@@ -1,0 +1,15 @@
+.container {
+    background: var(--background);
+    /* background: #000000; */
+    padding: 10px;
+}
+
+.text {
+    color: #fff;
+    font-size: 13px;
+    margin: 0 5px
+}
+
+.notification {
+    margin-right: 30px;
+}
