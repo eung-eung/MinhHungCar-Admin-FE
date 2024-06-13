@@ -4,7 +4,7 @@ import React, { Suspense } from 'react'
 import Sidebar from './components/Sidebar'
 import Content from './components/Content'
 import Header from './components/Header'
-
+import '../globals.css'
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
@@ -12,7 +12,9 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <Sidebar />
             <Content>
                 <Header />
-                {children}
+                <div className='box'>
+                    {children}
+                </div>
             </Content>
 
         </>
