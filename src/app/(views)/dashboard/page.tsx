@@ -8,6 +8,7 @@ import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
 import Person4RoundedIcon from '@mui/icons-material/Person4Rounded';
 import AreaReChart from './components/AreaChart';
 import classes from './index.module.css'
+import LineChartRef from './components/LineChart';
 
 const Skeleton = () => (
     <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
@@ -17,26 +18,22 @@ const items = [
         title: "1.000.000đ",
         description: "Tổng doanh thu",
         header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
-        //   icon: <IconClipboardCopy className="h-4 w-4 text-neutral-500" />,
     },
     {
         title: "500",
         description: "Tổng hợp đồng thuê xe",
         header: <ReceiptLongRoundedIcon sx={{ color: '#A9DFD8' }} />,
-        //   icon: <IconFileBroken className="h-4 w-4 text-neutral-500" />,
     },
     {
         title: "100",
         description: "Tổng partner",
         header: <HandshakeRoundedIcon sx={{ color: '#F2C8ED' }} />,
-        //   icon: <IconSignature className="h-4 w-4 text-neutral-500" />,
     },
     {
         title: "100",
         description:
             "Số khách hàng đã sử dụng dịch vụ",
         header: <Person4RoundedIcon sx={{ color: '#20AEF3' }} />,
-        //   icon: <IconTableColumn className="h-4 w-4 text-neutral-500" />,
     },
 
 ];
@@ -54,9 +51,7 @@ export default function Dashboard() {
                     />
                 ))}
             </StatisTicItemGrid>
-            <div className={classes.chartBox}>
-
-
+            <div className={classes.areaChart}>
                 <StatisticItem
                     style={{
                         height: '500px'
@@ -64,9 +59,17 @@ export default function Dashboard() {
                     header={<AreaReChart />}
                     title={<p>Doanh thu 6 ngày gần nhất</p>}
                 />
+            </div>
+            <div className={classes.lineChart}>
 
-
-
+                <StatisticItem
+                    style={{
+                        height: '500px',
+                        marginTop: '30px'
+                    }}
+                    header={<LineChartRef />}
+                    title={<p>Doanh thu 6 ngày gần nhất</p>}
+                />
             </div>
         </div>
     )
