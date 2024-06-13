@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background: #171821;
-  --darkBackground: #000000
+  --background: #fff;
+  --darkBackground: #000000;
+  --grayBackground: #efefef
+}
+
+.box {
+  margin: 0 15px;
 }
 
 html {
