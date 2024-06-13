@@ -43,25 +43,28 @@ export default function Sidebar() {
 
             <aside id="sidebar-multi-level-sidebar" className="lineBorder fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div className='title'>
-                    <Image
+                    {/* <Image
                         alt='minh hung' src='/Minhhung.png' width={50} height={50}
                         className='titleImage'
-                    />
-                    <p className='titleContent'>MinhHungCar</p>
+                    /> */}
+                    {/* <p className='titleContent'>MinhHungCar</p> */}
+                    <img
+                        className='mt-3'
+                        src='https://see.fontimg.com/api/renderfont4/gxnGR/eyJyIjoiZnMiLCJoIjozNiwidyI6MTAwMCwiZnMiOjM2LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/TWluaEh1bmdDYXI/creamy-sugar.png' />
                 </div>
                 <ConfigProvider theme={{
                     components: {
                         Menu: {
-                            itemSelectedBg: "#b7b6fd2b",
+                            itemSelectedBg: "#d4d3ff",
                             darkItemSelectedColor: '#b7b6fd2b',
-                            itemColor: '#fff',
-                            itemHoverColor: '#773BFF',
-                            itemActiveBg: '#13131A'
+                            itemColor: '#000000',
+                            itemHoverColor: '#re',
+                            itemActiveBg: '#d4d3ff',
+                            itemHoverBg: '#b7b6fd2b'
                         },
 
                     }
                 }}>
-
                     <Menu
                         onClick={handleChangeRoute}
                         defaultSelectedKeys={[path]}
@@ -70,7 +73,6 @@ export default function Sidebar() {
                         // theme='dark'
                         inlineCollapsed={collapsed}
                         items={items}
-
                     />
                 </ConfigProvider>
 
