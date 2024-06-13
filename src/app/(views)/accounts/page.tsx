@@ -1,14 +1,32 @@
 'use client'
 
 import { ConfigProvider, Table, Tag } from 'antd'
-import { Metadata } from 'next'
-import React from 'react'
-import classes from './index.module.css'
+import React, { useState } from 'react'
+
+
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import SearchInput from '@/app/components/SearchInput'
+import Diaglog from '@/app/components/Modal'
+import AccountDialog from './components/AccountDialog'
 export default function Account() {
+    const [open, setOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const showLoading = () => {
+        setOpen(true);
+        setLoading(true);
+
+        // Simple loading mock. You should add cleanup logic in real world.
+        setTimeout(() => {
+            setLoading(false);
+        }, 2000);
+    };
     const handleSearch = () => {
-        console.log('search');
+
+
+    }
+    const handleShowDialog = () => {
+        showLoading()
 
     }
     const dataSource = [
@@ -73,8 +91,11 @@ export default function Account() {
             key: 'action',
             render: (_: any, record: any) => (
                 <div className='flex items-center'>
-                    <RemoveRedEyeOutlinedIcon className='mr-3' />
-                    <Tag color='#ef1a2b' className='ml-3'>
+                    <RemoveRedEyeOutlinedIcon
+                        onClick={handleShowDialog}
+                        className='mr-3 cursor-pointer' />
+
+                    <Tag color='#ef1a2b' className='ml-3 cursor-pointer'>
                         Khóa
                     </Tag>
                 </div>
@@ -83,7 +104,7 @@ export default function Account() {
         },
     ];
     return (
-        <div className={classes.box + ' flex flex-col'}>
+        <div className={'flex flex-col'}>
             <div className='flex justify-end mt-5'>
                 <SearchInput callback={handleSearch} placeholder='Tìm kiếm theo họ và tên/email/số điện thoại' />
             </div>
@@ -92,22 +113,24 @@ export default function Account() {
                     {
                         components: {
                             Table: {
-                                headerBg: '#21222D',
                                 headerColor: '#87888C',
-                                footerBg: '#21222D',
-                                headerSplitColor: '#21222D',
-                                borderColor: '#30363d'
                             }
                         },
-                        token: {
-                            colorBgContainer: '#21222D',
-                            colorText: '#fff'
-                        }
+
                     }
                 }>
                 <Table dataSource={dataSource} columns={columns} />
 
             </ConfigProvider>
+            <Diaglog
+                loading={loading}
+                setOpen={setOpen}
+                showLoading={showLoading}
+                title="Chi tiết tài khoản"
+                open={open}
+            >
+                <AccountDialog />
+            </Diaglog>
         </div>
     )
 }
