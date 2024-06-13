@@ -55,8 +55,18 @@ export default function Dashboard() {
                 ))}
             </StatisTicItemGrid>
             <div className={classes.chartBox}>
-                <h2>Doanh thu 6 ngày gần nhất</h2>
-                <AreaReChart />
+
+
+                <StatisticItem
+                    style={{
+                        height: '500px'
+                    }}
+                    header={<AreaReChart />}
+                    title={<p>Doanh thu 6 ngày gần nhất</p>}
+                />
+
+
+
             </div>
         </div>
     )
