@@ -11,7 +11,7 @@ export default function Header() {
             </div>
             <Avatar size='default' src='/Minhhung.png' />
             <p className={classes.text}>Admin</p>
-            <KeyboardArrowDownOutlinedIcon sx={{ color: '#fff', fontSize: '20px' }} />
+            <KeyboardArrowDownOutlinedIcon sx={{ color: '#000000', fontSize: '20px' }} />
         </div>
     )
 }
