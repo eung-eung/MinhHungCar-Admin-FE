@@ -65,13 +65,13 @@ export default function AreaReChart() {
                 <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#62c3b6" stopOpacity={1} />
-                        <stop offset="100%" stopColor="#62c3b6" stopOpacity={0.1} />
+                        <stop offset="100%" stopColor="#62c3b6" stopOpacity={0} />
                     </linearGradient>
                 </defs>
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Area type="monotone" dataKey="uv" stroke="#62c3b6" fill="url(#colorUv)" />
+                <Area type="monotone" dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
             </AreaChart>
         </ResponsiveContainer>
     );
