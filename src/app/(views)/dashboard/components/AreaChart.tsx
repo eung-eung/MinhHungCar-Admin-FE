@@ -71,7 +71,7 @@ export default function AreaReChart() {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Area type="monotone" dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
+                <Area type="monotone" fillOpacity={1} dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
             </AreaChart>
         </ResponsiveContainer>
     );
