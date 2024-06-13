@@ -6,6 +6,9 @@ import EqualizerRoundedIcon from '@mui/icons-material/EqualizerRounded';
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded';
 import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
 import Person4RoundedIcon from '@mui/icons-material/Person4Rounded';
+import AreaReChart from './components/AreaChart';
+import classes from './index.module.css'
+
 const Skeleton = () => (
     <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl bg-gradient-to-br from-neutral-200 dark:from-neutral-900 dark:to-neutral-800 to-neutral-100"></div>
 );
@@ -51,6 +54,10 @@ export default function Dashboard() {
                     />
                 ))}
             </StatisTicItemGrid>
+            <div className={classes.chartBox}>
+                <h2>Doanh thu 6 ngày gần nhất</h2>
+                <AreaReChart />
+            </div>
         </div>
     )
 }
