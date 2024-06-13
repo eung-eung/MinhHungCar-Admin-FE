@@ -32,11 +32,8 @@ export default NextAuth({
             },
         })
     ],
-    // secret: process.env.JWT_SECRET,
     callbacks: {
         async jwt({ token, user }) {
-            console.log('loggg: ', process.env.NEXTAUTH_SECRET);
-
             if (user) {
                 return {
                     ...token,
@@ -47,20 +44,12 @@ export default NextAuth({
                 }
             }
             return token
-
         },
         async session({ session, token }) {
             return { ...session, ...token }
         },
-        // async redirect({ url, baseUrl }) {
-        //     return url.startsWith(baseUrl)
-        //         ? Promise.resolve(url)
-        //         : Promise.resolve(baseUrl);
-        // },
     },
-    // session: {
-    //     strategy: "jwt"
-    // },
+
     secret: process.env.NEXTAUTH_SECRET
-    // sta
+
 })
