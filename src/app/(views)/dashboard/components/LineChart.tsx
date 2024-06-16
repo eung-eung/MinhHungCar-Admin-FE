@@ -50,7 +50,6 @@ const data = [
 export default function LineReChart() {
 
     return (
-        // <ResponsiveContainer>
         <AreaChart
             width={600}
             height={300}
@@ -79,6 +78,5 @@ export default function LineReChart() {
             <Area dot type="linear" dataKey="pv" fillOpacity={1} fill='url(#colorUv)' stroke="#62c3b6" />
             <Area dot type="linear" dataKey="uv" fillOpacity={1} fill='url(#colorPv)' stroke="#b919a6" />
         </AreaChart>
-        // </ResponsiveContainer>
     );
 }
