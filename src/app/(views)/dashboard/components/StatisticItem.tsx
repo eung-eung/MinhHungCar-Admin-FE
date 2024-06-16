@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { cn } from "@/app/utils/cn";
 
 export default function StatisticItem({
@@ -14,7 +14,7 @@ export default function StatisticItem({
     description?: string | React.ReactNode;
     header?: React.ReactNode;
     icon?: React.ReactNode;
-    style?: any
+    style?: CSSProperties
 }) {
     return (
         <div
