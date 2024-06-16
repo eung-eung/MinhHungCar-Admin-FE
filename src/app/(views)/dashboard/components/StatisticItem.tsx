@@ -21,7 +21,7 @@ export default function StatisticItem({
     return (
         <div
             style={style}
-            className={"row-span-1 rounded-xl h-fit  group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 pb-5 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent flex flex-col space-y-4 " + className}
+            className={"row-span-1 rounded-xl h-max  group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 pb-5 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent flex flex-col space-y-4 " + className}
         >
             {header}
             <div className="group-hover/bento:translate-x-2 transition duration-200">
