@@ -45,28 +45,28 @@ const renderCustomizedLabel = (
 };
 export default function PieReChart() {
     return (
-        // <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={400} height={400}>
-            <Pie
+        <>
+            <PieChart width={400} height={400}>
+                <Pie
 
-                style={{ outline: 'none' }}
-                data={data}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={150}
-                fill="#8884d8"
-                dataKey="value"
-            >
-                {data.map((entry, index) => (
-                    <Cell
-                        style={{ outline: 'none' }}
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]} />
-                ))}
-            </Pie>
-        </PieChart>
-        // </ResponsiveContainer>
+                    style={{ outline: 'none' }}
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={renderCustomizedLabel}
+                    outerRadius={150}
+                    fill="#8884d8"
+                    dataKey="value"
+                >
+                    {data.map((entry, index) => (
+                        <Cell
+                            style={{ outline: 'none' }}
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Pie>
+            </PieChart>
+        </>
     )
 }
