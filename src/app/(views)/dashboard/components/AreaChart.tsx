@@ -50,7 +50,7 @@ const data = [
 
 export default function AreaReChart() {
     return (
-        <ResponsiveContainer>
+        <ResponsiveContainer width='100%'>
             <AreaChart
                 width={500}
                 height={400}
