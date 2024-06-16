@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/app/utils/cn";
 
 export default function StatisTicItemGrid({

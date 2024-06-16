@@ -3,3 +3,9 @@
     margin-top: 50px;
     /* background: ; */
 }
+
+.middleChartBox {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
