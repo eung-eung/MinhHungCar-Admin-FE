@@ -50,33 +50,28 @@ const data = [
 
 export default function AreaReChart() {
     return (
-        // <ResponsiveContainer width='100%'>
-        <>
-            <Suspense fallback={<p>Loadinggggg</p>} />
-            <AreaChart
-                width={500}
-                height={400}
-                data={data}
-                margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
-                    bottom: 0,
-                }}
-            >
-                <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#62c3b6" stopOpacity={1} />
-                        <stop offset="100%" stopColor="#62c3b6" stopOpacity={0} />
-                    </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Area type="monotone" fillOpacity={1} dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
-            </AreaChart>
-
-        </>
+        <AreaChart
+            width={500}
+            height={400}
+            data={data}
+            margin={{
+                top: 10,
+                right: 30,
+                left: 0,
+                bottom: 0,
+            }}
+        >
+            <defs>
+                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#62c3b6" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#62c3b6" stopOpacity={0} />
+                </linearGradient>
+            </defs>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area type="monotone" fillOpacity={1} dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
+        </AreaChart>
     );
 
 }
