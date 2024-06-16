@@ -50,7 +50,9 @@ const data = [
 
 export default function AreaReChart() {
     return (
-        <ResponsiveContainer width='100%'>
+        // <ResponsiveContainer width='100%'>
+        <>
+            <Suspense fallback={<p>Loadinggggg</p>} />
             <AreaChart
                 width={500}
                 height={400}
@@ -73,7 +75,8 @@ export default function AreaReChart() {
                 <Tooltip />
                 <Area type="monotone" fillOpacity={1} dataKey="uv" strokeWidth={4} stroke="#3fc587" fill="url(#colorUv)" />
             </AreaChart>
-        </ResponsiveContainer>
+
+        </>
     );
 
 }
