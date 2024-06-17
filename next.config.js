@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 // const nextConfig = {};
-module.exports = {
+
+const nextConfig = {
+    env: {
+        API_ENDPOINT_PUBLIC: process.env.API_ENDPOINT,
+    },
     reactStrictMode: false,
 }
-// export default nextConfig;
+
+module.exports = nextConfig
