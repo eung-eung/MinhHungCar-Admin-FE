@@ -3,8 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Layout from "./layouts/Layout";
 import { Metadata } from "next";
-import AuthProvider from "./components/AuthProvider";
+
 import { AntdRegistry } from '@ant-design/nextjs-registry';
+import SessionProvider from "./components/SessionProvider";
+import AuthProvider from "./components/AuthProvider";
+
 
 export const metadata: Metadata = {
   title: 'Home'
@@ -19,9 +22,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={inter.className}>
         <AntdRegistry>
           <AuthProvider>
-            <Layout>
-              {children}
-            </Layout>
+            <SessionProvider>
+              <Layout>
+                {children}
+              </Layout>
+            </SessionProvider>
           </AuthProvider>
         </AntdRegistry>
       </body>
