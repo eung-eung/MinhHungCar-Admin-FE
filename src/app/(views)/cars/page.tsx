@@ -1,116 +1,90 @@
 'use client'
-import { Button, ConfigProvider, Dropdown, GetProp, Menu, MenuProps, Modal, Select, Switch, Table, UploadFile, UploadProps } from 'antd'
-import React, { ChangeEvent, useState } from 'react'
+import { Button, Dropdown, GetProp, Menu, MenuProps, Modal, Select, Switch, Table, TableProps, UploadFile, UploadProps } from 'antd'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import '../../globals.css'
-import classes from './index.module.css'
+
 import SearchInput from '@/app/components/SearchInput'
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import TopFilterTable from '@/app/components/TopFilterTable'
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
+import { ICar } from '@/app/models/Car.model'
+import { TableParams } from '@/app/models/TableParams.model'
+import CarTable from './components/CarTable'
+
+
 
 
 
 
 export default function Cars() {
     const [filter, setFilter] = useState()
+    const [carData, setCarData] = useState<ICar[]>([])
+    const axiosAuth = useAxiosAuth()
+    const [tableParams, setTableParams] = useState<TableParams>({
+        pagination: {
+            current: 1,
+            pageSize: 10,
+        },
+    });
+    const getCarList = async () => {
+        const carList = await axiosAuth.get(
+            '/admin/cars?status=pending_approval'
+        )
+        console.log(carList);
 
-    const columns = [
-        {
-            title: 'Hãng xe',
-            dataIndex: 'brand',
-            key: 'brand',
-        },
-        {
-            title: 'Mẫu xe',
-            dataIndex: 'model',
-            key: 'model',
-        },
-        {
-            title: 'Biển số xe',
-            dataIndex: 'carNumber',
-            key: 'carNumber',
-        },
-        {
-            title: 'Giá thuê xe',
-            dataIndex: 'price',
-            key: 'price',
-        },
-        {
-            title: 'Tên chủ xe',
-            dataIndex: 'owner',
-            key: 'owner',
-        },
-        {
-            title: '',
-            dataIndex: 'action',
-            key: 'action',
-            render: () => {
-                return <div className={classes.actionBox}>
-                    <Dropdown
-                        dropdownRender={() => (
-                            <Menu
-                                items={[
-                                    { key: '1', label: 'Chi tiết' },
-                                    { key: '2', label: 'Hợp đồng' },
-                                    { key: '3', label: 'Option 3' },
-                                ]}>
+        setCarData(carList.data)
+    }
 
-                            </Menu>
-                        )}
+    useEffect(() => {
+        getCarList()
 
-                        placement="bottom" arrow>
-                        <Button><MoreHorizOutlinedIcon /></Button>
-                    </Dropdown>
-                </div>
 
-            }
+    }, [])
 
-        },
+    // const carData = [
+    //     {
+    //         key: 1,
+    //         brand: 'Audi',
+    //         model: 'Audi 2023',
+    //         carNumber: 'K1023021',
+    //         price: 213123,
+    //         owner: 'Nguyễn Văn Long'
+    //     },
+    //     {
+    //         key: 2,
+    //         brand: 'Toyoto',
+    //         model: 'Inova cross',
+    //         carNumber: 'K1023021',
+    //         price: 213123,
+    //         owner: 'Nguyễn Văn A'
+    //     },
+    //     {
+    //         key: 3,
+    //         brand: 'Toyoto',
+    //         model: 'Inova cross',
+    //         carNumber: 'K1023021',
+    //         price: 213123,
+    //         owner: 'Nguyễn Văn A'
+    //     },
+    //     {
+    //         key: 4,
+    //         brand: 'Toyoto',
+    //         model: 'Inova cross',
+    //         carNumber: 'K1023021',
+    //         price: 213123,
+    //         owner: 'Nguyễn Văn A'
+    //     },
+    //     {
+    //         key: 5,
+    //         brand: 'Toyoto',
+    //         model: 'Inova cross',
+    //         carNumber: 'K1023021',
+    //         price: 213123,
+    //         owner: 'Nguyễn Văn A'
+    //     },
 
-    ]
-    const carData = [
-        {
-            key: 1,
-            brand: 'Audi',
-            model: 'Audi 2023',
-            carNumber: 'K1023021',
-            price: 213123,
-            owner: 'Nguyễn Văn Long'
-        },
-        {
-            key: 2,
-            brand: 'Toyoto',
-            model: 'Inova cross',
-            carNumber: 'K1023021',
-            price: 213123,
-            owner: 'Nguyễn Văn A'
-        },
-        {
-            key: 3,
-            brand: 'Toyoto',
-            model: 'Inova cross',
-            carNumber: 'K1023021',
-            price: 213123,
-            owner: 'Nguyễn Văn A'
-        },
-        {
-            key: 4,
-            brand: 'Toyoto',
-            model: 'Inova cross',
-            carNumber: 'K1023021',
-            price: 213123,
-            owner: 'Nguyễn Văn A'
-        },
-        {
-            key: 5,
-            brand: 'Toyoto',
-            model: 'Inova cross',
-            carNumber: 'K1023021',
-            price: 213123,
-            owner: 'Nguyễn Văn A'
-        },
-
-    ]
+    // ]
 
     const handleSearch = () => {
 
@@ -137,8 +111,7 @@ export default function Cars() {
                 ]}
                 handleSearch={handleSearch}
             />
-            <Table
-                dataSource={carData} columns={columns} />
+            <CarTable carData={carData} />
         </div>
     )
 }
