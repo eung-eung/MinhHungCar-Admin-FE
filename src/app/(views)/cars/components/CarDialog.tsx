@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 
 
 export default function CarDialog({ detail }: { detail?: ICar }) {
+    console.log(detail);
+
     const { t } = useTranslation()
     return (
         <div className={classes.diaglog}>
@@ -28,7 +30,7 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>
-
+                                Số ghế
                             </p>
                             <p className={classes.infor}>
                                 {detail?.car_model.number_of_seats}
@@ -40,14 +42,37 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Truyền động
                             </p>
                             <p className={classes.infor}>
-                                {detail?.motion}
+                                {t(`${detail?.motion}`)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Nhiên liệu
+                            </p>
+                            <p className={classes.infor}>
+                                {t(`${detail?.fuel}`)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Mô tả
+                            </p>
+                            <p className={classes.infor}>
+                                {detail?.description}
                             </p>
                         </div>
                     </div>
 
                     <div className={classes.carInfo}>
                         <p className='font-semibold	text-xl mb-8'>
-                            {detail?.car_model.brand + ' ' + detail?.car_model.model}
+                            {detail?.car_model.brand
+                                + ' '
+                                + detail?.car_model.model
+                                + ' '
+                                + detail?.car_model.year
+                            }
                         </p>
                         {/* item */}
                         <div className={classes.inforItem}>
@@ -58,46 +83,56 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 {detail?.license_plate}
                             </p>
                         </div>
+
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Nơi đậu xe
+                            </p>
+                            <p className={classes.infor}>
+                                {t(`${detail?.parking_lot}`)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Giá cho thuê
+                            </p>
+                            <p className={classes.infor}>
+                                {detail?.price}
+                            </p>
+                        </div>
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>
                                 Trạng thái xe
                             </p>
                             <p className={classes.infor}>
-                                <Tag color='#4baf21'>
-                                    {detail?.status}
+                                <Tag color='#eb8628'>
+                                    {t(`${detail?.status}`)}
                                 </Tag>
 
-                            </p>
-                        </div>
-                        {/* item */}
-                        <div className={classes.inforItem}>
-                            <p className={classes.label}>
-                                Email
-                            </p>
-                            <p className={classes.infor}>
-                                boyvip5231@gmail.com
                             </p>
                         </div>
                     </div>
                 </div>
                 {/* bottom body */}
-                <div className={classes.bodyBottom}>
+                {/* <div className={classes.bodyBottom}>
                     <p className={classes.label}>
                         Giấy phép lái xe
                     </p>
                     <div className={classes.licenseImages}>
-                        {/* <Image
+                        <Image
                             width={200}
                             src="https://cdn.thuvienphapluat.vn/tintuc/uploads/image/2021/01/27/can-cuoc-cong-dan-gan-chip-2(1).jpg"
                         />
                         <Image
                             width={200}
                             src="https://cdn.thuvienphapluat.vn/tintuc/uploads/image/2021/01/27/can-cuoc-cong-dan-gan-chip-2(1).jpg"
-                        /> */}
+                        />
                     </div>
 
-                </div>
+                </div> */}
             </div>
         </div>
     )
