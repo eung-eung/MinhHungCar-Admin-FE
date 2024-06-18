@@ -1,25 +1,16 @@
 'use client'
-import { Button, Dropdown, GetProp, Menu, MenuProps, Modal, Select, Switch, Table, TableProps, UploadFile, UploadProps } from 'antd'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../../globals.css'
-
-import SearchInput from '@/app/components/SearchInput'
-
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import TopFilterTable from '@/app/components/TopFilterTable'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { ICar } from '@/app/models/Car.model'
 import { TableParams } from '@/app/models/TableParams.model'
 import CarTable from './components/CarTable'
 
-
-
-
-
-
 export default function Cars() {
-    const [filter, setFilter] = useState()
+    const [filter, setFilter] = useState('pending_approval')
     const [carData, setCarData] = useState<ICar[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const axiosAuth = useAxiosAuth()
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -27,64 +18,21 @@ export default function Cars() {
             pageSize: 10,
         },
     });
-    const getCarList = async () => {
+    const getCarList = async (filter: any) => {
+        setLoading(true)
         const carList = await axiosAuth.get(
-            '/admin/cars?status=pending_approval'
+            `/admin/cars?car_status=${filter}`
         )
-        console.log(carList);
-
         setCarData(carList.data)
+        setLoading(false)
+
     }
 
     useEffect(() => {
-        getCarList()
+        getCarList(filter)
+    }, [filter])
 
 
-    }, [])
-
-    // const carData = [
-    //     {
-    //         key: 1,
-    //         brand: 'Audi',
-    //         model: 'Audi 2023',
-    //         carNumber: 'K1023021',
-    //         price: 213123,
-    //         owner: 'Nguyễn Văn Long'
-    //     },
-    //     {
-    //         key: 2,
-    //         brand: 'Toyoto',
-    //         model: 'Inova cross',
-    //         carNumber: 'K1023021',
-    //         price: 213123,
-    //         owner: 'Nguyễn Văn A'
-    //     },
-    //     {
-    //         key: 3,
-    //         brand: 'Toyoto',
-    //         model: 'Inova cross',
-    //         carNumber: 'K1023021',
-    //         price: 213123,
-    //         owner: 'Nguyễn Văn A'
-    //     },
-    //     {
-    //         key: 4,
-    //         brand: 'Toyoto',
-    //         model: 'Inova cross',
-    //         carNumber: 'K1023021',
-    //         price: 213123,
-    //         owner: 'Nguyễn Văn A'
-    //     },
-    //     {
-    //         key: 5,
-    //         brand: 'Toyoto',
-    //         model: 'Inova cross',
-    //         carNumber: 'K1023021',
-    //         price: 213123,
-    //         owner: 'Nguyễn Văn A'
-    //     },
-
-    // ]
 
     const handleSearch = () => {
 
@@ -92,26 +40,28 @@ export default function Cars() {
 
     const handleChange = (e: string) => {
         console.log(e);
+        setFilter(e)
 
     }
-
-
-
     return (
         <div>
             <TopFilterTable
                 placeholder='Tìm kiếm theo họ và tên/email/số điện thoại'
-                defaultValue='waiting'
+                defaultValue='pending_approval'
                 handleChange={handleChange}
                 optionList={[
-                    { label: 'Xe đang chờ duyệt', value: 'waiting' },
-                    { label: 'Xe đã duyệt', value: 'approve' },
+                    { label: 'Xe đang chờ duyệt', value: 'pending_approval' },
+                    { label: 'Xe đã duyệt', value: 'approved' },
                     { label: 'Xe đang chờ giao', value: 'waitingPark' },
                     { label: 'Xe đang hoạt động', value: 'active' },
                 ]}
                 handleSearch={handleSearch}
             />
-            <CarTable carData={carData} />
+            <CarTable
+                loading={loading}
+                carData={carData}
+            />
+
         </div>
     )
 }
