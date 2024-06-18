@@ -1,0 +1,34 @@
+.topBody {
+    display: flex;
+
+}
+
+.inforItem {
+    display: flex;
+    align-items: center;
+}
+
+.carInfo {
+    margin-left: 30px;
+}
+
+.bodyBottom {
+    margin-top: 20px;
+}
+
+.licenseImages {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.label {
+    margin-right: 20px;
+    font-weight: 600;
+    min-width: 40%;
+    font-size: 20px;
+}
+
+.infor {
+    font-size: 18px;
+}
