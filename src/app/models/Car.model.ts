@@ -15,6 +15,7 @@ export interface ICar {
     price: number;
     status: string;
     period: number;
+    images: Array<string>;
     created_at: Date;
     updated_at: Date;
 }
