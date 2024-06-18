@@ -12,10 +12,8 @@ export default function Diaglog({ children, title, loading, showLoading, open, s
     }) {
     return (
         <>
-            {/* <Button type="primary" onClick={showLoading}>
-                {buttonContent}
-            </Button> */}
             <Modal
+                width='50%'
                 title={title}
                 footer={
                     <Button type="primary" onClick={() => setOpen(false)}>
