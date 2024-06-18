@@ -26,7 +26,7 @@ export default function CarTable(
     const handleOpenDetailDialog = async (id: any) => {
         setOpen(true);
         setLoadingDialog(true);
-        const carDetail = await axiosAuth.get(`/admin/car/${id}`)
+        const carDetail = await axiosAuth.get(`/car/${id}`)
         const detail: ICar = carDetail.data
         setCarDetail(detail)
         setLoadingDialog(false)
@@ -35,7 +35,7 @@ export default function CarTable(
 
     const handleOpenContractDialog = (id: any) => {
         console.log('a');
-        console.log(id);
+        // console.log(id);
 
     }
 
