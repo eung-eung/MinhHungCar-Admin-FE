@@ -1,12 +1,46 @@
 import { ICar } from '@/app/models/Car.model'
 import { Button, Dropdown, Menu, Table } from 'antd'
 import { TableProps } from 'antd/lib'
-import React from 'react'
+import React, { useState } from 'react'
 import classes from '../index.module.css'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { ICarModel } from '@/app/models/CarModel.model'
 import { IAccount } from '@/app/models/Account.model'
-export default function CarTable({ carData }: { carData: ICar[] }) {
+import Diaglog from '@/app/components/Modal'
+import CarDialog from './CarDialog'
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
+import { useTranslation } from 'react-i18next'
+export default function CarTable(
+    {
+        carData,
+        loading
+    }: {
+        carData: ICar[],
+        loading: boolean
+    }) {
+    const [open, setOpen] = useState<boolean>(false);
+    const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
+    const [carDetail, setCarDetail] = useState<ICar>()
+    const { t } = useTranslation()
+    const axiosAuth = useAxiosAuth()
+    const handleOpenDetailDialog = async (id: any) => {
+        setOpen(true);
+        setLoadingDialog(true);
+        const carDetail = await axiosAuth.get(`/admin/car/${id}`)
+        const detail: ICar = carDetail.data
+        setCarDetail(detail)
+        setLoadingDialog(false)
+
+    };
+
+    const handleOpenContractDialog = (id: any) => {
+        console.log('a');
+        console.log(id);
+
+    }
+
+
+
     const columns: TableProps<ICar>['columns'] = [
         {
             title: 'Hãng xe',
@@ -28,7 +62,7 @@ export default function CarTable({ carData }: { carData: ICar[] }) {
         {
             title: 'Giá thuê xe',
             dataIndex: 'price',
-            key: 'price',
+            key: 'id',
             render: (price: Number) => <>{price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</>
         },
         {
@@ -42,16 +76,30 @@ export default function CarTable({ carData }: { carData: ICar[] }) {
         {
             title: '',
             dataIndex: 'action',
-            key: 'action',
-            render: () => {
+            key: 'id',
+            render: (_, record) => {
+                console.log(record);
+
                 return <div className={classes.actionBox}>
                     <Dropdown
                         dropdownRender={() => (
                             <Menu
                                 items={[
-                                    { key: '1', label: 'Chi tiết' },
-                                    { key: '2', label: 'Hợp đồng' },
-                                    { key: '3', label: 'Option 3' },
+                                    {
+                                        key: '1',
+                                        label: 'Chi tiết',
+                                        onClick: () =>
+                                            handleOpenDetailDialog(record.id)
+                                    },
+                                    {
+                                        key: '2',
+                                        label: 'Hợp đồng',
+                                        onClick: () =>
+                                            handleOpenContractDialog(record.id)
+                                    },
+                                    {
+                                        key: '3', label: 'Option 3'
+                                    },
                                 ]}>
 
                             </Menu>
@@ -68,7 +116,21 @@ export default function CarTable({ carData }: { carData: ICar[] }) {
 
     ]
     return (
-        <Table
-            dataSource={carData} columns={columns} />
+        <>
+            <Table
+                loading={loading}
+                dataSource={carData}
+                columns={columns} />
+            <Diaglog
+                loading={loadingDialog}
+                open={open}
+                setOpen={setOpen}
+                title='Thông tin xe'
+                showLoading={handleOpenDetailDialog}
+            >
+                <CarDialog detail={carDetail} />
+            </Diaglog>
+        </>
+
     )
 }
