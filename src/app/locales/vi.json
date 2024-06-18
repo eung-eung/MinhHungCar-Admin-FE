@@ -1,6 +1,10 @@
 {
-    "title": "Đây là tiêu đề tiếng Việt",
-    "description": "Đây là mô tả tiếng Việt.",
-    "button_label": "Nhấn vào đây",
-    "error_message": "Đã xảy ra lỗi."
+    "pending_approval": "Chờ duyệt",
+    "automatic_transmission": "Số tự động",
+    "manual_transmission": "Số sàn",
+    "electricity": "Điện",
+    "oil": "Dầu",
+    "gas": "Xăng",
+    "home": "Tại nhà",
+    "garage": "Bãi đỗ MinhHungCar"
 }
