@@ -18,7 +18,9 @@ export default function Cars() {
             pageSize: 10,
         },
     });
+
     const getCarList = async (filter: any) => {
+        setCarData([])
         setLoading(true)
         const carList = await axiosAuth.get(
             `/admin/cars?car_status=${filter}`
@@ -39,7 +41,6 @@ export default function Cars() {
     }
 
     const handleChange = (e: string) => {
-        console.log(e);
         setFilter(e)
 
     }
@@ -60,6 +61,7 @@ export default function Cars() {
             <CarTable
                 loading={loading}
                 carData={carData}
+                filter={filter}
             />
 
         </div>
