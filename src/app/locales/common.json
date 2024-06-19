@@ -1,0 +1,11 @@
+{
+    "pending_approval": "Chờ duyệt",
+    "active": "Đang hoạt động",
+    "electricity": "Điện",
+    "oil": "Dầu",
+    "gas": "Xăng",
+    "home": "Tại nhà",
+    "garage": "Bãi đỗ MinhHungCar",
+    "automatic_transmission": "Số tự động",
+    "manual_transmission": "Số sàn"
+}
