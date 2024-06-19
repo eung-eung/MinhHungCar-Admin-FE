@@ -1,6 +1,7 @@
 {
     "pending_approval": "Chờ duyệt",
     "active": "Đang hoạt động",
+    "approved": "Đã duyệt",
     "electricity": "Điện",
     "oil": "Dầu",
     "gas": "Xăng",
