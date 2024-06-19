@@ -128,16 +128,6 @@ export default function CarDialog(
 
                         </div>
                         <Button onClick={showContract}>Click</Button>
-                        {/* <div>
-                            <Document
-                                file={pdfUrl}
-                                onLoadSuccess={onDocumentLoadSuccess}
-                                externalLinkTarget="_parent"
-                            >
-                                <Page pageNumber={1} />
-                            </Document>
-
-                        </div> */}
                     </div>
                 </div>
             </div>
