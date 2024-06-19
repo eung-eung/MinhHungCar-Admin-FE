@@ -1,4 +1,4 @@
-import { ConfigProvider, Select } from 'antd'
+import { ConfigProvider, DatePicker, Select } from 'antd'
 import React from 'react'
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import SearchInput from './SearchInput';
@@ -14,14 +14,19 @@ export default function TopFilterTable(
         handleSearch,
         optionList,
         defaultValue,
-        placeholder
+        placeholder,
+        showSearch,
+        showDatepicker
     }: {
         handleChange: any,
-        handleSearch: any,
+        handleSearch?: any,
         optionList: Option[],
         defaultValue: any,
-        placeholder: any
+        placeholder?: any,
+        showSearch?: boolean,
+        showDatepicker?: boolean
     }) {
+    const handleChangeDatepick = () => { }
     return (
         <div className='flex justify-between items-center mt-5'>
             <ConfigProvider
@@ -54,7 +59,17 @@ export default function TopFilterTable(
                     options={optionList}
                 />
             </ConfigProvider>
-            <SearchInput callback={handleSearch} placeholder={placeholder} />
+            {
+                showSearch &&
+                <SearchInput callback={handleSearch} placeholder={placeholder} />
+            }
+            {showDatepicker && <DatePicker
+                format={{
+                    format: 'YYYY-MM-DD',
+                    type: 'mask',
+                }}
+                onChange={handleChangeDatepick}
+            />}
         </div>
     )
 }
