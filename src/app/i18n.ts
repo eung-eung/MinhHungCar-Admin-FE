@@ -10,7 +10,9 @@ i18n
 
         resources: {
             vi: {
-                translation: require('./locales/vi.json'),
+                common: require('./locales/common.json'),
+                // fuel: require('./locales/fuel.json'),
+
             },
         },
     });
