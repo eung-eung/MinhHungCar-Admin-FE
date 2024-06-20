@@ -3,6 +3,8 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { Button, ConfigProvider, Input, Modal } from 'antd'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Bounce, ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 type KeyIGarage = keyof IGarage;
 
 export default function GarageConfigDialog(
@@ -31,9 +33,6 @@ export default function GarageConfigDialog(
             getGarageConfig()
             console.log('zasd');
         }
-
-
-
     }, [open])
 
     const handleOk = async () => {
@@ -45,21 +44,30 @@ export default function GarageConfigDialog(
         console.log(config);
 
         const response = await axiosAuth.put('/garage_config', config)
-        console.log('response: ', response);
+        if (response.status === 200) {
+            toast.success('Cập nhật thành công', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            })
+        }
         setOpen(false);
         setConfirmLoading(false);
 
     };
 
     const handleCancel = () => {
-        console.log('Clicked cancel button');
         setOpen(false);
         setConfirmLoading(false);
     };
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>, key: any) => {
-        console.log(key);
-        console.log(e.target.value);
         setGarageConfig((config: any) => ({
             ...config,
             [key]: parseInt(e.target.value)
@@ -68,6 +76,7 @@ export default function GarageConfigDialog(
 
     return (
         <>
+
             <ConfigProvider
                 theme={{
                     token: {
@@ -75,6 +84,8 @@ export default function GarageConfigDialog(
                     }
                 }}
             >
+
+
                 <Modal
                     title="Số lượng xe tối đa trong bãi đỗ"
                     open={open}
@@ -98,6 +109,7 @@ export default function GarageConfigDialog(
                     </div>
                 </Modal>
             </ConfigProvider>
+
         </>
     )
 }
