@@ -17,12 +17,9 @@ export default function CarDialog(
     const { t } = useTranslation()
 
 
-    const showContract = async () => {
+    const showContract = (id: any) => {
+        window.open(`/cars/contract/${id}`, '_blank')
     }
-    const [numPages, setNumPages] = useState<number>();
-    const [pageNumber, setPageNumber] = useState<number>(1);
-
-
 
     return (
         <div className={classes.diaglog}>
@@ -127,7 +124,7 @@ export default function CarDialog(
                             </p>
 
                         </div>
-                        <Button onClick={showContract}>Click</Button>
+                        <Button onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
                     </div>
                 </div>
             </div>
