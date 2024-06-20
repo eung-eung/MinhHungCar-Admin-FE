@@ -47,6 +47,7 @@ export default function Cars() {
     return (
         <div>
             <TopFilterTable
+                showSearch={true}
                 placeholder='Tìm kiếm theo họ và tên/email/số điện thoại'
                 defaultValue='pending_approval'
                 handleChange={handleChange}
