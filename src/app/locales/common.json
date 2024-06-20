@@ -8,5 +8,9 @@
     "home": "Tại nhà",
     "garage": "Bãi đỗ MinhHungCar",
     "automatic_transmission": "Số tự động",
-    "manual_transmission": "Số sàn"
+    "manual_transmission": "Số sàn",
+    "max_4_seats": "Số xe 4 chỗ",
+    "max_7_seats": "Số xe 7 chỗ",
+    "max_15_seats": "Số xe 15 chỗ",
+    "total": "Tổng cộng"
 }
