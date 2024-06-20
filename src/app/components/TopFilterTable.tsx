@@ -53,8 +53,10 @@ export default function TopFilterTable(
                             defaultHoverBg: '#fff',
                             defaultHoverColor: '#9244f9',
                             defaultBg: '#9244f9',
-                            defaultColor: '#fff'
-                        }
+                            defaultColor: '#fff',
+                        },
+
+
                     },
                 }}
             >
@@ -96,6 +98,7 @@ export default function TopFilterTable(
                         />
                     }
                 </div>
+
             </ConfigProvider>
             <GarageConfigDialog open={open} setOpen={setOpen} />
         </div>
