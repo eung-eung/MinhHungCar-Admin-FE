@@ -1,12 +1,10 @@
-import { IGarage } from '@/app/models/Garage.mode'
+import { IGarage, IGarageRequest } from '@/app/models/Garage.model'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-import { Modal } from 'antd'
-import { useEffect, useState } from 'react'
+import { Button, ConfigProvider, Input, Modal } from 'antd'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-type GarageConfig = {
-    key: string;
-    value: number
-}
+type KeyIGarage = keyof IGarage;
+
 export default function GarageConfigDialog(
     {
         open,
@@ -17,7 +15,7 @@ export default function GarageConfigDialog(
     }) {
     const axiosAuth = useAxiosAuth()
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
-    const [garageConfig, setGarageConfig] = useState<GarageConfig[]>()
+    const [garageConfig, setGarageConfig] = useState<IGarage>()
     const [loading, setLoading] = useState<boolean>(true)
     const [modalText, setModalText] = useState('Content of the modal');
     const { t } = useTranslation()
@@ -25,55 +23,81 @@ export default function GarageConfigDialog(
     const getGarageConfig = async () => {
         setLoading(true)
         const response = await axiosAuth.get('/garage_config')
-        const reponseToArray = Object.keys(response.data).map
-            (
-                key => ({
-                    key: key,
-                    value: response.data[key]
-                })
-            )
-
-
-        setGarageConfig(reponseToArray)
+        setGarageConfig(response.data)
         setLoading(false)
     }
     useEffect(() => {
         if (open) {
-            console.log('zo');
             getGarageConfig()
+            console.log('zasd');
         }
+
+
+
     }, [open])
 
-    const handleOk = () => {
-        setModalText('The modal will be closed after two seconds');
+    const handleOk = async () => {
         setConfirmLoading(true);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 2000);
+        const config = {} as IGarageRequest
+        config.max_7_seats = garageConfig?.max_7_seats
+        config.max_4_seats = garageConfig?.max_4_seats
+        config.max_15_seats = garageConfig?.max_15_seats
+        console.log(config);
+
+        const response = await axiosAuth.put('/garage_config', config)
+        console.log('response: ', response);
+        setOpen(false);
+        setConfirmLoading(false);
+
     };
 
     const handleCancel = () => {
         console.log('Clicked cancel button');
         setOpen(false);
+        setConfirmLoading(false);
     };
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>, key: any) => {
+        console.log(key);
+        console.log(e.target.value);
+        setGarageConfig((config: any) => ({
+            ...config,
+            [key]: parseInt(e.target.value)
+        }))
+    }
+
     return (
         <>
-            <Modal
-                title="Số lượng xe tối đa trong bãi đỗ"
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-                maskClosable={false}
-                loading={loading}
+            <ConfigProvider
+                theme={{
+                    token: {
+                        colorPrimary: "#9244f9"
+                    }
+                }}
             >
-                <div>
-                    {garageConfig?.map(config => <div>
-                        <p>{t(`common:${config.key}`)}</p>
-                        <p>{config.value}</p>
-                    </div>)}
-                </div>
-            </Modal></>
+                <Modal
+                    title="Số lượng xe tối đa trong bãi đỗ"
+                    open={open}
+                    onOk={handleOk}
+                    confirmLoading={confirmLoading}
+                    onCancel={handleCancel}
+                    cancelText="Hủy"
+                    maskClosable={false}
+                    loading={loading}
+
+                >
+                    <div className='mt-5'>
+                        {!loading &&
+                            Object?.keys(garageConfig as IGarage).map((key) => <div className='flex items:center mb-4'>
+                                <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
+                                <Input type='number' className='flex-1' size='middle' disabled={key === 'total' ? true : false} value={(garageConfig as IGarage)[key as KeyIGarage]} onChange={(e) => handleOnChange(e, key)} />
+                            </div>)
+
+
+                        }
+                    </div>
+                </Modal>
+            </ConfigProvider>
+        </>
     )
 }
