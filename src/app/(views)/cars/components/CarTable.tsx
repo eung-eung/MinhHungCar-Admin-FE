@@ -18,11 +18,12 @@ export default function CarTable(
         carData,
         loading,
         filter,
-
+        setRefresh
     }: {
         carData: ICar[],
         loading: boolean,
         filter: any,
+        setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()
     const [open, setOpen] = useState<boolean>(false);
@@ -85,6 +86,7 @@ export default function CarTable(
                             carDetail={carDetail}
                             loadingDialog={loadingDialog}
                             setOpen={setOpen}
+                            setRefresh={setRefresh}
                         />
                     }
                     {
