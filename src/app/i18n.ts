@@ -6,13 +6,12 @@ i18n
     .use(HttpBackend)
     .use(initReactI18next)
     .init({
-        fallbackLng: 'vi', // Default language
+        fallbackLng: 'mapping', // Default language
 
         resources: {
-            vi: {
+            mapping: {
                 common: require('./locales/common.json'),
-                // fuel: require('./locales/fuel.json'),
-
+                carStatus: require('./locales/carStatus.json')
             },
         },
     });
