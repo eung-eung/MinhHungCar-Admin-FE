@@ -17,7 +17,8 @@ export default function TopFilterTable(
         defaultValue,
         placeholder,
         showSearch,
-        showDatepicker
+        showDatepicker,
+        showGarageConfig
     }: {
         handleChange: any,
         handleSearch?: any,
@@ -25,7 +26,8 @@ export default function TopFilterTable(
         defaultValue: any,
         placeholder?: any,
         showSearch?: boolean,
-        showDatepicker?: boolean
+        showDatepicker?: boolean,
+        showGarageConfig?: boolean
     }) {
     const [open, setOpen] = useState<boolean>(false);
     const handleChangeDatepick = () => { }
@@ -78,16 +80,18 @@ export default function TopFilterTable(
                         showSearch &&
                         <SearchInput callback={handleSearch} placeholder={placeholder} />
                     }
-                    <Button
-                        onClick={showGarageDiaglog}
-                        style={{
-                            height: '100%',
-                            padding: 10,
-
-                        }}>
-                        <p>Bãi xe</p>
-                        <SettingsOutlinedIcon />
-                    </Button>
+                    {showGarageConfig &&
+                        <Button
+                            onClick={showGarageDiaglog}
+                            style={{
+                                height: '100%',
+                                padding: 10,
+                                marginLeft: 10
+                            }}>
+                            <p>Bãi xe</p>
+                            <SettingsOutlinedIcon />
+                        </Button>
+                    }
                     {
                         showDatepicker && <DatePicker
                             format={{
@@ -100,7 +104,7 @@ export default function TopFilterTable(
                 </div>
 
             </ConfigProvider>
-            <GarageConfigDialog open={open} setOpen={setOpen} />
+            {showGarageConfig && <GarageConfigDialog open={open} setOpen={setOpen} />}
         </div>
     )
 }
