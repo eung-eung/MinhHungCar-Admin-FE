@@ -11,6 +11,7 @@ export default function Cars() {
     const [filter, setFilter] = useState('pending_approval')
     const [carData, setCarData] = useState<ICar[]>([])
     const [loading, setLoading] = useState<boolean>(true)
+    const [refresh, setRefresh] = useState<boolean>(true)
     const axiosAuth = useAxiosAuth()
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -32,7 +33,7 @@ export default function Cars() {
 
     useEffect(() => {
         getCarList(filter)
-    }, [filter])
+    }, [filter, refresh])
 
 
 
@@ -58,11 +59,13 @@ export default function Cars() {
                     { label: 'Xe đang hoạt động', value: 'active' },
                 ]}
                 handleSearch={handleSearch}
+                showGarageConfig={true}
             />
             <CarTable
                 loading={loading}
                 carData={carData}
                 filter={filter}
+                setRefresh={setRefresh}
             />
 
         </div>
