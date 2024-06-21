@@ -16,6 +16,7 @@ export interface ICar {
     status: string;
     period_code: number;
     images: Array<string>;
+    caveats: Array<string>;
     created_at: Date;
     updated_at: Date;
 }
