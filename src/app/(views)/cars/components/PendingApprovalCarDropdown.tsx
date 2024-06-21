@@ -7,12 +7,14 @@ export default function PendingApprovalDropdown(
     {
         id,
         handleOpenDetailDialog,
+        setRefresh
     }: {
         id: any,
         handleOpenDetailDialog: any,
         carDetail?: ICar,
         loadingDialog: boolean,
-        setOpen: React.Dispatch<React.SetStateAction<boolean>>
+        setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+        setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()
 
@@ -20,13 +22,12 @@ export default function PendingApprovalDropdown(
     const handleApproveCar = async (id: any) => {
         showConfirmModal()
             .then(async () => {
-
                 const response = await axiosAuth.put('/admin/car_application', {
                     "car_id": id,
                     "action": "approve_register"
                 })
                 console.log('response: ', response);
-
+                setRefresh(prev => !prev)
             })
     }
 
