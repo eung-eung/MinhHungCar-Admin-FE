@@ -2,7 +2,10 @@ import { Button, Dropdown, Menu, Modal } from 'antd'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { ICar } from '@/app/models/Car.model';
-
+type IApproveRequest = {
+    car_id: any,
+    action: string
+}
 export default function PendingApprovalDropdown(
     {
         id,
@@ -20,26 +23,37 @@ export default function PendingApprovalDropdown(
 
 
     const handleApproveCar = async (id: any) => {
-        showConfirmModal()
+        showConfirmModal("Bạn có muốn duyệt xe này?")
             .then(async () => {
                 const response = await axiosAuth.put('/admin/car_application', {
-                    "car_id": id,
-                    "action": "approve_register"
-                })
-                console.log('response: ', response);
+                    car_id: id,
+                    action: "approve_register"
+                } as IApproveRequest)
                 setRefresh(prev => !prev)
             })
     }
 
-    const handleRejectCar = (id: any) => {
+    const handleRejectCar = async (id: any) => {
+        showConfirmModal("Bạn có muốn từ chối xe này?")
+            .then(async () => {
+                const response = await axiosAuth.put('/admin/car_application', {
+                    car_id: id,
+                    action: "reject"
+                } as IApproveRequest)
+                console.log('response: ', response);
+                if (response.status === 200) {
+
+                    setRefresh(prev => !prev)
+                }
+            })
 
     }
 
-    const showConfirmModal = () => {
+    const showConfirmModal = (title: any) => {
         const { confirm } = Modal
         return new Promise((res, rej) => {
             confirm({
-                title: 'Bạn có muốn duyệt xe này?',
+                title: title,
                 onOk: () => {
                     res(true)
                 },
