@@ -1,6 +1,6 @@
 
 import classes from './CarDialog.module.css'
-import { Button, Tag } from 'antd'
+import { Button, ConfigProvider, Image, Tag } from 'antd'
 import { ICar } from '@/app/models/Car.model'
 import { useTranslation } from 'react-i18next';
 import CarouselImages from './Carousel';
@@ -27,42 +27,7 @@ export default function CarDialog(
                 <div className={classes.topBody}>
                     <div className='w-3/6'>
                         <CarouselImages images={detail?.images} />
-                        {/* item */}
-                        <div className={classes.inforItem}>
-                            <p className={classes.label}>
-                                Số ghế
-                            </p>
-                            <p className={classes.infor}>
-                                {detail?.car_model.number_of_seats}
-                            </p>
-                        </div>
-                        {/* item */}
-                        <div className={classes.inforItem}>
-                            <p className={classes.label}>
-                                Truyền động
-                            </p>
-                            <p className={classes.infor}>
-                                {t(`common:${detail?.motion}`)}
-                            </p>
-                        </div>
-                        {/* item */}
-                        <div className={classes.inforItem}>
-                            <p className={classes.label}>
-                                Nhiên liệu
-                            </p>
-                            <p className={classes.infor}>
-                                {t(`common:${detail?.fuel}`)}
-                            </p>
-                        </div>
-                        {/* item */}
-                        <div className={classes.inforItem}>
-                            <p className={classes.label}>
-                                Mô tả
-                            </p>
-                            <p className={classes.infor}>
-                                {detail?.description}
-                            </p>
-                        </div>
+
                     </div>
 
                     <div className={classes.carInfo}>
@@ -74,6 +39,25 @@ export default function CarDialog(
                                 + detail?.car_model.year
                             }
                         </p>
+                        <ConfigProvider
+                            theme={{
+                                components: {
+                                    Button: {
+                                        defaultHoverBorderColor: '#9244f9',
+                                        defaultHoverBg: '#fff',
+                                        defaultHoverColor: '#9244f9',
+                                        defaultBg: '#9244f9',
+                                        defaultColor: '#fff',
+                                        defaultBorderColor: "#9244f9"
+                                    },
+                                },
+
+
+                            }}>
+                            <div className='flex justify-end'>
+                                <Button className='' onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
+                            </div>
+                        </ConfigProvider>
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>
@@ -117,17 +101,64 @@ export default function CarDialog(
                                 Trạng thái xe
                             </p>
                             <p className={classes.infor}>
-                                <Tag style={{ margin: 0, fontSize: 18, padding: 3 }} color='#eb8628'>
+                                <Tag style={{ margin: 0, fontSize: 14, padding: 3 }} color='green'>
                                     {t(`common:${detail?.status}`)}
                                 </Tag>
-
                             </p>
-
                         </div>
-                        <Button onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Số ghế
+                            </p>
+                            <p className={classes.infor}>
+                                {detail?.car_model.number_of_seats}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Truyền động
+                            </p>
+                            <p className={classes.infor}>
+                                {t(`common:${detail?.motion}`)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Nhiên liệu
+                            </p>
+                            <p className={classes.infor}>
+                                {t(`common:${detail?.fuel}`)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Mô tả
+                            </p>
+                            <p className={classes.infor}>
+                                {detail?.description}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <p className={classes.caveats}>Giấy tờ xe</p>
+                    <div className='flex mt-4 justify-around'>
+                        {
+                            detail?.caveats.map(c =>
+                                <Image
+                                    src={c}
+                                    width={300}
+                                    height={150}
+                                    style={{ objectFit: 'contain' }} />)
+                        }
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
