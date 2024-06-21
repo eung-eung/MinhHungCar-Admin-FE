@@ -195,6 +195,8 @@ export default function Contracts() {
                     { label: 'Đã hủy', value: 'cancel' },
                 ]}
                 handleSearch={handleSearch}
+                showGarageConfig={false}
+
             />
             <Table
                 expandable={{
