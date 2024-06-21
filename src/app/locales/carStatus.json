@@ -1,0 +1,7 @@
+{
+    "pending": "pending_approval",
+    "approved": "approved",
+    "rejected": "rejected",
+    "active": "active",
+    "waiting": "waiting_car_delivery"
+}
