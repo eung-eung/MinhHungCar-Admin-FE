@@ -1,10 +1,12 @@
 import { IGarage, IGarageRequest } from '@/app/models/Garage.model'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-import { Button, ConfigProvider, Input, Modal } from 'antd'
+import { Button, ConfigProvider, Modal, Tag } from 'antd'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
+import WarehouseRoundedIcon from '@mui/icons-material/WarehouseRounded';
 import 'react-toastify/dist/ReactToastify.css';
+import { Input } from '../../login/components/Input'
 type KeyIGarage = keyof IGarage;
 
 export default function GarageConfigDialog(
@@ -19,7 +21,6 @@ export default function GarageConfigDialog(
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const [garageConfig, setGarageConfig] = useState<IGarage>()
     const [loading, setLoading] = useState<boolean>(true)
-    const [modalText, setModalText] = useState('Content of the modal');
     const { t } = useTranslation()
 
     const getGarageConfig = async () => {
@@ -31,7 +32,6 @@ export default function GarageConfigDialog(
     useEffect(() => {
         if (open) {
             getGarageConfig()
-            console.log('zasd');
         }
     }, [open])
 
@@ -42,23 +42,40 @@ export default function GarageConfigDialog(
         config.max_4_seats = garageConfig?.max_4_seats
         config.max_15_seats = garageConfig?.max_15_seats
         console.log(config);
-
-        const response = await axiosAuth.put('/garage_config', config)
-        if (response.status === 200) {
-            toast.success('Cập nhật thành công', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-                transition: Bounce,
-            })
+        try {
+            const response = await axiosAuth.put('/garage_config', config)
+            if (response.status === 200) {
+                toast.success('Cập nhật thành công', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                })
+            }
+            setOpen(false);
+            setConfirmLoading(false);
+        } catch (error: any) {
+            if (error.response.status === 400) {
+                toast.error('Cập nhật thất bại', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                })
+                setConfirmLoading(false);
+            }
         }
-        setOpen(false);
-        setConfirmLoading(false);
+
 
     };
 
@@ -68,9 +85,14 @@ export default function GarageConfigDialog(
     };
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>, key: any) => {
+        const numberRegex = /^[1-9][0-9]*$/;
+
+        if (!numberRegex.test(e.target.value) && e.target.value !== "") {
+            return
+        }
         setGarageConfig((config: any) => ({
             ...config,
-            [key]: parseInt(e.target.value)
+            [key]: e.target.value === "" ? 1 : parseInt(e.target.value)
         }))
     }
 
@@ -87,22 +109,36 @@ export default function GarageConfigDialog(
 
 
                 <Modal
-                    title="Số lượng xe tối đa trong bãi đỗ"
+                    title={
+                        <Tag
+                            style={{
+                                verticalAlign: 'middle'
+                            }}
+                            icon={
+                                <WarehouseRoundedIcon
+                                    color='warning' />
+                            }
+                            color='orange'>
+                            Tổng số lượng xe tối đa trong bãi: {garageConfig?.total}
+                        </Tag>}
                     open={open}
                     onOk={handleOk}
+                    okText='Cập nhật'
                     confirmLoading={confirmLoading}
                     onCancel={handleCancel}
                     cancelText="Hủy"
                     maskClosable={false}
                     loading={loading}
-
                 >
                     <div className='mt-5'>
                         {!loading &&
-                            Object?.keys(garageConfig as IGarage).map((key) => <div className='flex items:center mb-4'>
-                                <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
-                                <Input type='number' className='flex-1' size='middle' disabled={key === 'total' ? true : false} value={(garageConfig as IGarage)[key as KeyIGarage]} onChange={(e) => handleOnChange(e, key)} />
-                            </div>)
+                            Object?.keys(garageConfig as IGarage).map((key) => {
+                                if (key === 'total') return
+                                return <div className='flex items-center mb-4'>
+                                    <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
+                                    <Input type='text' value={(garageConfig as IGarage)[key as KeyIGarage]} onChange={(e) => handleOnChange(e, key)} />
+                                </div>
+                            })
 
 
                         }
