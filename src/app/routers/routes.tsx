@@ -34,7 +34,7 @@ export const sidebarRoutes: RouteType[] = [
     {
         icon: < DragIndicatorIcon />,
         title: "Hợp đồng",
-        link: "",
+        link: "/contracts",
         children: [
             {
                 icon: <ReceiptLongOutlinedIcon />,

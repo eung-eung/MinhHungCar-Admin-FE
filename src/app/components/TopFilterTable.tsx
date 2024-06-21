@@ -1,8 +1,9 @@
-import { ConfigProvider, Select } from 'antd'
-import React from 'react'
+import { Button, ConfigProvider, DatePicker, Select } from 'antd'
+import React, { useState } from 'react'
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import SearchInput from './SearchInput';
-
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import GarageConfigDialog from '../(views)/cars/components/GarageConfigDialog';
 type Option = {
     value: string,
     label: string
@@ -14,14 +15,23 @@ export default function TopFilterTable(
         handleSearch,
         optionList,
         defaultValue,
-        placeholder
+        placeholder,
+        showSearch,
+        showDatepicker
     }: {
         handleChange: any,
-        handleSearch: any,
+        handleSearch?: any,
         optionList: Option[],
         defaultValue: any,
-        placeholder: any
+        placeholder?: any,
+        showSearch?: boolean,
+        showDatepicker?: boolean
     }) {
+    const [open, setOpen] = useState<boolean>(false);
+    const handleChangeDatepick = () => { }
+    const showGarageDiaglog = () => {
+        setOpen(true)
+    }
     return (
         <div className='flex justify-between items-center mt-5'>
             <ConfigProvider
@@ -38,6 +48,15 @@ export default function TopFilterTable(
                             fontSize: 14,
                             optionSelectedColor: '#6C69FF'
                         },
+                        Button: {
+                            defaultHoverBorderColor: '#9244f9',
+                            defaultHoverBg: '#fff',
+                            defaultHoverColor: '#9244f9',
+                            defaultBg: '#9244f9',
+                            defaultColor: '#fff',
+                        },
+
+
                     },
                 }}
             >
@@ -53,8 +72,35 @@ export default function TopFilterTable(
                     onChange={handleChange}
                     options={optionList}
                 />
+
+                <div className='w-3/6 flex items-center mb-5 justify-between relative'>
+                    {
+                        showSearch &&
+                        <SearchInput callback={handleSearch} placeholder={placeholder} />
+                    }
+                    <Button
+                        onClick={showGarageDiaglog}
+                        style={{
+                            height: '100%',
+                            padding: 10,
+
+                        }}>
+                        <p>Bãi xe</p>
+                        <SettingsOutlinedIcon />
+                    </Button>
+                    {
+                        showDatepicker && <DatePicker
+                            format={{
+                                format: 'YYYY-MM-DD',
+                                type: 'mask',
+                            }}
+                            onChange={handleChangeDatepick}
+                        />
+                    }
+                </div>
+
             </ConfigProvider>
-            <SearchInput callback={handleSearch} placeholder={placeholder} />
+            <GarageConfigDialog open={open} setOpen={setOpen} />
         </div>
     )
 }

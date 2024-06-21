@@ -1,28 +1,34 @@
 import { ICar } from '@/app/models/Car.model'
-import { Button, Dropdown, Menu, Table } from 'antd'
+import { Table } from 'antd'
 import { TableProps } from 'antd/lib'
 import React, { useState } from 'react'
 import classes from '../index.module.css'
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { ICarModel } from '@/app/models/CarModel.model'
 import { IAccount } from '@/app/models/Account.model'
-import Diaglog from '@/app/components/Modal'
-import CarDialog from './CarDialog'
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { useTranslation } from 'react-i18next'
+import PendingApprovalDropdown from './PendingApprovalCarDropdown'
+import Diaglog from '@/app/components/Modal'
+import CarDialog from './CarDialog'
+import ActiveCarDropdown from './ActiveCarDropdown'
+import { formatCurrency } from '@/app/utils/formatCurrency'
 export default function CarTable(
     {
         carData,
-        loading
+        loading,
+        filter,
+
     }: {
         carData: ICar[],
-        loading: boolean
+        loading: boolean,
+        filter: any,
     }) {
+    const axiosAuth = useAxiosAuth()
     const [open, setOpen] = useState<boolean>(false);
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
     const [carDetail, setCarDetail] = useState<ICar>()
-    const { t } = useTranslation()
-    const axiosAuth = useAxiosAuth()
+
     const handleOpenDetailDialog = async (id: any) => {
         setOpen(true);
         setLoadingDialog(true);
@@ -32,14 +38,6 @@ export default function CarTable(
         setLoadingDialog(false)
 
     };
-
-    const handleOpenContractDialog = (id: any) => {
-        console.log('a');
-        // console.log(id);
-
-    }
-
-
 
     const columns: TableProps<ICar>['columns'] = [
         {
@@ -63,7 +61,7 @@ export default function CarTable(
             title: 'Giá thuê xe',
             dataIndex: 'price',
             key: 'id',
-            render: (price: Number) => <>{price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</>
+            render: (price: Number) => <>{formatCurrency(price)}</>
         },
         {
             title: 'Tên chủ xe',
@@ -78,36 +76,31 @@ export default function CarTable(
             dataIndex: 'action',
             key: 'id',
             render: (_, record) => {
-                console.log(record);
-
                 return <div className={classes.actionBox}>
-                    <Dropdown
-                        dropdownRender={() => (
-                            <Menu
-                                items={[
-                                    {
-                                        key: '1',
-                                        label: 'Chi tiết',
-                                        onClick: () =>
-                                            handleOpenDetailDialog(record.id)
-                                    },
-                                    {
-                                        key: '2',
-                                        label: 'Hợp đồng',
-                                        onClick: () =>
-                                            handleOpenContractDialog(record.id)
-                                    },
-                                    {
-                                        key: '3', label: 'Option 3'
-                                    },
-                                ]}>
-
-                            </Menu>
-                        )}
-
-                        placement="bottom" arrow>
-                        <Button><MoreHorizOutlinedIcon /></Button>
-                    </Dropdown>
+                    {
+                        filter === 'pending_approval' &&
+                        <PendingApprovalDropdown
+                            id={record.id}
+                            handleOpenDetailDialog={handleOpenDetailDialog}
+                            carDetail={carDetail}
+                            loadingDialog={loadingDialog}
+                            setOpen={setOpen}
+                        />
+                    }
+                    {
+                        filter === 'approved' &&
+                        <RemoveRedEyeOutlinedIcon
+                            className='cursor-pointer'
+                            onClick={() => handleOpenDetailDialog(record.id)}
+                        />
+                    }
+                    {
+                        filter === 'active' &&
+                        <ActiveCarDropdown
+                            id={record.id}
+                            handleOpenDetailDialog={handleOpenDetailDialog}
+                        />
+                    }
                 </div>
 
             }
@@ -128,7 +121,9 @@ export default function CarTable(
                 title='Thông tin xe'
                 showLoading={handleOpenDetailDialog}
             >
-                <CarDialog detail={carDetail} />
+                <CarDialog
+                    detail={carDetail}
+                />
             </Diaglog>
         </>
 

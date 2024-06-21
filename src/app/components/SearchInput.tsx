@@ -5,13 +5,12 @@ export default function SearchInput({ callback, placeholder }: { callback: any, 
         <input
             style={{
                 background: '#fff',
-                padding: 10,
-                width: "50%",
+                width: "90%",
                 color: 'black',
-                marginBottom: 30,
                 borderRadius: 5,
                 border: '1px solid #efefef',
-                outline: 'none'
+                outline: 'none',
+                padding: 10
             }}
             onChange={callback}
             placeholder={placeholder} />

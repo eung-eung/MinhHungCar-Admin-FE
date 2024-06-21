@@ -1,0 +1,17 @@
+{
+    "pending_approval": "Chờ duyệt",
+    "active": "Đang hoạt động",
+    "approved": "Đã duyệt",
+    "electricity": "Điện",
+    "oil": "Dầu",
+    "gas": "Xăng",
+    "home": "Tại nhà",
+    "garage": "Bãi đỗ MinhHungCar",
+    "automatic_transmission": "Số tự động",
+    "manual_transmission": "Số sàn",
+    "max_4_seats": "Số xe 4 chỗ",
+    "max_7_seats": "Số xe 7 chỗ",
+    "max_15_seats": "Số xe 15 chỗ",
+    "total": "Tổng cộng",
+    "update garage configs successfully": "Cập nhật thành công"
+}

@@ -1,32 +1,32 @@
 
 import classes from './CarDialog.module.css'
-import { Carousel, Image, Tag } from 'antd'
+import { Button, Tag } from 'antd'
 import { ICar } from '@/app/models/Car.model'
 import { useTranslation } from 'react-i18next';
+import CarouselImages from './Carousel';
+import { formatCurrency } from '@/app/utils/formatCurrency';
+import { useState } from 'react';
 
 
-
-export default function CarDialog({ detail }: { detail?: ICar }) {
-    console.log(detail);
-
+export default function CarDialog(
+    {
+        detail,
+    }: {
+        detail?: ICar,
+    }) {
     const { t } = useTranslation()
+
+
+    const showContract = (id: any) => {
+        window.open(`/cars/contract/${id}`, '_blank')
+    }
+
     return (
         <div className={classes.diaglog}>
             <div className={classes.diaglogBody}>
                 <div className={classes.topBody}>
                     <div className='w-3/6'>
-                        <Carousel style={{ textAlign: 'center' }}>
-                            {detail?.images.map(image =>
-                                <div className='flex items-center'>
-                                    <Image src={image}
-                                        width={'100%'}
-                                        height={300}
-                                        style={{ objectFit: "contain" }}
-                                        alt='Ảnh xe'
-                                    />
-                                </div>
-                            )}
-                        </Carousel>
+                        <CarouselImages images={detail?.images} />
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>
@@ -42,7 +42,7 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Truyền động
                             </p>
                             <p className={classes.infor}>
-                                {t(`${detail?.motion}`)}
+                                {t(`common:${detail?.motion}`)}
                             </p>
                         </div>
                         {/* item */}
@@ -51,7 +51,7 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Nhiên liệu
                             </p>
                             <p className={classes.infor}>
-                                {t(`${detail?.fuel}`)}
+                                {t(`common:${detail?.fuel}`)}
                             </p>
                         </div>
                         {/* item */}
@@ -90,7 +90,7 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Nơi đậu xe
                             </p>
                             <p className={classes.infor}>
-                                {t(`${detail?.parking_lot}`)}
+                                {t(`common:${detail?.parking_lot}`)}
                             </p>
                         </div>
                         {/* item */}
@@ -99,7 +99,16 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Giá cho thuê
                             </p>
                             <p className={classes.infor}>
-                                {detail?.price}
+                                {formatCurrency(detail?.price)}
+                            </p>
+                        </div>
+                        {/* item */}
+                        <div className={classes.inforItem}>
+                            <p className={classes.label}>
+                                Thời hạn thuê
+                            </p>
+                            <p className={classes.infor}>
+                                {detail?.period_code} tháng
                             </p>
                         </div>
                         {/* item */}
@@ -108,31 +117,16 @@ export default function CarDialog({ detail }: { detail?: ICar }) {
                                 Trạng thái xe
                             </p>
                             <p className={classes.infor}>
-                                <Tag color='#eb8628'>
-                                    {t(`${detail?.status}`)}
+                                <Tag style={{ margin: 0, fontSize: 18, padding: 3 }} color='#eb8628'>
+                                    {t(`common:${detail?.status}`)}
                                 </Tag>
 
                             </p>
+
                         </div>
+                        <Button onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
                     </div>
                 </div>
-                {/* bottom body */}
-                {/* <div className={classes.bodyBottom}>
-                    <p className={classes.label}>
-                        Giấy phép lái xe
-                    </p>
-                    <div className={classes.licenseImages}>
-                        <Image
-                            width={200}
-                            src="https://cdn.thuvienphapluat.vn/tintuc/uploads/image/2021/01/27/can-cuoc-cong-dan-gan-chip-2(1).jpg"
-                        />
-                        <Image
-                            width={200}
-                            src="https://cdn.thuvienphapluat.vn/tintuc/uploads/image/2021/01/27/can-cuoc-cong-dan-gan-chip-2(1).jpg"
-                        />
-                    </div>
-
-                </div> */}
             </div>
         </div>
     )
