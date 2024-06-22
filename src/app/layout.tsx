@@ -8,6 +8,7 @@ import SessionProvider from "./components/SessionProvider";
 import AuthProvider from "./components/AuthProvider";
 import I18nProvider from "./components/I18Provider";
 import { ToastContainer } from "react-toastify";
+import { ConfigProvider } from "antd";
 
 
 
@@ -36,7 +37,43 @@ export default function RootLayout(
             <SessionProvider>
               <Layout>
                 <I18nProvider>
-                  {children}
+                  <ConfigProvider
+                    theme={{
+                      token: {
+                        colorPrimary: '#6C69FF',
+                        colorPrimaryBgHover: '#fff'
+                      },
+                      components: {
+                        Select: {
+                          fontSize: 14,
+                          optionSelectedColor: '#6C69FF'
+                        },
+                        Button: {
+                          defaultHoverBorderColor: '#6C69FF',
+                          defaultHoverBg: '#6C69FF',
+                          defaultHoverColor: '#fff',
+                          defaultBorderColor: '#6C69FF',
+                          defaultColor: '#6C69FF',
+                          // primary
+
+                        },
+                        Table: {
+                          headerColor: '#87888C',
+                        },
+                        Menu: {
+                          itemSelectedBg: "#d4d3ff",
+                          darkItemSelectedColor: '#b7b6fd2b',
+                          itemColor: '#000000',
+                          itemHoverColor: '#re',
+                          itemActiveBg: '#d4d3ff',
+                          itemHoverBg: '#b7b6fd2b'
+                        },
+                      },
+
+                    }}
+                  >
+                    {children}
+                  </ConfigProvider>
                 </I18nProvider>
               </Layout>
             </SessionProvider>
