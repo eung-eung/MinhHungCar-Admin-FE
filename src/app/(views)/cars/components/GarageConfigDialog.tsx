@@ -1,6 +1,6 @@
 import { IGarage, IGarageRequest } from '@/app/models/Garage.model'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-import { Button, ConfigProvider, Modal, Tag } from 'antd'
+import { Button, Modal, Tag } from 'antd'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Bounce, ToastContainer, toast } from 'react-toastify'
@@ -25,7 +25,7 @@ export default function GarageConfigDialog(
 
     const getGarageConfig = async () => {
         setLoading(true)
-        const response = await axiosAuth.get('/garage_config')
+        const response = await axiosAuth.get('/admin/garage_config')
         setGarageConfig(response.data)
         setLoading(false)
     }
@@ -99,53 +99,42 @@ export default function GarageConfigDialog(
     return (
         <>
 
-            <ConfigProvider
-                theme={{
-                    token: {
-                        colorPrimary: "#9244f9"
-                    }
-                }}
-            >
-
-
-                <Modal
-                    title={
-                        <Tag
-                            style={{
-                                verticalAlign: 'middle'
-                            }}
-                            icon={
-                                <WarehouseRoundedIcon
-                                    color='warning' />
-                            }
-                            color='orange'>
-                            Tổng số lượng xe tối đa trong bãi: {garageConfig?.total}
-                        </Tag>}
-                    open={open}
-                    onOk={handleOk}
-                    okText='Cập nhật'
-                    confirmLoading={confirmLoading}
-                    onCancel={handleCancel}
-                    cancelText="Hủy"
-                    maskClosable={false}
-                    loading={loading}
-                >
-                    <div className='mt-5'>
-                        {!loading &&
-                            Object?.keys(garageConfig as IGarage).map((key) => {
-                                if (key === 'total') return
-                                return <div className='flex items-center mb-4'>
-                                    <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
-                                    <Input type='text' value={(garageConfig as IGarage)[key as KeyIGarage]} onChange={(e) => handleOnChange(e, key)} />
-                                </div>
-                            })
-
-
+            <Modal
+                title={
+                    <Tag
+                        style={{
+                            verticalAlign: 'middle'
+                        }}
+                        icon={
+                            <WarehouseRoundedIcon
+                                color='warning' />
                         }
-                    </div>
-                </Modal>
-            </ConfigProvider>
+                        color='orange'>
+                        Tổng số lượng xe tối đa trong bãi: {garageConfig?.total}
+                    </Tag>}
+                open={open}
+                onOk={handleOk}
+                okText='Cập nhật'
+                confirmLoading={confirmLoading}
+                onCancel={handleCancel}
+                cancelText="Hủy"
+                maskClosable={false}
+                loading={loading}
+            >
+                <div className='mt-5'>
+                    {!loading &&
+                        Object?.keys(garageConfig as IGarage).map((key) => {
+                            if (key === 'total') return
+                            return <div className='flex items-center mb-4'>
+                                <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
+                                <Input type='text' value={(garageConfig as IGarage)[key as KeyIGarage]} onChange={(e) => handleOnChange(e, key)} />
+                            </div>
+                        })
 
+
+                    }
+                </div>
+            </Modal>
         </>
     )
 }

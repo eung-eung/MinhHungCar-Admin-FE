@@ -2,7 +2,7 @@
 import React, { Suspense, useState } from 'react'
 import "./index.css"
 import { sidebarRoutes } from '@/app/routers/routes'
-import { ConfigProvider, Menu, MenuProps } from 'antd'
+import { Menu, MenuProps } from 'antd'
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image'
@@ -52,30 +52,15 @@ export default function Sidebar() {
                         className='mt-3'
                         src='https://see.fontimg.com/api/renderfont4/gxnGR/eyJyIjoiZnMiLCJoIjozNiwidyI6MTAwMCwiZnMiOjM2LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/TWluaEh1bmdDYXI/creamy-sugar.png' />
                 </div>
-                <ConfigProvider theme={{
-                    components: {
-                        Menu: {
-                            itemSelectedBg: "#d4d3ff",
-                            darkItemSelectedColor: '#b7b6fd2b',
-                            itemColor: '#000000',
-                            itemHoverColor: '#re',
-                            itemActiveBg: '#d4d3ff',
-                            itemHoverBg: '#b7b6fd2b'
-                        },
-
-                    }
-                }}>
-                    <Menu
-                        onClick={handleChangeRoute}
-                        defaultSelectedKeys={[path]}
-                        defaultOpenKeys={['']}
-                        mode="inline"
-                        // theme='dark'
-                        inlineCollapsed={collapsed}
-                        items={items}
-                    />
-                </ConfigProvider>
-
+                <Menu
+                    onClick={handleChangeRoute}
+                    defaultSelectedKeys={[path]}
+                    defaultOpenKeys={['']}
+                    mode="inline"
+                    // theme='dark'
+                    inlineCollapsed={collapsed}
+                    items={items}
+                />
             </aside>
 
 

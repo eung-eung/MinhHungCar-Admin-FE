@@ -1,6 +1,6 @@
 'use client'
 
-import { ConfigProvider, Table, Tag } from 'antd'
+import { Table, Tag } from 'antd'
 import React, { useState } from 'react'
 
 
@@ -108,20 +108,7 @@ export default function Account() {
             <div className='flex justify-end mt-5'>
                 <SearchInput callback={handleSearch} placeholder='Tìm kiếm theo họ và tên/email/số điện thoại' />
             </div>
-            <ConfigProvider
-                theme={
-                    {
-                        components: {
-                            Table: {
-                                headerColor: '#87888C',
-                            }
-                        },
-
-                    }
-                }>
-                <Table dataSource={dataSource} columns={columns} />
-
-            </ConfigProvider>
+            <Table dataSource={dataSource} columns={columns} />
             <Diaglog
                 loading={loading}
                 setOpen={setOpen}

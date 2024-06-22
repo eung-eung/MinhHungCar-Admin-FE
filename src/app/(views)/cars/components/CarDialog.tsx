@@ -1,6 +1,6 @@
 
 import classes from './CarDialog.module.css'
-import { Button, ConfigProvider, Image, Tag } from 'antd'
+import { Button, Image, Tag } from 'antd'
 import { ICar } from '@/app/models/Car.model'
 import { useTranslation } from 'react-i18next';
 import CarouselImages from './Carousel';
@@ -39,25 +39,9 @@ export default function CarDialog(
                                 + detail?.car_model.year
                             }
                         </p>
-                        <ConfigProvider
-                            theme={{
-                                components: {
-                                    Button: {
-                                        defaultHoverBorderColor: '#9244f9',
-                                        defaultHoverBg: '#fff',
-                                        defaultHoverColor: '#9244f9',
-                                        defaultBg: '#9244f9',
-                                        defaultColor: '#fff',
-                                        defaultBorderColor: "#9244f9"
-                                    },
-                                },
-
-
-                            }}>
-                            <div className='flex justify-end'>
-                                <Button className='' onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
-                            </div>
-                        </ConfigProvider>
+                        <div className='flex justify-end'>
+                            <Button type='primary' onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
+                        </div>
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>

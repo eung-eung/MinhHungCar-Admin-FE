@@ -1,5 +1,5 @@
 'use client'
-import { ConfigProvider, Spin } from "antd"
+import { Spin } from "antd"
 import { useSession } from "next-auth/react"
 
 export default function SessionProvider({

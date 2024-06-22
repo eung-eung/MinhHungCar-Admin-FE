@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, ConfigProvider, Dropdown, GetProp, Menu, Modal, Switch, Table, UploadFile, UploadProps } from 'antd'
+import { Button, Dropdown, GetProp, Menu, Modal, Switch, Table, UploadFile, UploadProps } from 'antd'
 import React, { useState } from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { getBase64 } from '@/app/utils/getBase64';
@@ -214,21 +214,10 @@ export default function Contracts() {
                                     setPreviewImage={setPreviewImage}
                                     setPreviewOpen={setPreviewOpen}
                                 />
-                                <ConfigProvider
-                                    theme={{
-                                        token: {
-                                            colorPrimary: 'rgb(75, 175, 33)',
-
-                                        },
-
-                                    }}
-                                >
-                                    <div className='flex mt-5 items-center'>
-                                        <p className='text-base mt-3 mb-3 font-semibold mr-3'>Hoàn trả:</p>
-                                        <Switch defaultChecked />
-                                    </div>
-
-                                </ConfigProvider>
+                                <div className='flex mt-5 items-center'>
+                                    <p className='text-base mt-3 mb-3 font-semibold mr-3'>Hoàn trả:</p>
+                                    <Switch defaultChecked />
+                                </div>
                                 <h2 className='text-base mt-3 mb-3 font-semibold '>
                                     Tình trạng xe khi khách hàng nhận
                                 </h2>

@@ -1,4 +1,4 @@
-import { Carousel, ConfigProvider, Image, List } from 'antd'
+import { Carousel, Image, List } from 'antd'
 import React, { useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -13,13 +13,7 @@ export default function CarouselImages({ images }: { images: any }) {
         }
     };
     return (
-        <ConfigProvider
-            theme={{
-                token: {
-                    colorBgContainer: "#fff"
-                },
-            }}
-        >
+        <>
             <Carousel
                 afterChange={(current: any) => {
                     setCurrentSlide(current)
@@ -70,6 +64,6 @@ export default function CarouselImages({ images }: { images: any }) {
                 }
 
             </Swiper>
-        </ConfigProvider >
+        </>
     )
 }

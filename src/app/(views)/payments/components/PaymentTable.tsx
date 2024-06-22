@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Table, Tag } from 'antd'
+import { Button, Table, Tag } from 'antd'
 import React from 'react'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
@@ -84,21 +84,7 @@ export default function PaymentTable() {
             dataIndex: 'action',
             key: 'id',
             render: () =>
-                <ConfigProvider
-                    theme={{
-                        components: {
-                            Button: {
-                                defaultBorderColor: 'forestgreen',
-                                defaultColor: 'forestgreen',
-                                defaultHoverBg: 'forestgreen',
-                                defaultHoverColor: "#fff"
-                            },
-                        },
-                    }}
-                >
-                    <Button >Thanh toán</Button>
-                </ConfigProvider>
-
+                <Button >Thanh toán</Button>
         },
     ]
     return (
