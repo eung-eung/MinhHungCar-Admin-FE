@@ -13,6 +13,7 @@ import Diaglog from '@/app/components/Modal'
 import CarDialog from './CarDialog'
 import ActiveCarDropdown from './ActiveCarDropdown'
 import { formatCurrency } from '@/app/utils/formatCurrency'
+import DeliveryCarDropdown from './DeliveryCarDropdown'
 export default function CarTable(
     {
         carData,
@@ -70,7 +71,6 @@ export default function CarTable(
             key: 'id',
             render: (account: IAccount) =>
                 <>{`${account.first_name + ' ' + account.last_name}`}</>
-
         },
         {
             title: '',
@@ -101,6 +101,17 @@ export default function CarTable(
                         <ActiveCarDropdown
                             id={record.id}
                             handleOpenDetailDialog={handleOpenDetailDialog}
+                        />
+                    }
+                    {
+                        filter === 'waiting_car_delivery' &&
+                        <DeliveryCarDropdown
+                            id={record.id}
+                            handleOpenDetailDialog={handleOpenDetailDialog}
+                            carDetail={carDetail}
+                            loadingDialog={loadingDialog}
+                            setOpen={setOpen}
+                            setRefresh={setRefresh}
                         />
                     }
                 </div>
