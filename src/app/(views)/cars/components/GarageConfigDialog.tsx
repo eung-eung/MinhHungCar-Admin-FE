@@ -45,7 +45,7 @@ export default function GarageConfigDialog(
         config.max_15_seats = garageConfig?.max_15_seats
 
         try {
-            const response = await axiosAuth.put('/garage_config', config)
+            const response = await axiosAuth.put('/admin/garage_config', config)
             if (response.status === 200) {
                 toast.success('Cập nhật thành công', {
                     position: "top-right",
