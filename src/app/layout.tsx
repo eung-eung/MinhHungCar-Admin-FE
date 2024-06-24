@@ -41,7 +41,8 @@ export default function RootLayout(
                     theme={{
                       token: {
                         colorPrimary: '#6C69FF',
-                        colorPrimaryBgHover: '#fff'
+                        colorPrimaryBgHover: '#fff',
+
                       },
                       components: {
                         Select: {
@@ -68,6 +69,9 @@ export default function RootLayout(
                           itemActiveBg: '#d4d3ff',
                           itemHoverBg: '#b7b6fd2b'
                         },
+                        Carousel: {
+                          colorBgContainer: "#6C69FF"
+                        }
                       },
 
                     }}
