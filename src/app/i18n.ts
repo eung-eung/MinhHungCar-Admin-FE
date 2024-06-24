@@ -11,7 +11,8 @@ i18n
         resources: {
             mapping: {
                 common: require('./locales/common.json'),
-                carStatus: require('./locales/carStatus.json')
+                carStatus: require('./locales/carStatus.json'),
+                accountStatus: require('./locales/accountStatus.json')
             },
         },
     });
