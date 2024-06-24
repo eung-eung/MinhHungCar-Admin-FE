@@ -1,11 +1,14 @@
 'use client'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import { Result } from 'antd';
+
+
 
 export default function ContractPage({
     params: { carIdSlug }
@@ -14,6 +17,7 @@ export default function ContractPage({
 }) {
     const [pdfUrl, setPdfUrl] = useState<any>()
     const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<any>(false)
     const transform: TransformToolbarSlot = (slot: ToolbarSlot) => ({
         ...slot,
         Open: () => <></>,
@@ -38,11 +42,15 @@ export default function ContractPage({
 
     const getContractByCarId = async (id: any) => {
         setLoading(true)
-        const response = await axiosAuth.get('/admin/partner_contract?car_id=' + id)
-        console.log('aa');
-        console.log(response.data.url);
-        setPdfUrl(response.data.url)
-        setLoading(false)
+        try {
+            const response = await axiosAuth.get('/admin/partner_contract?car_id=' + id)
+            setPdfUrl(response.data.url)
+            setLoading(false)
+        } catch (error: any) {
+            setError(error.response.status)
+
+        }
+
     }
 
     useEffect(() => {
@@ -50,7 +58,13 @@ export default function ContractPage({
     }, [carIdSlug])
     return (
         <>
-            {!loading &&
+            {error &&
+                <Result
+                    status='error'
+                    title={error}
+                    subTitle="Xin lỗi, không tìm thấy hợp đồng nào"
+                />}
+            {!loading && error &&
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                     <Viewer
                         fileUrl={pdfUrl}
