@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SearchInput({ callback, placeholder }: { callback: any, placeholder: any }) {
+export default function SearchInput({ value, callback, placeholder }: { value: any, callback: any, placeholder: any }) {
     return (
         <input
             style={{
@@ -12,6 +12,7 @@ export default function SearchInput({ callback, placeholder }: { callback: any, 
                 outline: 'none',
                 padding: 10
             }}
+            value={value}
             onChange={callback}
             placeholder={placeholder} />
     )
