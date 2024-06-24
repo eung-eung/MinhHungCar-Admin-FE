@@ -57,6 +57,7 @@ export default function PendingApprovalDropdown(
                 onOk: () => {
                     res(true)
                 },
+                cancelText: "Hủy",
                 onCancel: () => {
                     rej(true)
                 }
