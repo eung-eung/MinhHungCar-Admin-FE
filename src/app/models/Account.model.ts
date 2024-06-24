@@ -3,7 +3,7 @@ import { Role } from "./Role"
 export interface IAccount {
     id: number;
     roleid: number;
-    role: Role;
+    role: string;
     first_name: string;
     last_name: string;
     phone_number: string;
@@ -11,7 +11,7 @@ export interface IAccount {
     identification_card_number: string;
     password: string;
     avatar_url: string;
-    driving_license: string;
+    driving_license_images: Array<string>;
     status: string;
     date_of_birth: string;
     created_at: Date;
