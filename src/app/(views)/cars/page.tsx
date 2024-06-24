@@ -6,13 +6,19 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { ICar } from '@/app/models/Car.model'
 import { TableParams } from '@/app/models/TableParams.model'
 import CarTable from './components/CarTable'
+import { removeKeys } from '@/app/utils/removeKeysFromObject'
+import { Flex, Skeleton, Tag } from 'antd'
 
 export default function Cars() {
+    const axiosAuth = useAxiosAuth()
     const [filter, setFilter] = useState('pending_approval')
     const [carData, setCarData] = useState<ICar[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [refresh, setRefresh] = useState<boolean>(true)
-    const axiosAuth = useAxiosAuth()
+    const [loadingCurrentSeats, setLoadingCurrentSeats] = useState<boolean>(true)
+    const [searchValue, setSearchValue] = useState<string>()
+    const [currentSeats, setCurrentSeats] = useState<any>()
+    const keyToRemove = ["max_4_seats", "max_7_seats", "max_15_seats", "total"]
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
             current: 1,
@@ -26,8 +32,16 @@ export default function Cars() {
         const carList = await axiosAuth.get(
             `/admin/cars?car_status=${filter}`
         )
-        setCarData(carList.data)
+        setCarData(carList.data.cars)
         setLoading(false)
+    }
+
+    const getCurrentSeats = async () => {
+        setLoadingCurrentSeats(true)
+        const currentSeats = await axiosAuth.get('/admin/garage_config')
+        const filterData = removeKeys(currentSeats.data, keyToRemove)
+        setCurrentSeats(filterData)
+        setLoadingCurrentSeats(false)
 
     }
 
@@ -35,7 +49,9 @@ export default function Cars() {
         getCarList(filter)
     }, [filter, refresh])
 
-
+    useEffect(() => {
+        getCurrentSeats()
+    }, [refresh])
 
     const handleSearch = () => {
 
@@ -48,6 +64,7 @@ export default function Cars() {
     return (
         <div>
             <TopFilterTable
+                searchValue={searchValue}
                 setRefresh={setRefresh}
                 showSearch={true}
                 placeholder='Tìm kiếm theo họ và tên/email/số điện thoại'
@@ -62,6 +79,24 @@ export default function Cars() {
                 handleSearch={handleSearch}
                 showGarageConfig={true}
             />
+            <div className='mb-5'>
+                <Flex gap="4px 0" wrap justify='end'>
+                    {loadingCurrentSeats ? <Skeleton.Input active size='small' />
+                        : <>
+                            <Tag color="blue" style={{ fontWeight: 500 }}>
+                                <p>Số xe 4 chỗ đã có ở bãi đỗ: {currentSeats.current_4_seats}</p>
+                            </Tag>
+                            <Tag color="geekblue" style={{ fontWeight: 500 }}>
+                                <p>Số xe 7 chỗ đã có ở bãi đỗ: {currentSeats.current_7_seats}</p>
+                            </Tag>
+                            <Tag color="purple" style={{ fontWeight: 500 }}>
+                                <p>Số xe 15 chỗ đã có ở bãi đỗ: {currentSeats.current_15_seats}</p>
+                            </Tag>
+                        </>
+                    }
+
+                </Flex>
+            </div>
             <CarTable
                 loading={loading}
                 carData={carData}
