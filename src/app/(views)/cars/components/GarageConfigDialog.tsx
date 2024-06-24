@@ -7,6 +7,7 @@ import { Bounce, ToastContainer, toast } from 'react-toastify'
 import WarehouseRoundedIcon from '@mui/icons-material/WarehouseRounded';
 import 'react-toastify/dist/ReactToastify.css';
 import { Input } from '../../login/components/Input'
+import { removeKeys } from '@/app/utils/removeKeysFromObject'
 type KeyIGarage = keyof IGarage;
 
 export default function GarageConfigDialog(
@@ -22,11 +23,12 @@ export default function GarageConfigDialog(
     const [garageConfig, setGarageConfig] = useState<IGarage>()
     const [loading, setLoading] = useState<boolean>(true)
     const { t } = useTranslation()
-
+    const keysToRemove = ["current_4_seats", "current_7_seats", "current_15_seats", "current_total"];
     const getGarageConfig = async () => {
         setLoading(true)
         const response = await axiosAuth.get('/admin/garage_config')
-        setGarageConfig(response.data)
+        const filterData = removeKeys(response.data, keysToRemove)
+        setGarageConfig(filterData)
         setLoading(false)
     }
     useEffect(() => {
@@ -41,7 +43,7 @@ export default function GarageConfigDialog(
         config.max_7_seats = garageConfig?.max_7_seats
         config.max_4_seats = garageConfig?.max_4_seats
         config.max_15_seats = garageConfig?.max_15_seats
-        console.log(config);
+
         try {
             const response = await axiosAuth.put('/garage_config', config)
             if (response.status === 200) {
