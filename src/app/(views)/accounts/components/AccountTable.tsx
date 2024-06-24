@@ -99,7 +99,7 @@ export default function AccountTable(
                 dataSource={accountData}
                 columns={columns} />
             <Diaglog
-                width='40%'
+                width='45%'
                 loading={loadingDialog}
                 setOpen={setOpen}
                 title="Chi tiết tài khoản"
