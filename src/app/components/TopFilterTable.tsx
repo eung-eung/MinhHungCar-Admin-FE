@@ -21,7 +21,8 @@ export default function TopFilterTable(
         showSearch,
         showDatepicker,
         showGarageConfig,
-        setRefresh
+        setRefresh,
+        searchValue
     }: {
         handleChange: any,
         handleSearch?: any,
@@ -31,7 +32,8 @@ export default function TopFilterTable(
         showSearch?: boolean,
         showDatepicker?: boolean,
         showGarageConfig?: boolean,
-        setRefresh: React.Dispatch<React.SetStateAction<boolean>>
+        setRefresh: React.Dispatch<React.SetStateAction<boolean>>,
+        searchValue: any
     }) {
     const [open, setOpen] = useState<boolean>(false);
     const handleChangeDatepick = () => { }
@@ -64,7 +66,7 @@ export default function TopFilterTable(
             <div className='w-3/6 flex items-center mb-5 justify-between relative'>
                 {
                     showSearch &&
-                    <SearchInput callback={handleSearch} placeholder={placeholder} />
+                    <SearchInput value={searchValue} callback={handleSearch} placeholder={placeholder} />
                 }
                 {showGarageConfig &&
                     <Button
