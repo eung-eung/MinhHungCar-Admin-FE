@@ -39,9 +39,15 @@ export default function CarDialog(
                                 + detail?.car_model.year
                             }
                         </p>
-                        <div className='flex justify-end'>
-                            <Button type='primary' onClick={() => showContract(detail?.id)}>Xem hợp đồng</Button>
-                        </div>
+                        {detail?.status === "active" &&
+                            <div className='flex justify-end'>
+                                <Button
+                                    type='primary'
+                                    onClick={() => showContract(detail?.id)}>
+                                    Xem hợp đồng
+                                </Button>
+                            </div>
+                        }
                         {/* item */}
                         <div className={classes.inforItem}>
                             <p className={classes.label}>
