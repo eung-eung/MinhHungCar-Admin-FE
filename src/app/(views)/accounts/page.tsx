@@ -1,16 +1,50 @@
 'use client'
 
-import { Table, Tag } from 'antd'
-import React, { useState } from 'react'
-
-
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import SearchInput from '@/app/components/SearchInput'
-import Diaglog from '@/app/components/Modal'
-import AccountDialog from './components/AccountDialog'
+import React, { useEffect, useState } from 'react'
+import { IAccount } from '@/app/models/Account.model';
+import TopFilterTable from '@/app/components/TopFilterTable';
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import AccountTable from './components/AccountTable'
 export default function Account() {
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+    const [accountData, setAccountData] = useState<IAccount[]>([])
+    const [filter, setFilter] = useState<string>('all')
+    const [refresh, setRefresh] = useState<boolean>(true)
+    const axiosAuth = useAxiosAuth()
+    const [searchValue, setSearchValue] = useState<string>()
+    // useEffect(() => {
+    //     getAccountData()
+    // }, [filter, refresh])
+
+    useEffect(() => {
+        if (!searchValue) {
+            console.log('search: ', searchValue);
+            getAccountData()
+            return
+        }
+        const getData = setTimeout(async () => {
+            setLoading(true)
+            const query = filter === 'all' ?
+                `/admin/accounts?search_param=${searchValue}&offset=0&limit=100`
+                : `/admin/accounts?role=${filter}&search_param=${searchValue}&offset=0&limit=100`
+            const getAccountsBySearch = await axiosAuth.get(query)
+            setAccountData(getAccountsBySearch.data)
+            setLoading(false)
+        }, 1000)
+        return () => clearTimeout(getData)
+    }, [searchValue, filter, refresh])
+
+
+    const getAccountData = async () => {
+        setAccountData([])
+        setLoading(true)
+        const response = await axiosAuth.get(
+            `/admin/accounts?${filter === 'all' ? '' : `role=${filter}&`}offset=0&limit=100`
+        )
+        setAccountData(response.data)
+        setLoading(false)
+    }
 
     const showLoading = () => {
         setOpen(true);
@@ -21,103 +55,49 @@ export default function Account() {
             setLoading(false);
         }, 2000);
     };
-    const handleSearch = () => {
-
+    const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value.length);
+        setSearchValue(e.target.value)
 
     }
     const handleShowDialog = () => {
         showLoading()
 
     }
-    const dataSource = [
-        {
-            key: '1',
-            name: 'Mike',
-            age: 32,
-            address: '10 Downing Street',
-            phone: "01231231",
-            email: 'boyvip@gmai.com',
-            role: 'Customer',
-            status: 'Đang hoạt động'
-        },
-        {
-            key: '2',
-            name: 'John',
-            age: 42,
-            address: '10 Downing Street',
-            phone: "01231231",
-            email: 'boyvip@gmai.com',
-            role: 'Customer',
-            status: 'Đang hoạt động'
-        },
-    ];
+    const handleChange = (e: string) => {
+        setFilter(e)
+        setSearchValue('')
 
-    const columns = [
-        {
-            title: 'Họ và tên',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Số điện thoại',
-            dataIndex: 'phone',
-            key: 'phone',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-        },
-        {
-            title: 'Vai trò',
-            dataIndex: 'role',
-            key: 'role',
-        },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (_: any, record: any) => (
-                <Tag color='#4baf21' key={record}>
-                    {record.status.toUpperCase()}
-                </Tag>
-            )
-
-
-        },
-        {
-            title: '',
-            dataIndex: 'action',
-            key: 'action',
-            render: (_: any, record: any) => (
-                <div className='flex items-center'>
-                    <RemoveRedEyeOutlinedIcon
-                        onClick={handleShowDialog}
-                        className='mr-3 cursor-pointer' />
-
-                    <Tag color='#ef1a2b' className='ml-3 cursor-pointer'>
-                        Khóa
-                    </Tag>
-                </div>
-
-            )
-        },
-    ];
+    }
     return (
         <div className={'flex flex-col'}>
+            <TopFilterTable
+                searchValue={searchValue}
+                handleSearch={handleSearch}
+                setRefresh={setRefresh}
+                handleChange={handleChange}
+                placeholder='Tìm kiếm theo họ và tên/email/số điện thoại'
+                defaultValue='all'
+                optionList={[
+                    { value: 'all', label: "Tất cả" },
+                    { value: 'customer', label: "Khách hàng" },
+                    { value: 'partner', label: "Đối tác" },
+
+                ]}
+                showDatepicker={false}
+                showGarageConfig={false}
+                showSearch={true}
+            />
             <div className='flex justify-end mt-5'>
-                <SearchInput callback={handleSearch} placeholder='Tìm kiếm theo họ và tên/email/số điện thoại' />
+                {/* <SearchInput callback={handleSearch} placeholder='Tìm kiếm theo họ và tên/email/số điện thoại' /> */}
             </div>
-            <Table dataSource={dataSource} columns={columns} />
-            <Diaglog
+            <AccountTable
+                accountData={accountData}
+                filter={filter}
                 loading={loading}
-                setOpen={setOpen}
-                showLoading={showLoading}
-                title="Chi tiết tài khoản"
-                open={open}
-            >
-                <AccountDialog />
-            </Diaglog>
+                setRefresh={setRefresh}
+            />
+
         </div>
     )
 }
