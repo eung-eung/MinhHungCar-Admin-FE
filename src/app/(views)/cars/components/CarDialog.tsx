@@ -91,9 +91,54 @@ export default function CarDialog(
                                 Trạng thái xe
                             </p>
                             <p className={classes.infor}>
-                                <Tag style={{ margin: 0, fontSize: 14, padding: 3 }} color='green'>
-                                    {t(`common:${detail?.status}`)}
-                                </Tag>
+                                {
+                                    t('carStatus:active') === detail?.status &&
+                                    <Tag
+                                        style={{
+                                            margin: 0,
+                                            fontSize: 14,
+                                            padding: 3
+                                        }}
+                                        color='green'>
+                                        {t(`common:${detail?.status}`)}
+                                    </Tag>
+                                }
+                                {
+                                    t('carStatus:pending') === detail?.status &&
+                                    <Tag
+                                        style={{
+                                            margin: 0,
+                                            fontSize: 14,
+                                            padding: 3
+                                        }}
+                                        color='red'>
+                                        {t(`common:${detail?.status}`)}
+                                    </Tag>
+                                }
+                                {
+                                    t('carStatus:approved') === detail?.status &&
+                                    <Tag
+                                        style={{
+                                            margin: 0,
+                                            fontSize: 14,
+                                            padding: 3
+                                        }}
+                                        color='cyan'>
+                                        {t(`common:${detail?.status}`)}
+                                    </Tag>
+                                }
+                                {
+                                    t('carStatus:waiting') === detail?.status &&
+                                    <Tag
+                                        style={{
+                                            margin: 0,
+                                            fontSize: 14,
+                                            padding: 3
+                                        }}
+                                        color='cyan'>
+                                        {t(`common:${detail?.status}`)}
+                                    </Tag>
+                                }
                             </p>
                         </div>
                         {/* item */}
