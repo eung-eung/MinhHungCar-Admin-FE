@@ -5,6 +5,7 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 
 export default function ContractPage({
     params: { carIdSlug }
@@ -12,6 +13,7 @@ export default function ContractPage({
     params: { carIdSlug: any }
 }) {
     const [pdfUrl, setPdfUrl] = useState<any>()
+    const [loading, setLoading] = useState<boolean>(true)
     const transform: TransformToolbarSlot = (slot: ToolbarSlot) => ({
         ...slot,
         Open: () => <></>,
@@ -24,6 +26,7 @@ export default function ContractPage({
         NumberOfPages: () => <></>,
         CurrentPageInput: () => <></>
     });
+    const axiosAuth = useAxiosAuth()
 
     const renderToolbar = (Toolbar: (props: ToolbarProps) => React.ReactElement) => (
         <Toolbar>{renderDefaultToolbar(transform)}</Toolbar>
@@ -33,18 +36,28 @@ export default function ContractPage({
     });
     const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
 
+    const getContractByCarId = async (id: any) => {
+        setLoading(true)
+        const response = await axiosAuth.get('/admin/partner_contract?car_id=' + id)
+        console.log('aa');
+        console.log(response.data.url);
+        setPdfUrl(response.data.url)
+        setLoading(false)
+    }
+
     useEffect(() => {
-        setPdfUrl('https://rentalcar-capstone.s3.ap-southeast-2.amazonaws.com/df2827bd-961a-4b70-96fe-059e1d4dc0fd.pdf')
+        getContractByCarId(carIdSlug)
     }, [carIdSlug])
     return (
-
-        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-            <Viewer
-                fileUrl={pdfUrl}
-                plugins={[defaultLayoutPluginInstance]}
-            />
-        </Worker>
-
-
+        <>
+            {!loading &&
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                    <Viewer
+                        fileUrl={pdfUrl}
+                        plugins={[defaultLayoutPluginInstance]}
+                    />
+                </Worker>
+            }
+        </>
     )
 }
