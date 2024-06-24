@@ -135,7 +135,7 @@ export default function CarDialog(
                                             fontSize: 14,
                                             padding: 3
                                         }}
-                                        color='cyan'>
+                                        color='magenta'>
                                         {t(`common:${detail?.status}`)}
                                     </Tag>
                                 }
