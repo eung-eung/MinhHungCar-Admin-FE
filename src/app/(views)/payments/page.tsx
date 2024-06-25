@@ -1,10 +1,10 @@
 'use client'
 import TopFilterTable from '@/app/components/TopFilterTable'
-import React from 'react'
+import React, { useState } from 'react'
 import PaymentTable from './components/PaymentTable'
 
 export default function Payments() {
-
+    const [refresh, setRefresh] = useState<boolean>(true)
     const handleChange = () => {
 
     }
@@ -12,6 +12,8 @@ export default function Payments() {
     return (
         <>
             <TopFilterTable
+                searchValue='a'
+                setRefresh={setRefresh}
                 handleChange={handleChange}
                 optionList={[
                     {
