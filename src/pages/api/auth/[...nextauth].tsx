@@ -22,9 +22,10 @@ export default NextAuth({
                 };
 
                 const response = await axios.post('/login', {
-                    email: payload.email,
+                    phone_number: payload.email,
                     password: payload.password
                 })
+
                 if (response.data.user.role === 'admin') {
                     return response.data
                 }
