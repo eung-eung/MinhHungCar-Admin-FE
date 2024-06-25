@@ -33,7 +33,7 @@ export default function TopFilterTable(
         showDatepicker?: boolean,
         showGarageConfig?: boolean,
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>,
-        searchValue: any
+        searchValue?: any
     }) {
     const [open, setOpen] = useState<boolean>(false);
     const handleChangeDatepick = () => { }
