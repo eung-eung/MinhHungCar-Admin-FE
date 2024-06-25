@@ -138,6 +138,7 @@ export default function GarageConfigDialog(
                 onCancel={handleCancel}
                 cancelText="Hủy"
                 maskClosable={false}
+                okButtonProps={{ disabled: (error.max_15_seats || error.max_4_seats || error.max_7_seats) ? true : false }}
                 loading={loading}
             >
                 <div className='mt-5'>
