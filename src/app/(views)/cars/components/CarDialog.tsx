@@ -184,8 +184,9 @@ export default function CarDialog(
                     <p className={classes.caveats}>Giấy tờ xe</p>
                     <div className='flex mt-4 justify-around'>
                         {
-                            detail?.caveats.map(c =>
+                            detail?.caveats.map((c, index) =>
                                 <Image
+                                    key={index}
                                     src={c}
                                     width={300}
                                     height={150}

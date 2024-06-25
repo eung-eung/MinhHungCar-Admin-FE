@@ -74,8 +74,9 @@ export default function AccountDialog({ detail }: { detail?: IAccount }) {
                             Giấy phép lái xe
                         </p>
                         <div className={classes.licenseImages}>
-                            {detail?.driving_license_images.map(img =>
+                            {detail?.driving_license_images.map((img, index) =>
                                 <Image
+                                    key={index}
                                     width={200}
                                     src={img} />
                             )}

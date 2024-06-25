@@ -20,11 +20,11 @@ export default function CarouselImages({ images }: { images: any }) {
                 }}
                 autoplay
                 dotPosition='bottom'
-                style={{ textAlign: 'center' }}
+                style={{ textAlign: 'center', color: "red" }}
                 ref={carouselRef}
             >
-                {images.map((image: any) =>
-                    <div className='flex items-center'>
+                {images.map((image: any, index: any) =>
+                    <div key={index} className='flex items-center'>
                         <Image
                             src={image}
                             width={'100%'}
@@ -41,7 +41,7 @@ export default function CarouselImages({ images }: { images: any }) {
 
             >
                 {
-                    images.map((image: any, index: any) => <SwiperSlide >
+                    images.map((image: any, index: any) => <SwiperSlide key={index}>
                         <Image
                             width={'100%'}
                             height={100}
