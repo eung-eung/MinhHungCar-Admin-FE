@@ -46,7 +46,6 @@ li.ant-menu-item.ant-menu-item-selected .ant-menu-item-icon {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding-bottom: 20px;
 }
 
 .titleImage {

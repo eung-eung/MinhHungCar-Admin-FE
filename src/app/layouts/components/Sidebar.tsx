@@ -43,14 +43,10 @@ export default function Sidebar() {
 
             <aside id="sidebar-multi-level-sidebar" className="lineBorder fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div className='title'>
-                    {/* <Image
-                        alt='minh hung' src='/Minhhung.png' width={50} height={50}
-                        className='titleImage'
-                    /> */}
-                    {/* <p className='titleContent'>MinhHungCar</p> */}
                     <img
+                        style={{ width: '70%' }}
                         className='mt-3'
-                        src='https://see.fontimg.com/api/renderfont4/gxnGR/eyJyIjoiZnMiLCJoIjozNiwidyI6MTAwMCwiZnMiOjM2LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/TWluaEh1bmdDYXI/creamy-sugar.png' />
+                        src='/minhhunglogo.png' />
                 </div>
                 <Menu
                     onClick={handleChangeRoute}
