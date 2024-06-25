@@ -5,18 +5,6 @@
     background: #fff !important;
 }
 
-.lineBorder {
-    /* border-right: 1px solid #2C2D33; */
-}
-
-.ant-menu-submenu-selected .ant-menu-submenu-title {
-    /* color: white !important; */
-
-}
-
-/* :where(.css-dev-only-do-not-override-1icy8pg).ant-menu-dark .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected):hover {
-    color: rgb(16 185 129 / 1) !important;
-} */
 .ant-menu-item {
     font-weight: 600;
 }
