@@ -12,6 +12,7 @@ type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function Contracts() {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
+    const [refresh, setRefresh] = useState<boolean>(true)
     const columns = [
         {
             title: 'Tên khách hàng',
@@ -185,6 +186,7 @@ export default function Contracts() {
     return (
         <>
             <TopFilterTable
+                setRefresh={setRefresh}
                 placeholder='Tìm kiếm theo biển số xe/tên khách hàng'
                 defaultValue='waiting'
                 handleChange={handleChange}
