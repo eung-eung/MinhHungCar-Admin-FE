@@ -43,6 +43,9 @@ export default function GarageConfigDialog(
     }, [open])
 
     const handleOk = async () => {
+        if (error.max_15_seats || error.max_4_seats || error.max_7_seats) {
+            return
+        }
         setConfirmLoading(true);
         const config = {} as IGarageRequest
         config.max_7_seats = parseInt(garageConfig?.max_7_seats)
@@ -69,7 +72,7 @@ export default function GarageConfigDialog(
         } catch (error: any) {
             if (error.response.status === 400) {
                 toast.error('Cập nhật thất bại', {
-                    position: "top-right",
+                    position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
                     closeOnClick: true,
@@ -139,9 +142,9 @@ export default function GarageConfigDialog(
             >
                 <div className='mt-5'>
                     {!loading &&
-                        Object?.keys(garageConfig as IGarage).map((key) => {
+                        Object?.keys(garageConfig as IGarage).map((key, index) => {
                             if (key === 'total') return
-                            return <div className='mb-5'>
+                            return <div className='mb-5' key={index}>
                                 <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
                                 <div className='flex flex-col'>
                                     <Input
