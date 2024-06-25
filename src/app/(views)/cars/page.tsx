@@ -73,7 +73,7 @@ export default function Cars() {
                 optionList={[
                     { label: 'Xe đang chờ duyệt', value: 'pending_approval' },
                     { label: 'Xe đã duyệt', value: 'approved' },
-                    { label: 'Xe đang chờ giao', value: 'waitingPark' },
+                    { label: 'Xe đang chờ giao', value: 'waiting_car_delivery' },
                     { label: 'Xe đang hoạt động', value: 'active' },
                 ]}
                 handleSearch={handleSearch}
