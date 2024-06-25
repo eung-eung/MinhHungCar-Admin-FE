@@ -19,7 +19,6 @@ export default function Account() {
 
     useEffect(() => {
         if (!searchValue) {
-            console.log('search: ', searchValue);
             getAccountData()
             return
         }

@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import '../../globals.css'
 import TopFilterTable from '@/app/components/TopFilterTable'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
@@ -46,20 +46,31 @@ export default function Cars() {
     }
 
     useEffect(() => {
-        getCarList(filter)
-    }, [filter, refresh])
+        if (!searchValue) {
+            getCarList(filter)
+            return
+        }
+        const getData = setTimeout(async () => {
+            setLoading(true)
+            const query = `admin/cars?car_status=${filter}&search_param=${searchValue}&offset=0&limit=100`
+            const getCarsBySearch = await axiosAuth.get(query)
+            setCarData(getCarsBySearch.data.cars)
+            setLoading(false)
+        }, 1000)
+        return () => clearTimeout(getData)
+    }, [filter, refresh, searchValue])
 
     useEffect(() => {
         getCurrentSeats()
     }, [refresh])
 
-    const handleSearch = () => {
-
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value)
     }
 
     const handleChange = (e: string) => {
         setFilter(e)
-
+        setSearchValue('')
     }
     return (
         <div>
