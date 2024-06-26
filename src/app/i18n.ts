@@ -12,7 +12,8 @@ i18n
             mapping: {
                 common: require('./locales/common.json'),
                 carStatus: require('./locales/carStatus.json'),
-                accountStatus: require('./locales/accountStatus.json')
+                accountStatus: require('./locales/accountStatus.json'),
+                day: require('./locales/day.json')
             },
         },
     });
