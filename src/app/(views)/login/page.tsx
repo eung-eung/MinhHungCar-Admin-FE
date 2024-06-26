@@ -8,9 +8,8 @@ import { LabelInputContainer } from "./components/LabelInputContainer";
 import { BottomGradient } from "./components/BottomGradient";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Bounce, ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { Spin } from "antd";
+import { errorNotify } from "@/app/utils/toast";
 
 export default function Login() {
     const emailInput = useRef<HTMLInputElement>(null)
@@ -26,17 +25,7 @@ export default function Login() {
             password: passwordInput.current?.value,
         });
         if (res?.status === 401) {
-            toast.error("Tài khoản không đúng", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            })
+            errorNotify('Tài khoản không đúng')
         } else if (res?.status === 200 && res.ok) {
             router.replace('/')
         }

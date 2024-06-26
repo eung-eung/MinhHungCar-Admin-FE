@@ -2,6 +2,7 @@ import { Button, Dropdown, Menu, Modal } from 'antd'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { ICar } from '@/app/models/Car.model';
+import { errorNotify } from '@/app/utils/toast';
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -25,11 +26,20 @@ export default function PendingApprovalDropdown(
     const handleApproveCar = async (id: any) => {
         showConfirmModal("Bạn có muốn duyệt xe này?")
             .then(async () => {
-                const response = await axiosAuth.put('/admin/car_application', {
-                    car_id: id,
-                    action: "approve_register"
-                } as IApproveRequest)
-                setRefresh(prev => !prev)
+                try {
+                    const response = await axiosAuth.put('/admin/car_application', {
+                        car_id: id,
+                        action: "approve_register"
+                    } as IApproveRequest)
+                    setRefresh(prev => !prev)
+                } catch (error: any) {
+                    if (error.response.data.error === "not enough slot at garage") {
+                        errorNotify('Không đủ chỗ trong garage')
+                    } else {
+
+                    }
+                }
+
             })
     }
 

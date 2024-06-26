@@ -3,11 +3,10 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { Button, Flex, Modal, Tag } from 'antd'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Bounce, ToastContainer, toast } from 'react-toastify'
 import WarehouseRoundedIcon from '@mui/icons-material/WarehouseRounded';
-import 'react-toastify/dist/ReactToastify.css';
 import { Input } from '../../login/components/Input'
 import { removeKeys } from '@/app/utils/removeKeysFromObject'
+import { errorNotify, sucessNotify } from '@/app/utils/toast'
 type KeyIGarage = keyof IGarage;
 
 export default function GarageConfigDialog(
@@ -55,35 +54,13 @@ export default function GarageConfigDialog(
         try {
             const response = await axiosAuth.put('/admin/garage_config', config)
             if (response.status === 200) {
-                toast.success('Cập nhật thành công', {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    transition: Bounce,
-                })
+                sucessNotify('Cập nhật thành công')
             }
             setOpen(false);
             setConfirmLoading(false);
         } catch (error: any) {
-            if (error.response.status === 400) {
-                toast.error('Cập nhật thất bại', {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                    transition: Bounce,
-                })
-                setConfirmLoading(false);
-            }
+            errorNotify('Cập nhật thất bại')
+            setConfirmLoading(false);
         }
 
 

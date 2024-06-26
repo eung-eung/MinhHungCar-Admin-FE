@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import AccountDialog from './AccountDialog';
 import Diaglog from '@/app/components/Modal';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import { errorNotify, sucessNotify } from '@/app/utils/toast';
 type IUpdateAccountStatusRequest = {
 
     account_id: any,
@@ -35,11 +36,27 @@ export default function AccountTable(
     const handleUpdateStatusAccount = async (id: any, status: any, title: any) => {
         showConfirmModal(title)
             .then(async () => {
-                const response = await axiosAuth.put('/admin/account/status', {
-                    account_id: id,
-                    status: status
-                } as IUpdateAccountStatusRequest)
-                setRefresh(prev => !prev)
+                try {
+                    const response = await axiosAuth.put('/admin/account/status', {
+                        account_id: id,
+                        status: status
+                    } as IUpdateAccountStatusRequest)
+                    if (status === 'active') {
+                        sucessNotify('Gỡ khóa thành công')
+                    }
+                    else if (status === 'inactive') {
+                        sucessNotify('Đã khóa tài khoản')
+                    }
+                    setRefresh(prev => !prev)
+                } catch (error: any) {
+                    if (status === 'active') {
+                        errorNotify('Gỡ khóa thất bại. Hãy thử lại')
+                    }
+                    else if (status === 'inactive') {
+                        errorNotify('Khóa tài khoản thất bại. Hãy thử lại')
+                    }
+                }
+
             })
     }
 
