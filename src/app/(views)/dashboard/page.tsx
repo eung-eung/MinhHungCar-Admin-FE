@@ -54,7 +54,7 @@ const DynamicLineChart = dynamic(() => import('./components/LineChart'), {
 })
 export default function Dashboard() {
     return (
-        <div>
+        <div className='mt-5'>
             <div>
                 <StatisTicItemGrid>
                     {items.map((item, i) => (

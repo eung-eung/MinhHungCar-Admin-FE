@@ -21,7 +21,7 @@ export default function DigitalClock() {
                 className="relative inline-flex h-12 overflow-hidden rounded-full p-[2px] focus:outline-none">
                 <span className="absolute inset-[-1000%] animate-[spin_100s_linear_infinite]  bg-[conic-gradient(from_90deg_at_50%_50%,#8E2DE2_0%,#c471ed_50%,#4A00E0_100%)]" />
                 <span
-                    style={{ background: '#efe6ff', color: '#8200f5' }}
+                    style={{ background: '#fff', color: '#8200f5' }}
                     className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-2 text-sm font-medium text-white backdrop-blur-3xl shadow-sm	">
 
 
