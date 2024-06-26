@@ -7,7 +7,7 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import SessionProvider from "./components/SessionProvider";
 import AuthProvider from "./components/AuthProvider";
 import I18nProvider from "./components/I18Provider";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from 'react-hot-toast'
 import { ConfigProvider } from "antd";
 
 
@@ -83,16 +83,9 @@ export default function RootLayout(
             </SessionProvider>
           </AuthProvider>
         </AntdRegistry>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          theme="dark"
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
         />
       </body>
     </html>
