@@ -1,11 +1,12 @@
 'use client'
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import "./index.css"
 import { sidebarRoutes } from '@/app/routers/routes'
 import { Menu, MenuProps } from 'antd'
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import Image from 'next/image'
+import NProgress from "nprogress"
+import nProgress from 'nprogress'
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,12 +29,21 @@ const items: MenuItem[] = sidebarRoutes.map((route) => {
 export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const router = useRouter()
-    const path = usePathname() as string
+    const pathname = usePathname() as string
+    const [path, setPath] = useState<any>()
+    NProgress.configure({ showSpinner: false });
+
+    useEffect(() => {
+    }, [pathname])
     const handleChangeRoute = (e: any) => {
         if (e.key === '/logout') {
             signOut()
         } else {
-            router.push(e.key)
+            if (e.key !== pathname) {
+                nProgress.start();
+                router.push(e.key)
+                nProgress.done();
+            }
         }
     }
 
@@ -50,8 +60,9 @@ export default function Sidebar() {
                 </div>
                 <Menu
                     onClick={handleChangeRoute}
-                    defaultSelectedKeys={[path]}
+                    defaultSelectedKeys={[pathname]}
                     defaultOpenKeys={['']}
+                    selectedKeys={[pathname]}
                     mode="inline"
                     // theme='dark'
                     inlineCollapsed={collapsed}
