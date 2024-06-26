@@ -6,7 +6,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import DigitalClock from '@/app/components/DigitalClock';
 export default function Header() {
     return (
-        <div className={classes.container + ' flex justify-end items-center'}>
+        <div className={classes.container + ' flex justify-end items-center mb-4'}>
             <DigitalClock />
             {/* <div className='flex justify-end items-center'> */}
             <div className={classes.notification}>
