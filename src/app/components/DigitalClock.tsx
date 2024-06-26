@@ -16,13 +16,13 @@ export default function DigitalClock() {
     }, []);
     return (
 
-        <div style={{ position: 'absolute', left: '50%', transform: "translateX(-50%)" }}>
-            <button
+        <div style={{ position: 'absolute', left: '50%', transform: "translateX(-50%)", marginTop: 5 }}>
+            <div
                 className="relative inline-flex h-12 overflow-hidden rounded-full p-[2px] focus:outline-none">
-                <span className="absolute inset-[-1000%] animate-[spin_100s_linear_infinite]  bg-[conic-gradient(from_90deg_at_50%_50%,#8E2DE2_0%,#c471ed_50%,#4A00E0_100%)]" />
+                <span className="absolute inset-[-1000%]  bg-[conic-gradient(from_180deg_at_30%_70%,#A5B4FC_0%,#C084FC_100%)]" />
                 <span
                     style={{ background: '#fff', color: '#8200f5' }}
-                    className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-2 text-sm font-medium text-white backdrop-blur-3xl shadow-sm	">
+                    className="inline-flex h-full w-full items-center justify-center rounded-full bg-slate-950 px-2 text-sm font-medium text-white backdrop-blur-3xl shadow-sm	">
 
 
                     <div style={{ fontSize: 19, fontWeight: 500, width: 150, overflow: 'hidden' }}>
@@ -40,7 +40,7 @@ export default function DigitalClock() {
 
 
                 </span>
-            </button>
+            </div>
         </div>
     )
 }
