@@ -22,16 +22,17 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout(
   {
-    children, }: Readonly<
-      {
-        children: React.ReactNode,
-      }
-    >) {
+    children
+  }: Readonly<{
+    children: React.ReactNode,
+  }
+  >) {
 
 
   return (
     <html>
       <body className={inter.className}>
+
         <AntdRegistry>
           <ConfigProvider
             theme={{
