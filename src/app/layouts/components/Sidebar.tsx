@@ -34,6 +34,7 @@ export default function Sidebar() {
     NProgress.configure({ showSpinner: false });
 
     useEffect(() => {
+        nProgress.done();
     }, [pathname])
     const handleChangeRoute = (e: any) => {
         if (e.key === '/logout') {
@@ -42,7 +43,7 @@ export default function Sidebar() {
             if (e.key !== pathname) {
                 nProgress.start();
                 router.push(e.key)
-                nProgress.done();
+
             }
         }
     }
