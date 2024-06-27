@@ -174,7 +174,7 @@ export default function ContractTable(
             message.error('You can only upload JPG file!');
             return
         }
-        setFileList(newFileList)
+        // setFileList(newFileList)
     }
 
     const handleRemove = () => {
@@ -215,6 +215,8 @@ export default function ContractTable(
                     setExpandedRowKeys(keys);
                 },
                 expandedRowRender: (record) => {
+                    console.log(record.is_return_collateral_asset);
+
                     return (
                         <>
 
@@ -223,7 +225,7 @@ export default function ContractTable(
                                 {
                                     !expandLoading &&
                                     <UploadImage
-                                        id={record.id + record.collateral_type}
+                                        id={record.id}
                                         fileList={
                                             customerContractDetail
                                         }
@@ -241,7 +243,7 @@ export default function ContractTable(
                                 }
                                 <div className='flex mt-5 items-center'>
                                     <p className='text-base mt-3 mb-3 font-semibold mr-3'>Hoàn trả:</p>
-                                    <Switch style={{ opacity: 1 }} disabled defaultChecked />
+                                    <Switch style={{ opacity: 1 }} disabled checked={record.is_return_collateral_asset ? true : false} />
                                 </div>
                                 <h2 className='text-base mt-3 mb-3 font-semibold '>
                                     Tình trạng xe khi khách hàng nhận

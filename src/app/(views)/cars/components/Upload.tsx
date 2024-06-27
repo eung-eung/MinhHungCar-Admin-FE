@@ -26,24 +26,26 @@ export default function UploadImage(
         setPreviewImage: any
     }) {
     const axiosAuth = useAxiosAuth()
-    const handleUploadImage = async (file: any) => {
-        const formData = new FormData()
-        formData.append('document_category', 'COLLATERAL_ASSETS')
-        formData.append('customer_contract_id', '4')
-        formData.append('files', file.file)
-        const response = await axiosAuth.put('/admin/contract/document', formData)
-        console.log(response);
+    const handleUploadImage = async (info, event) => {
+        console.log(event);
+
+        // const formData = new FormData()
+        // formData.append('document_category', 'COLLATERAL_ASSETS')
+        // formData.append('customer_contract_id', id)
+        // formData.append('files', file.file)
+        // const response = await axiosAuth.put('/admin/contract/document', formData)
+        // console.log(response);
 
     }
     return (
         <>
             <Upload
                 id={id}
-                customRequest={handleUploadImage}
+                // customRequest={handleUploadImage}
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
-                onChange={handleChange}
+                onChange={handleUploadImage}
                 onRemove={handleRemove}
             >
                 <UploadButton />
