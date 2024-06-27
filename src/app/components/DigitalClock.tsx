@@ -28,7 +28,9 @@ export default function DigitalClock() {
 
                     <div style={{ fontSize: 10, fontWeight: 500, width: '100%', overflow: 'hidden' }} className='flex items-center flex-col justify-center p-2 mt-1'>
                         <time className='flex items-center w-full' >
-                            <AccessTimeRoundedIcon sx={{ color: '#2900ff', marginRight: '15px', fontSize: 15 }} />
+                            {/* <AccessTimeRoundedIcon sx={{ color: '#2900ff', marginRight: '15px', fontSize: 15 }} />
+                             */}
+                            <p style={{ width: 15, marginRight: 15 }}></p>
                             <p className='p-1'>{currentTime.format("HH")}</p>
                             :
                             <p className='p-1'>{currentTime.format("mm")}</p>
