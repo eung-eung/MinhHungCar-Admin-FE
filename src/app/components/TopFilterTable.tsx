@@ -41,7 +41,7 @@ export default function TopFilterTable(
         setOpen(true)
     }
     return (
-        <div className='flex justify-between items-center mt-5'>
+        <div className='flex justify-between items-center mt-5 mb-5'>
             <div className='flex items-center w-3/6 justify-start'>
                 <Button
                     size='middle'
