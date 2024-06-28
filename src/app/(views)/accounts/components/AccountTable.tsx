@@ -134,7 +134,7 @@ export default function AccountTable(
                         onClick={() => handleOpenDetailDialog(record.id)}
                         className='mr-3 cursor-pointer' />
                     {
-                        record.status === 'active' ? <Tag onClick={
+                        record.status === 'active' && <Tag onClick={
                             () =>
                                 handleUpdateStatusAccount(
                                     record.id,
@@ -144,18 +144,20 @@ export default function AccountTable(
                             color='red'
                             className='ml-3 cursor-pointer'>
                             Khóa
-                        </Tag> :
-                            <Tag onClick={
-                                () =>
-                                    handleUpdateStatusAccount(
-                                        record.id,
-                                        'active',
-                                        'Bạn có muốn gỡ khóa tài khoản này?'
-                                    )}
-                                color='default'
-                                className='ml-3 cursor-pointer'>
-                                Gỡ khóa
-                            </Tag>
+                        </Tag>
+                    }
+                    {record.status === 'inactive' &&
+                        <Tag onClick={
+                            () =>
+                                handleUpdateStatusAccount(
+                                    record.id,
+                                    'active',
+                                    'Bạn có muốn gỡ khóa tài khoản này?'
+                                )}
+                            color='default'
+                            className='ml-3 cursor-pointer'>
+                            Gỡ khóa
+                        </Tag>
                     }
 
                 </div>
