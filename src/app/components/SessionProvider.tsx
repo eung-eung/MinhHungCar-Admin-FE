@@ -1,6 +1,7 @@
 'use client'
 import { Spin } from "antd"
 import { useSession } from "next-auth/react"
+import Loading from "./Loading"
 
 export default function SessionProvider({
     children,
@@ -11,7 +12,7 @@ export default function SessionProvider({
 
     return (
         <>
-            {status === 'loading' ? <Spin size="large" fullscreen /> : children}
+            {status === 'loading' ? <Loading /> : children}
         </>
     )
 }
