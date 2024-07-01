@@ -1,5 +1,5 @@
 {
     "active": "Đang hoạt động",
     "inactive": "Đã bị khóa",
-    "waiting_confirm_email": "Chưa nhập OTP"
+    "waiting_confirm_phone_number": "Chưa nhập OTP"
 }
