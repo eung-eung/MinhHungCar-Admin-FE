@@ -33,11 +33,13 @@ export default function PendingApprovalDropdown(
                     } as IApproveRequest)
                     setRefresh(prev => !prev)
                 } catch (error: any) {
-                    if (error.response.data.error === "not enough slot at garage") {
-                        errorNotify('Không đủ chỗ trong garage')
-                    } else {
+                    console.log(error.response.data);
 
-                    }
+                    // if (error.response.data.error === "not enough slot at garage") {
+                    //     errorNotify('Không đủ chỗ trong garage')
+                    // } else {
+
+                    // }
                 }
 
             })
