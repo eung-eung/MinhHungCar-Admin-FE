@@ -25,9 +25,9 @@ export default NextAuth({
                     phone_number: payload.email,
                     password: payload.password
                 })
-
-                if (response.data.user.role === 'admin') {
-                    return response.data
+                const responseJson = response.data
+                if (responseJson.data.user.role === 'admin') {
+                    return responseJson.data
                 }
                 return null
             },
