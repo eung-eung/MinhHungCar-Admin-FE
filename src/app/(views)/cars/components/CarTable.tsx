@@ -7,7 +7,6 @@ import { ICarModel } from '@/app/models/CarModel.model'
 import { IAccount } from '@/app/models/Account.model'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-import { useTranslation } from 'react-i18next'
 import PendingApprovalDropdown from './PendingApprovalCarDropdown'
 import Diaglog from '@/app/components/Modal'
 import CarDialog from './CarDialog'
@@ -35,7 +34,7 @@ export default function CarTable(
         setOpen(true);
         setLoadingDialog(true);
         const carDetail = await axiosAuth.get(`/car/${id}`)
-        const detail: ICar = carDetail.data
+        const detail: ICar = carDetail.data.data
         setCarDetail(detail)
         setLoadingDialog(false)
 

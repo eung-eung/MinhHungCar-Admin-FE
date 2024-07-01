@@ -44,7 +44,7 @@ export default function ContractPage({
         setLoading(true)
         try {
             const response = await axiosAuth.get('/admin/contract/' + id)
-            setPdfUrl(response.data.url)
+            setPdfUrl(response.data.data.url)
             setLoading(false)
         } catch (error: any) {
             setError(error.response.status)

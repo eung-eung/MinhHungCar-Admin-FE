@@ -28,7 +28,7 @@ export default function Account() {
                 `/admin/accounts?search_param=${searchValue}&offset=0&limit=100`
                 : `/admin/accounts?role=${filter}&search_param=${searchValue}&offset=0&limit=100`
             const getAccountsBySearch = await axiosAuth.get(query)
-            setAccountData(getAccountsBySearch.data)
+            setAccountData(getAccountsBySearch.data.data)
             setLoading(false)
         }, 1000)
         return () => clearTimeout(getData)
@@ -41,7 +41,7 @@ export default function Account() {
         const response = await axiosAuth.get(
             `/admin/accounts?${filter === 'all' ? '' : `role=${filter}&`}offset=0&limit=100`
         )
-        setAccountData(response.data)
+        setAccountData(response.data.data)
         setLoading(false)
     }
 

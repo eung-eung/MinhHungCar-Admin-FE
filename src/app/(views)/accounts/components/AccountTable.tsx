@@ -80,8 +80,7 @@ export default function AccountTable(
         setOpen(true)
         setLoadingDialog(true)
         const response = await axiosAuth.get('/admin/account/' + id)
-        console.log(response.data);
-        setAccountDetail(response.data)
+        setAccountDetail(response.data.data)
         setLoadingDialog(false)
 
     }

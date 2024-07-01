@@ -22,9 +22,7 @@ export default function Contracts() {
         const response = await axiosAuth.get(
             `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
         )
-        console.log('status": ', status);
-        setContractData(response.data.contracts)
-        console.log(response.data);
+        setContractData(response.data.data.contracts)
 
     }
     useEffect(() => {
@@ -97,6 +95,7 @@ export default function Contracts() {
     }
 
     const handleChange = (e: string) => {
+        setContractData([])
         setFilter(e)
     }
     return (
@@ -117,6 +116,7 @@ export default function Contracts() {
 
             />
             <ContractTable
+                setRefresh={setRefresh}
                 filter={filter}
                 contractData={contractData}
             />

@@ -40,9 +40,7 @@ export default function DeliveryCarDropdown(
                     car_id: id,
                     action: "reject"
                 } as IApproveRequest)
-                console.log('response: ', response);
                 if (response.status === 200) {
-
                     setRefresh(prev => !prev)
                 }
             })

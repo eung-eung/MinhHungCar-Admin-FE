@@ -32,14 +32,14 @@ export default function Cars() {
         const carList = await axiosAuth.get(
             `/admin/cars?car_status=${filter}`
         )
-        setCarData(carList.data.cars)
+        setCarData(carList.data.data.cars)
         setLoading(false)
     }
 
     const getCurrentSeats = async () => {
         setLoadingCurrentSeats(true)
         const currentSeats = await axiosAuth.get('/admin/garage_config')
-        const filterData = removeKeys(currentSeats.data, keyToRemove)
+        const filterData = removeKeys(currentSeats.data.data, keyToRemove)
         setCurrentSeats(filterData)
         setLoadingCurrentSeats(false)
 
@@ -54,7 +54,7 @@ export default function Cars() {
             setLoading(true)
             const query = `admin/cars?car_status=${filter}&search_param=${searchValue}&offset=0&limit=100`
             const getCarsBySearch = await axiosAuth.get(query)
-            setCarData(getCarsBySearch.data.cars)
+            setCarData(getCarsBySearch.data.data.cars)
             setLoading(false)
         }, 1000)
         return () => clearTimeout(getData)

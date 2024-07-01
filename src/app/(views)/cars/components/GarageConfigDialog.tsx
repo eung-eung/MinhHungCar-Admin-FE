@@ -31,7 +31,7 @@ export default function GarageConfigDialog(
     const getGarageConfig = async () => {
         setLoading(true)
         const response = await axiosAuth.get('/admin/garage_config')
-        const filterData = removeKeys(response.data, keysToRemove)
+        const filterData = removeKeys(response.data.data, keysToRemove)
         setGarageConfig(filterData)
         setLoading(false)
     }
