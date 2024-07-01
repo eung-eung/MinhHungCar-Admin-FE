@@ -1,7 +1,7 @@
 import { IAccount } from '@/app/models/Account.model'
 import { ICar } from '@/app/models/Car.model'
 import { ICustomerContract } from '@/app/models/CustomerContract'
-import { Button, GetProp, Image, Modal, Skeleton, Switch, Table, TableProps, Upload, UploadFile, message } from 'antd'
+import { Modal, Skeleton, Spin, Table, TableProps, Upload, UploadFile, message } from 'antd'
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
@@ -15,6 +15,7 @@ import { sucessNotify } from '@/app/utils/toast'
 import ExpandRowCollateral from './ExpandRowCollateral'
 import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
+import Loading from '@/app/components/Loading'
 
 export default function ContractTable(
     {
@@ -191,43 +192,55 @@ export default function ContractTable(
                 expandedRowKeys: expandedRowKeys,
                 onExpand: async (expanded, record) => {
                     const keys = []
+                    setExpandLoaing(true)
                     if (expanded) {
                         keys.push(record.id);
-                        setExpandLoaing(true)
                         getDataForExpand(record.id)
                     }
-                    setExpandLoaing(false)
+                    setTimeout(() => setExpandLoaing(false), 1000)
                     setExpandedRowKeys(keys);
                 },
                 expandedRowRender: (record) => {
+                    console.log(expandLoading);
+
                     return (
                         <>
                             {
-                                record.collateral_type !== 'cash'
-                                &&
-                                <ExpandRowCollateral
-                                    id={record.id}
-                                    expandLoading={expandLoading}
-                                    fileList={fileList}
-                                    status={record.status}
-                                />
+                                expandLoading &&
+                                <div className='flex justify-center'><Spin /></div>
                             }
-
                             {
-                                expandLoading
-                                && <Skeleton.Image active />
+                                !expandLoading &&
+                                <>
+                                    {
+                                        record.collateral_type !== 'cash'
+                                        &&
+                                        <ExpandRowCollateral
+                                            id={record.id}
+                                            expandLoading={expandLoading}
+                                            fileList={fileList}
+                                            status={record.status}
+                                        />
+                                    }
+
+                                    {
+                                        expandLoading
+                                        && <Skeleton.Image active />
+                                    }
+                                    <SwitchIsReturn
+                                        isReturn={record.is_return_collateral_asset}
+                                    />
+                                    <ExpandRowRecievingCar
+                                        id={record.id}
+                                        fileList={fileCarCondition}
+                                        status={record.status}
+                                        expandLoading={expandLoading}
+                                        setFileCarCondition={setFileCarCondition}
+                                        getDataForExpand={getDataForExpand}
+                                    />
+                                </>
+
                             }
-                            <SwitchIsReturn
-                                isReturn={record.is_return_collateral_asset}
-                            />
-                            <ExpandRowRecievingCar
-                                id={record.id}
-                                fileList={fileCarCondition}
-                                status={record.status}
-                                expandLoading={expandLoading}
-                                setFileCarCondition={setFileCarCondition}
-                                getDataForExpand={getDataForExpand}
-                            />
                         </>
                     )
                 },

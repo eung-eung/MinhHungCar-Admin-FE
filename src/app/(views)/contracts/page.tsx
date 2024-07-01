@@ -1,10 +1,8 @@
 'use client'
 
-import { Button, Dropdown, GetProp, Menu, Modal, Switch, Table, UploadFile, UploadProps } from 'antd'
+import { Button, Dropdown, Menu } from 'antd'
 import React, { useEffect, useState } from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import { getBase64 } from '@/app/utils/getBase64';
-import UploadImage from '../cars/components/Upload';
 import TopFilterTable from '@/app/components/TopFilterTable';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import ContractTable from './components/ContractTable';
