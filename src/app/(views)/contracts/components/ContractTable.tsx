@@ -1,39 +1,40 @@
 import { IAccount } from '@/app/models/Account.model'
 import { ICar } from '@/app/models/Car.model'
 import { ICustomerContract } from '@/app/models/CustomerContract'
-import { Button, GetProp, Modal, Skeleton, Switch, Table, TableProps, UploadFile, message } from 'antd'
-import React, { useState } from 'react'
-import UploadImage from '../../cars/components/Upload'
+import { Button, GetProp, Image, Modal, Skeleton, Switch, Table, TableProps, Upload, UploadFile, message } from 'antd'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import OrderedContractDropdown from './OrderedContractDropdown'
-import { getBase64 } from '@/app/utils/getBase64'
 import { UploadProps } from 'antd/lib'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import RentingContractDropdown from './RentingContractDropdown'
+import { sucessNotify } from '@/app/utils/toast'
+import ExpandRowCollateral from './ExpandRowCollateral'
+import SwitchIsReturn from './Switch'
+import ExpandRowRecievingCar from './ExpandRowRecievingCar'
+
 export default function ContractTable(
     {
         contractData,
-        filter
+        filter,
+        setRefresh
     }: {
         contractData?: ICustomerContract[],
-        filter: any
+        filter: any,
+        setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
-    const [previewOpen, setPreviewOpen] = useState<boolean>(false);
-    const [previewImage, setPreviewImage] = useState<any>('');
-    const [customerContractDetail, setCustomerContractDetail] = useState<any>()
+
+    const [customerContractDetail, setCustomerContractDetail] = useState<ICustomerContract>()
     const [expandLoading, setExpandLoaing] = useState<any>({})
     const [expandedRowKeys, setExpandedRowKeys] = useState<any>([]);
     const { t } = useTranslation()
     const axiosAuth = useAxiosAuth()
+    const [fileCarCondition, setFileCarCondition] = useState<UploadFile[]>([])
 
-    const approveCustomerContract = () => {
-
-    }
-
-    const rejectCustomerContract = () => {
-
-    }
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
     const columns: TableProps<ICustomerContract>['columns'] = [
         {
             title: 'Tên khách hàng',
@@ -81,92 +82,60 @@ export default function ContractTable(
                         filter === 'ordered' &&
                         <OrderedContractDropdown
                             id={record.id}
-                            approveCustomerContract={approveCustomerContract}
+                            approveCustomerContract={() => approveCustomerContract(record.id)}
                             rejectCustomerContract={rejectCustomerContract}
                         />
                     }
-                    {/* {
-                        filter === 'approved' &&
-                        <RemoveRedEyeOutlinedIcon
-                            className='cursor-pointer'
-                            onClick={() => handleOpenDetailDialog(record.id)}
-                        />
+                    {
+                        filter === 'completed' &&
+                        <> <RemoveRedEyeOutlinedIcon />
+                            <ReceiptLongOutlinedIcon /></>
                     }
                     {
-                        filter === 'active' &&
-                        <ActiveCarDropdown
-                            id={record.id}
-                            handleOpenDetailDialog={handleOpenDetailDialog}
-                        />
+
                     }
-                    {
-                        filter === 'waiting_car_delivery' &&
-                        <DeliveryCarDropdown
-                            id={record.id}
-                            handleOpenDetailDialog={handleOpenDetailDialog}
-                            carDetail={carDetail}
-                            loadingDialog={loadingDialog}
-                            setOpen={setOpen}
-                            setRefresh={setRefresh}
-                        />
-                    } */}
+
                 </div>
 
             }
 
         },
-
     ]
 
-    const [fileList, setFileList] = useState<UploadFile[]>([]
-        // [
-        // {
-        //     uid: '-1',
-        //     name: 'image.png',
-        //     status: 'done',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //     uid: '-2',
-        //     name: 'image.png',
-        //     status: 'done',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //     uid: '-3',
-        //     name: 'image.png',
-        //     status: 'done',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //     uid: '-4',
-        //     name: 'image.png',
-        //     status: 'done',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //     uid: '-xxx',
-        //     percent: 50,
-        //     name: 'image.png',
-        //     status: 'uploading',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // },
-        // {
-        //     uid: '-5',
-        //     name: 'image.png',
-        //     status: 'error',
-        // },
-        // ]
-    );
+    useEffect(() => {
 
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as FileType);
+    }, [expandLoading])
+
+    const approveCustomerContract = async (id: any) => {
+        const response = await axiosAuth.put('/admin/contract', {
+            customer_contract_id: id,
+            action: "approve"
+        })
+        console.log(response);
+        if (response.status === 200) {
+            setRefresh(prev => !prev)
+            sucessNotify('Cập nhật hợp đồng thành công')
         }
+    }
 
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-    };
+    const rejectCustomerContract = () => {
+
+    }
+
+    const handleUpdate = async (id: any, type: any) => {
+        const formData = new FormData()
+        if (type === 'receivingCar') {
+            const files = fileCarCondition.map(file => file.originFileObj)
+            formData.append('document_category', 'RECEIVING_CAR_IMAGES')
+            formData.append('customer_contract_id', id)
+            files.forEach((file: any) => formData.append('files', file))
+        }
+        const response = await axiosAuth.put('/admin/contract/document', formData)
+        console.log(response);
+        // if (response.status === 200)
+
+
+    }
 
     const handleUpload: UploadProps['onChange'] = ({ fileList: newFileList, file }) => {
         const isJPG = file.type === 'image/jpeg';
@@ -174,7 +143,7 @@ export default function ContractTable(
             message.error('You can only upload JPG file!');
             return
         }
-        // setFileList(newFileList)
+        setFileList(newFileList)
     }
 
     const handleRemove = () => {
@@ -191,7 +160,30 @@ export default function ContractTable(
             })
         })
     }
+    const getDataForExpand = async (id: any) => {
+        const response = await axiosAuth.get(
+            '/admin/contract/' + id
+        )
+        setCustomerContractDetail(response.data.data)
+        setFileList(
+            response.data
+                .data.collateral_asset_images.map((img: any) =>
+                ({
+                    url: img.url,
+                    status: 'done',
+                    uid: img.id
+                })))
 
+        setFileCarCondition(
+            response.data
+                .data.receiving_car_images.map((img: any) =>
+                ({
+                    url: img.url,
+                    status: 'done',
+                    uid: img.id,
+                    isUpload: true
+                })))
+    }
     return (
         <Table
             rowKey={(record) => record.id}
@@ -202,70 +194,46 @@ export default function ContractTable(
                     if (expanded) {
                         keys.push(record.id);
                         setExpandLoaing(true)
-                        const response = await axiosAuth.get(
-                            '/admin/contract/' + record.id
-                        )
-                        setCustomerContractDetail(
-                            response.data.collateral_asset_images.map((img: any) => ({
-                                url: img
-                            })))
-                        setExpandLoaing(false)
-
+                        getDataForExpand(record.id)
                     }
+                    setExpandLoaing(false)
                     setExpandedRowKeys(keys);
                 },
                 expandedRowRender: (record) => {
-                    console.log(record.is_return_collateral_asset);
-
                     return (
                         <>
+                            {
+                                record.collateral_type !== 'cash'
+                                &&
+                                <ExpandRowCollateral
+                                    id={record.id}
+                                    expandLoading={expandLoading}
+                                    fileList={fileList}
+                                    status={record.status}
+                                />
+                            }
 
-                            <>
-                                <h2 className='text-base mb-3 font-semibold '>Hình ảnh xe thế chấp</h2>
-                                {
-                                    !expandLoading &&
-                                    <UploadImage
-                                        id={record.id}
-                                        fileList={
-                                            customerContractDetail
-                                        }
-                                        handleChange={handleUpload}
-                                        handlePreview={handlePreview}
-                                        handleRemove={handleRemove}
-                                        previewOpen={previewOpen}
-                                        previewImage={previewImage}
-                                        setPreviewImage={setPreviewImage}
-                                        setPreviewOpen={setPreviewOpen}
-                                    />
-                                }
-                                {
-                                    expandLoading && <Skeleton.Image active />
-                                }
-                                <div className='flex mt-5 items-center'>
-                                    <p className='text-base mt-3 mb-3 font-semibold mr-3'>Hoàn trả:</p>
-                                    <Switch style={{ opacity: 1 }} disabled checked={record.is_return_collateral_asset ? true : false} />
-                                </div>
-                                <h2 className='text-base mt-3 mb-3 font-semibold '>
-                                    Tình trạng xe khi khách hàng nhận
-                                </h2>
-                                {/* <UploadImage
-                                id={record.id + record.collateral_type}
-                                fileList={fileList}
-                                handleChange={handleUpload}
-                                handlePreview={handlePreview}
-                                handleRemove={handleRemove}
-                                previewOpen={previewOpen}
-                                previewImage={previewImage}
-                                setPreviewImage={setPreviewImage}
-                                setPreviewOpen={setPreviewOpen}
-                            /> */}
-                            </>
-
+                            {
+                                expandLoading
+                                && <Skeleton.Image active />
+                            }
+                            <SwitchIsReturn
+                                isReturn={record.is_return_collateral_asset}
+                            />
+                            <ExpandRowRecievingCar
+                                id={record.id}
+                                fileList={fileCarCondition}
+                                status={record.status}
+                                expandLoading={expandLoading}
+                                setFileCarCondition={setFileCarCondition}
+                                getDataForExpand={getDataForExpand}
+                            />
                         </>
                     )
                 },
-                // rowExpandable: (record) => record.brand
             }}
-            columns={columns} dataSource={contractData} />
+            columns={columns}
+            dataSource={contractData}
+        />
     )
 }
