@@ -109,8 +109,11 @@ export default function ContractTable(
     ]
 
     useEffect(() => {
-
-    }, [expandLoading])
+        const timeoutID = setTimeout(() => setExpandLoaing(false), 1000)
+        return () => {
+            clearTimeout(timeoutID);
+        };
+    }, [expandedRowKeys])
 
     const approveCustomerContract = async (id: any) => {
         const { confirm } = Modal
@@ -175,7 +178,6 @@ export default function ContractTable(
                         keys.push(record.id);
                         getDataForExpand(record.id)
                     }
-                    setTimeout(() => setExpandLoaing(false), 1000)
                     setExpandedRowKeys(keys);
                 },
                 expandedRowRender: (record) => {
