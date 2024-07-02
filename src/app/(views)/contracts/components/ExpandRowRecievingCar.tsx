@@ -28,7 +28,6 @@ export default function ExpandRowRecievingCar(
     const axiosAuth = useAxiosAuth()
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<any>('');
-    // const [fileCarCondition, setFileCarCondition] = useState<UploadFile[]>([])
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj as FileType);
@@ -45,7 +44,7 @@ export default function ExpandRowRecievingCar(
             setFileCarCondition((prev: any) => prev)
         }
     }
-    const handleUpdate = async (id: any, type: any) => {
+    const handleUpdate = async (id: any) => {
         setLoadingUpdate(true)
         const formData = new FormData()
         const files = fileList.filter((file: any) => !file.isUpload).map((file: any) => file.originFileObj)
@@ -111,7 +110,11 @@ export default function ExpandRowRecievingCar(
                 {!expandLoading
                     && <Upload
                         showUploadList={{
-                            showRemoveIcon: status === 'ordered' ? true : false
+                            showRemoveIcon: (
+                                status === 'ordered'
+                                && !loadingUpdate
+                            )
+                                ? true : false
                         }}
                         itemRender={(originNode, file: any) => {
                             return <div
@@ -148,7 +151,7 @@ export default function ExpandRowRecievingCar(
                     disabled={loadingUpdate ||
                         fileList.filter((file: any) => !file.isUpload).length < 1}
                     onClick={
-                        () => handleUpdate(id, 'receivingCar')
+                        () => handleUpdate(id)
                     }
                     className='mt-3'
                 >
