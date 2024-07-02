@@ -41,7 +41,7 @@ export default function ContractTable(
             title: 'Tên khách hàng',
             dataIndex: 'customer',
             key: 'id',
-            render: (customer: IAccount) => <>{customer.first_name + ' ' + customer.last_name}</>
+            render: (customer: IAccount) => <>{customer.last_name + ' ' + customer.first_name}</>
         },
         {
             title: 'Biển số xe',
@@ -89,11 +89,16 @@ export default function ContractTable(
                     }
                     {
                         filter === 'completed' &&
-                        <> <RemoveRedEyeOutlinedIcon />
-                            <ReceiptLongOutlinedIcon /></>
+                        <>
+                            <RemoveRedEyeOutlinedIcon />
+                            <ReceiptLongOutlinedIcon />
+                        </>
                     }
                     {
-
+                        filter === 'renting' &&
+                        <RentingContractDropdown
+                            id={record.id}
+                        />
                     }
 
                 </div>
@@ -108,58 +113,30 @@ export default function ContractTable(
     }, [expandLoading])
 
     const approveCustomerContract = async (id: any) => {
-        const response = await axiosAuth.put('/admin/contract', {
-            customer_contract_id: id,
-            action: "approve"
+        const { confirm } = Modal
+        confirm({
+            title: 'Bạn có muốn xóa ảnh này?',
+            onOk: async () => {
+                const response = await axiosAuth.put('/admin/contract', {
+                    customer_contract_id: id,
+                    action: "approve"
+                })
+
+                if (response.status === 200) {
+                    setRefresh(prev => !prev)
+                    sucessNotify('Cập nhật hợp đồng thành công')
+                    setExpandedRowKeys([])
+                }
+            },
+            onCancel: () => {
+
+            }
         })
-        console.log(response);
-        if (response.status === 200) {
-            setRefresh(prev => !prev)
-            sucessNotify('Cập nhật hợp đồng thành công')
-        }
+
     }
 
     const rejectCustomerContract = () => {
 
-    }
-
-    const handleUpdate = async (id: any, type: any) => {
-        const formData = new FormData()
-        if (type === 'receivingCar') {
-            const files = fileCarCondition.map(file => file.originFileObj)
-            formData.append('document_category', 'RECEIVING_CAR_IMAGES')
-            formData.append('customer_contract_id', id)
-            files.forEach((file: any) => formData.append('files', file))
-        }
-        const response = await axiosAuth.put('/admin/contract/document', formData)
-        console.log(response);
-        // if (response.status === 200)
-
-
-    }
-
-    const handleUpload: UploadProps['onChange'] = ({ fileList: newFileList, file }) => {
-        const isJPG = file.type === 'image/jpeg';
-        if (!isJPG) {
-            message.error('You can only upload JPG file!');
-            return
-        }
-        setFileList(newFileList)
-    }
-
-    const handleRemove = () => {
-        const { confirm } = Modal
-        return new Promise((res, rej) => {
-            confirm({
-                title: 'Bạn có muốn xóa ảnh này?',
-                onOk: () => {
-                    res(true)
-                },
-                onCancel: () => {
-                    rej(true)
-                }
-            })
-        })
     }
     const getDataForExpand = async (id: any) => {
         const response = await axiosAuth.get(
@@ -172,7 +149,8 @@ export default function ContractTable(
                 ({
                     url: img.url,
                     status: 'done',
-                    uid: img.id
+                    uid: img.id,
+                    isUpload: true
                 })))
 
         setFileCarCondition(
@@ -201,8 +179,6 @@ export default function ContractTable(
                     setExpandedRowKeys(keys);
                 },
                 expandedRowRender: (record) => {
-                    console.log(expandLoading);
-
                     return (
                         <>
                             {
@@ -216,10 +192,12 @@ export default function ContractTable(
                                         record.collateral_type !== 'cash'
                                         &&
                                         <ExpandRowCollateral
+                                            getDataForExpand={getDataForExpand}
                                             id={record.id}
                                             expandLoading={expandLoading}
                                             fileList={fileList}
                                             status={record.status}
+                                            setFileList={setFileList}
                                         />
                                     }
 
