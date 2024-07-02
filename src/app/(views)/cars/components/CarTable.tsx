@@ -59,7 +59,7 @@ export default function CarTable(
             key: 'id',
         },
         {
-            title: 'Giá thuê xe',
+            title: 'Giá cho thuê',
             dataIndex: 'price',
             key: 'id',
             render: (price: Number) => <>{formatCurrency(price)}</>
