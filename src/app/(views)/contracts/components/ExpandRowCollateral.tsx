@@ -37,7 +37,7 @@ export default function ExpandRowCollateral(
         setPreviewOpen(true);
     };
     const handleChange: UploadProps['onChange'] = ({ file, fileList: newFileList }) => {
-        const isJPG = file.type === ('image/jpeg' || 'image/png');
+        const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
         if (isJPG) {
             setFileList(newFileList);
         } else {

@@ -37,7 +37,7 @@ export default function ExpandRowRecievingCar(
         setPreviewOpen(true);
     };
     const handleChange: UploadProps['onChange'] = ({ file, fileList: newfileList }) => {
-        const isJPG = file.type === 'image/jpeg';
+        const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
         if (isJPG) {
             setFileCarCondition(newfileList)
         } else {
