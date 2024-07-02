@@ -1,6 +1,7 @@
 import { Button, Dropdown, Menu } from 'antd'
 import React from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import { useRouter } from 'next/navigation';
 export default function RentingContractDropdown(
     {
         id
@@ -8,8 +9,13 @@ export default function RentingContractDropdown(
         id: any
     }
 ) {
+    const router = useRouter()
     const showCustomerContract = (id: any) => {
         window.open('/contracts/' + id, '_blank')
+    }
+
+    const openPaymentByContractId = (id: any) => {
+        router.push('/contracts/payments/' + id)
     }
     return (
         <>
@@ -25,6 +31,7 @@ export default function RentingContractDropdown(
                             {
                                 key: '2',
                                 label: 'Hoàn thành',
+                                onClick: () => openPaymentByContractId(id)
                             },
 
                         ]}>
