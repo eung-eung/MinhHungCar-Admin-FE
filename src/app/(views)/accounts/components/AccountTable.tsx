@@ -94,7 +94,7 @@ export default function AccountTable(
         },
         {
             title: 'Số điện thoại',
-            dataIndex: 'phone',
+            dataIndex: 'phone_number',
             key: 'phone',
         },
         {
