@@ -55,7 +55,6 @@ export default function Account() {
         }, 2000);
     };
     const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.value.length);
         setSearchValue(e.target.value)
 
     }

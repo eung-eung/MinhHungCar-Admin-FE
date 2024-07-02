@@ -38,9 +38,6 @@ export default function ExpandRowCollateral(
     };
     const handleChange: UploadProps['onChange'] = ({ file, fileList: newFileList }) => {
         const isJPG = file.type === ('image/jpeg' || 'image/png');
-        console.log('change');
-        console.log('is: ', isJPG);
-
         if (isJPG) {
             setFileList(newFileList);
         } else {
@@ -66,7 +63,6 @@ export default function ExpandRowCollateral(
         files.forEach((file: any) => formData.append('files', file))
 
         const response = await axiosAuth.put('/admin/contract/document', formData)
-        console.log(response);
         setLoadingUpdate(false)
         if (response.status === 200) {
             sucessNotify('Thêm ảnh thành công')

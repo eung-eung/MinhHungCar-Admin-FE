@@ -1,12 +1,11 @@
 import { IAccount } from '@/app/models/Account.model'
 import { ICar } from '@/app/models/Car.model'
 import { ICustomerContract } from '@/app/models/CustomerContract'
-import { Modal, Skeleton, Spin, Table, TableProps, Upload, UploadFile, message } from 'antd'
+import { Modal, Skeleton, Spin, Table, TableProps, UploadFile } from 'antd'
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import OrderedContractDropdown from './OrderedContractDropdown'
-import { UploadProps } from 'antd/lib'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
@@ -15,7 +14,7 @@ import { sucessNotify } from '@/app/utils/toast'
 import ExpandRowCollateral from './ExpandRowCollateral'
 import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
-import Loading from '@/app/components/Loading'
+
 
 export default function ContractTable(
     {
@@ -169,8 +168,6 @@ export default function ContractTable(
     return (
         <Table
             onRow={(record, index) => {
-                console.log(record.id)
-                console.log(expandedRowKeys)
                 return {
                     style: {
                         background: record.id === expandedRowKeys[0] ? '#c1c5ff6b' : 'white',

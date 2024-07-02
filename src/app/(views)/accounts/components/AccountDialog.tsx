@@ -5,7 +5,6 @@ import { Tag } from 'antd'
 import { IAccount } from '@/app/models/Account.model'
 import { useTranslation } from 'react-i18next'
 export default function AccountDialog({ detail }: { detail?: IAccount }) {
-    console.log(detail);
     const { t } = useTranslation()
     return (
         <div className={classes.diaglog}>

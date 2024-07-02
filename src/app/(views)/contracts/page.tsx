@@ -27,65 +27,6 @@ export default function Contracts() {
         getListContractByStatus(filter)
     }, [filter, refresh])
 
-    const columns = [
-        {
-            title: 'Tên khách hàng',
-            dataIndex: 'customerName',
-            key: 'customerName',
-        },
-        {
-            title: 'Biển số xe',
-            dataIndex: 'carNumber',
-            key: 'carNumber',
-        },
-        {
-            title: 'Ngày nhận xe',
-            dataIndex: 'startDate',
-            key: 'startDate',
-        },
-        {
-            title: 'Ngày trả xe',
-            dataIndex: 'endDate',
-            key: 'endDate',
-        },
-        {
-            title: 'Số điện thoại',
-            dataIndex: 'phoneNumber',
-            key: 'phoneNumber',
-        },
-        {
-            title: 'Loại thế chấp',
-            dataIndex: 'collateralType',
-            key: 'collateralType',
-        },
-        {
-            title: '',
-            dataIndex: 'action',
-            key: 'action',
-            render: () => {
-                return <div>
-                    <Dropdown
-                        dropdownRender={() => (
-                            <Menu
-                                items={[
-                                    { key: '1', label: 'Chi tiết' },
-                                    { key: '2', label: 'Hợp đồng' },
-                                    { key: '3', label: 'Option 3' },
-                                ]}>
-
-                            </Menu>
-                        )}
-
-                        placement="bottom" arrow>
-                        <Button><MoreHorizOutlinedIcon /></Button>
-                    </Dropdown>
-                </div>
-
-            }
-
-        },
-
-    ]
 
 
     const handleSearch = () => {
