@@ -9,8 +9,21 @@ export default function SwitchIsReturn(
     }
 ) {
     return (
-        <div className='flex mt-5 items-center'>
-            <p className='text-base mt-3 mb-3 font-semibold mr-3'>
+        <div
+            className='flex mt-5 items-center'
+            style={
+                {
+                    borderBottom: '0.5px solid #ccc'
+                }
+            }>
+            <p
+                className='text-base mt-3 mb-3 font-semibold mr-3'
+                style={
+                    {
+                        color: "#9250fa"
+                    }
+                }
+            >
                 Hoàn trả:
             </p>
             <Switch

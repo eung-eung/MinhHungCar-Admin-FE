@@ -97,7 +97,9 @@ export default function ExpandRowRecievingCar(
     return (
 
         <>
-            <h2 className='text-base mt-3 mb-3 font-semibold '>
+            <h2
+                style={{ color: "#9250fa" }}
+                className='text-base mt-3 mb-3 font-semibold '>
                 Tình trạng xe khi khách hàng nhận
             </h2>
             <ConfigProvider
