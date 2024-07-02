@@ -168,6 +168,15 @@ export default function ContractTable(
     }
     return (
         <Table
+            onRow={(record, index) => {
+                console.log(record.id)
+                console.log(expandedRowKeys)
+                return {
+                    style: {
+                        background: record.id === expandedRowKeys[0] ? '#c1c5ff6b' : 'white',
+                    }
+                }
+            }}
             rowKey={(record) => record.id}
             expandable={{
                 expandedRowKeys: expandedRowKeys,
@@ -227,6 +236,7 @@ export default function ContractTable(
             }}
             columns={columns}
             dataSource={contractData}
+
         />
     )
 }
