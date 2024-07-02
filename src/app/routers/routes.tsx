@@ -7,7 +7,7 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-
+import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 export interface RouteType {
     icon: JSX.Element;
     title: string;
@@ -42,7 +42,7 @@ export const sidebarRoutes: RouteType[] = [
                 link: "/contracts",
             },
             {
-                icon: <CurrencyExchangeOutlinedIcon />,
+                icon: <PaymentsOutlinedIcon />,
                 title: "Thanh toán",
                 link: "/contracts/payments",
             },
