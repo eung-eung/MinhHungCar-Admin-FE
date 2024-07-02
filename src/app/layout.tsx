@@ -57,7 +57,8 @@ export default function RootLayout(
                 },
                 Table: {
                   headerColor: '#87888C',
-                  rowExpandedBg: "#fff"
+                  rowExpandedBg: "#fff",
+                  rowHoverBg: ''
                 },
                 Menu: {
                   itemSelectedBg: "#d4d3ff",
