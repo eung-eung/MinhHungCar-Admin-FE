@@ -1,17 +1,45 @@
 import { IPayment } from '@/app/models/Payment.model'
 import { formatCurrency } from '@/app/utils/formatCurrency'
-import { Button, Table, TableProps, Tag } from 'antd'
-import React from 'react'
+import { Button, Modal, Table, TableProps, Tag } from 'antd'
+import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
-
+import RemoveIcon from '@mui/icons-material/Remove';
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
+import { sucessNotify } from '@/app/utils/toast'
 export default function PaymentTable(
     {
-        listPayment
+        listPayment,
+        getPaymentUrl,
+        setRefresh
     }: {
-        listPayment?: IPayment[]
+        listPayment?: IPayment[],
+        getPaymentUrl: (id: any) => void,
+        setRefresh: React.Dispatch<SetStateAction<boolean>>
     }
 ) {
     const { t } = useTranslation()
+    const axiosAuth = useAxiosAuth()
+    const handleRemovePayment = async (id: any) => {
+
+        const { confirm } = Modal
+        confirm({
+            title: 'Bạn có muốn xóa thanh toán này?',
+            onOk: async () => {
+                const response = await axiosAuth.put('/admin/customer_payment/cancel', {
+                    customer_payment_id: id,
+                })
+
+                if (response.status === 200) {
+                    sucessNotify('Đã xóa thành công!')
+                    setRefresh(prev => !prev)
+                }
+            },
+            onCancel: () => {
+
+            }
+        })
+
+    }
     const column: TableProps<IPayment>['columns'] = [
         {
             title: "Loại thanh toán",
@@ -45,10 +73,26 @@ export default function PaymentTable(
         {
             title: "",
             key: "id",
-            render: (_, record) => record.status === 'paid' ?
-                <Tag color='green'>Đã thanh toán</Tag>
-                : <Button>Thanh toán</Button>
+            render: (_, record) => {
+                return record.status === 'paid' ?
+                    <Tag color='green'>Đã thanh toán</Tag>
+                    : <div className='flex items-center justify-between'>
+                        <Tag
+                            className='cursor-pointer'
+                            color='purple-inverse'
+                            onClick={() => getPaymentUrl(record.payment_url)}>
+                            Thanh toán
+                        </Tag>
+                        <Tag
+                            onClick={() => handleRemovePayment(record.id)}
+                            className='cursor-pointer'
+                            color='red-inverse'><RemoveIcon />
+                        </Tag>
+                    </div>
+
+            }
         },
+
     ]
 
     const rowSelection = {
