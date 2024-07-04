@@ -85,7 +85,7 @@ export default function PaymentTable() {
             key: 'id',
             render: () =>
                 <Button >Thanh toán</Button>
-        },
+        }
     ]
     return (
         <Table
