@@ -14,16 +14,19 @@ import { errorNotify, sucessNotify } from '@/app/utils/toast'
 import ExpandRowCollateral from './ExpandRowCollateral'
 import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
+import CompletedContractDropdown from './CompletedContractDropdown'
 
 
 export default function ContractTable(
     {
         contractData,
         filter,
+        loading,
         setRefresh
     }: {
         contractData?: ICustomerContract[],
         filter: any,
+        loading: boolean,
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
 
@@ -85,14 +88,15 @@ export default function ContractTable(
                             approveCustomerContract={() =>
                                 approveCustomerContract(record.id)
                             }
-                            rejectCustomerContract={rejectCustomerContract}
+                            rejectCustomerContract={() => rejectCustomerContract(record.id)}
                         />
                     }
                     {
                         filter === 'completed' &&
                         <>
-                            <RemoveRedEyeOutlinedIcon />
-                            <ReceiptLongOutlinedIcon />
+                            <CompletedContractDropdown
+                                id={record.id}
+                            />
                         </>
                     }
                     {
@@ -158,8 +162,28 @@ export default function ContractTable(
 
     }
 
-    const rejectCustomerContract = () => {
+    const rejectCustomerContract = (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn từ chối hợp đồng này?",
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    const response = await axiosAuth.put("/admin/contract", {
+                        customer_contract_id: id,
+                        action: "reject"
+                    })
+                    if (response.status === 200) {
+                        sucessNotify("Đã từ chối hợp đồng thành công")
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+                    errorNotify("Đã có lỗi, vui lòng thử lại")
+                }
 
+
+            }
+        })
     }
     const getDataForExpand = async (id: any) => {
         const response = await axiosAuth.get(
@@ -188,6 +212,7 @@ export default function ContractTable(
     }
     return (
         <Table
+            loading={loading}
             onRow={(record, index) => {
                 return {
                     style: {
