@@ -8,7 +8,7 @@ import { IAccount } from '@/app/models/Account.model'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import PendingApprovalDropdown from './PendingApprovalCarDropdown'
-import Diaglog from '@/app/components/Modal'
+import Dialog from '@/app/components/Modal'
 import CarDialog from './CarDialog'
 import ActiveCarDropdown from './ActiveCarDropdown'
 import { formatCurrency } from '@/app/utils/formatCurrency'
@@ -126,7 +126,7 @@ export default function CarTable(
                 loading={loading}
                 dataSource={carData}
                 columns={columns} />
-            <Diaglog
+            <Dialog
                 width='50%'
                 loading={loadingDialog}
                 open={open}
@@ -136,7 +136,7 @@ export default function CarTable(
                 <CarDialog
                     detail={carDetail}
                 />
-            </Diaglog>
+            </Dialog>
         </>
 
     )

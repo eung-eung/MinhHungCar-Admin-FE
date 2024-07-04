@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import { useTranslation } from 'react-i18next';
 import AccountDialog from './AccountDialog';
-import Diaglog from '@/app/components/Modal';
+import Dialog from '@/app/components/Modal';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 type IUpdateAccountStatusRequest = {
@@ -170,7 +170,7 @@ export default function AccountTable(
                 loading={loading}
                 dataSource={accountData}
                 columns={columns} />
-            <Diaglog
+            <Dialog
                 width='45%'
                 loading={loadingDialog}
                 setOpen={setOpen}
@@ -180,7 +180,7 @@ export default function AccountTable(
                 <AccountDialog
                     detail={accountDetail}
                 />
-            </Diaglog>
+            </Dialog>
         </>
     )
 }
