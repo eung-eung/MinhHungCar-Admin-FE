@@ -126,7 +126,8 @@ export default function GarageConfigDialog(
                                 <p className='flex-1/2 w-1/5'>{t(`common:${key}`)}</p>
                                 <div className='flex flex-col'>
                                     <Input
-                                        type='text'
+                                        onKeyDown={(evt) => ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()}
+                                        type='number'
                                         value={(garageConfig as IGarage)[key as KeyIGarage]}
                                         onChange={(e) => handleOnChange(e, key)}
                                     />
