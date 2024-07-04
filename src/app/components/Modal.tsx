@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
 
-export default function Diaglog({ children, title, loading, open, setOpen, width }
+export default function Dialog({ children, title, loading, open, setOpen, width }
     : {
         children: React.ReactNode,
         title: any,
