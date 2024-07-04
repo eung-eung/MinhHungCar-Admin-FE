@@ -15,13 +15,14 @@ export default function Contracts() {
     const [refresh, setRefresh] = useState<boolean>(true)
     const [filter, setFilter] = useState<any>('ordered')
     const [contractData, setContractData] = useState<ICustomerContract[]>()
-
+    const [loading, setLoading] = useState<boolean>(true)
     const getListContractByStatus = async (status: any) => {
+        setLoading(true)
         const response = await axiosAuth.get(
             `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
         )
         setContractData(response.data.data.contracts)
-
+        setLoading(false)
     }
     useEffect(() => {
         getListContractByStatus(filter)
@@ -34,8 +35,10 @@ export default function Contracts() {
     }
 
     const handleChange = (e: string) => {
+        setLoading(true)
         setContractData([])
         setFilter(e)
+        setLoading(false)
     }
     return (
         <>
@@ -55,6 +58,7 @@ export default function Contracts() {
 
             />
             <ContractTable
+                loading={loading}
                 setRefresh={setRefresh}
                 filter={filter}
                 contractData={contractData}
