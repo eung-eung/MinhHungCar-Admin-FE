@@ -9,6 +9,13 @@
   --grayBackground: #efefef
 }
 
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 .box {
   margin: 0 15px;
 }
