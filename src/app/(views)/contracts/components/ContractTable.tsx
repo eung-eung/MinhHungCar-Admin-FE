@@ -10,7 +10,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import RentingContractDropdown from './RentingContractDropdown'
-import { sucessNotify } from '@/app/utils/toast'
+import { errorNotify, sucessNotify } from '@/app/utils/toast'
 import ExpandRowCollateral from './ExpandRowCollateral'
 import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
@@ -82,7 +82,9 @@ export default function ContractTable(
                         filter === 'ordered' &&
                         <OrderedContractDropdown
                             id={record.id}
-                            approveCustomerContract={() => approveCustomerContract(record.id)}
+                            approveCustomerContract={() =>
+                                approveCustomerContract(record.id)
+                            }
                             rejectCustomerContract={rejectCustomerContract}
                         />
                     }
@@ -116,8 +118,27 @@ export default function ContractTable(
 
     const approveCustomerContract = async (id: any) => {
         const { confirm } = Modal
+        const contractResponse = await axiosAuth.get("/admin/contract/" + id)
+        const contractDetail: ICustomerContract = contractResponse.data.data
+        console.log(contractDetail);
+
+        if (contractDetail.collateral_type === "cash"
+            && contractDetail.receiving_car_images.length < 1
+        ) {
+            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+            return
+        }
+        if (contractDetail.collateral_type === "motorbike"
+            &&
+            (
+                contractDetail.receiving_car_images.length < 1
+                || contractDetail.collateral_asset_images.length < 1
+            )) {
+            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+            return
+        }
         confirm({
-            title: 'Bạn có muốn xóa ảnh này?',
+            title: 'Bạn có muốn đưa vào đang thuê?',
             onOk: async () => {
                 const response = await axiosAuth.put('/admin/contract', {
                     customer_contract_id: id,
