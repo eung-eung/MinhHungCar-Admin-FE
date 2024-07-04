@@ -12,7 +12,9 @@ import { ICustomerContract } from '@/app/models/CustomerContract';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import QRPaymentDialog from './components/QRPaymentDialog';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { errorNotify } from '@/app/utils/toast';
+import { errorNotify, sucessNotify } from '@/app/utils/toast';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+
 export default function PaymentDetail({
     params: { contractIdSlug }
 }: {
@@ -35,9 +37,6 @@ export default function PaymentDetail({
     const getPaymentUrl = async (url: any) => {
         setOpenQr(true)
         setloadingQR(true)
-
-        console.log(url);
-
         setPaymentUrl(url)
         setloadingQR(false)
     }
@@ -47,6 +46,9 @@ export default function PaymentDetail({
             const resposne = await axiosAuth.put('/admin/contract/complete', {
                 customer_contract_id: parseInt(id)
             })
+            if (resposne.status === 200) {
+                sucessNotify("Cập nhật thành công!")
+            }
         } catch (error: any) {
             if (error.response.data.error_code === 10064) {
                 errorNotify("Vui lòng thanh toán hết các khoản")
@@ -140,20 +142,56 @@ export default function PaymentDetail({
                                     </span>
                             }
                         </div>
-                        <Button
-                            onClick={handleModal}
-                            type='default'
-                            style={{ width: "fit-content" }}
-                        >
-                            <AddCircleOutlineOutlinedIcon />
-                            <p>Thêm khoản thanh toán</p>
-                        </Button>
+                        {
+                            detail?.status === 'renting'
+                            &&
+                            <Button
+                                onClick={handleModal}
+                                type='default'
+                                style={{ width: "fit-content" }}
+                            >
+                                <AddCircleOutlineOutlinedIcon />
+                                <p>Thêm khoản thanh toán</p>
+                            </Button>
+                        }
+
                     </div>
                 </div>
                 <div className='w-1/2 text-end'>
-                    <button
-                        style={{ color: '#fff', padding: '7px 20px', outline: 'none', border: 'none' }}
-                        className="inline-flex 
+                    {
+                        detail?.status === 'completed'
+                        &&
+                        <button
+                            style={{
+                                color: '#fff',
+                                padding: '7px 20px',
+                                outline: 'none',
+                                border: 'none',
+                                cursor: 'auto'
+                            }}
+                            className="inline-flex 
+                    animate-shimmer 
+                    items-center 
+                    justify-center 
+                    rounded-md border 
+                    border-slate-800 bg-[linear-gradient(110deg,#33bf4e,45%,#60ff7e,55%,#33bf4e)]
+                     bg-[length:200%_100%] 
+                    font-medium 
+                     text-slate-400 
+                     transition-colors 
+                     focus:outline-none 
+                     focus:ring-offset-2 focus:ring-offset-slate-50"
+                        >
+                            Đã hoàn thành
+                            <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                        </button>
+                    }
+                    {
+                        detail?.status === 'renting'
+                        &&
+                        <button
+                            style={{ color: '#fff', padding: '7px 20px', outline: 'none', border: 'none' }}
+                            className="inline-flex 
                      
                     animate-shimmer 
                     items-center 
@@ -166,11 +204,13 @@ export default function PaymentDetail({
                      transition-colors 
                      focus:outline-none 
                      focus:ring-offset-2 focus:ring-offset-slate-50"
-                        onClick={() => handleCompletedContract(contractIdSlug)}
-                    >
-                        Hoàn thành hợp đồng
-                        <ArrowForwardIosIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                    </button>
+                            onClick={() => handleCompletedContract(contractIdSlug)}
+                        >
+                            Hoàn thành hợp đồng
+                            <ArrowForwardIosIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                        </button>
+                    }
+
                 </div>
             </div>
             <PaymentTable
