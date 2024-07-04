@@ -24,7 +24,7 @@ export default function TopFilterTable(
         setRefresh,
         searchValue
     }: {
-        handleChange: any,
+        handleChange?: any,
         handleSearch?: any,
         optionList: Option[],
         defaultValue: any,
