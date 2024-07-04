@@ -6,6 +6,7 @@ import { Input } from '@/app/(views)/login/components/Input';
 import { TextArea } from '@/app/(views)/login/components/TextArea';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { sucessNotify } from '@/app/utils/toast';
+import { IPayment } from '@/app/models/Payment.model';
 export default function AddPaymentDialog(
     {
         setOpen,
@@ -24,13 +25,13 @@ export default function AddPaymentDialog(
         setPaymentType(e)
     }
     const handleCreatePayment = async () => {
-        const response = await axiosAuth.post('/admin/customer_payment', {
-            customer_contract_id: parseInt(id),
+        const response = await axiosAuth.post('/admin/customer_payment/generate_qr', {
+            customer_payment_id: parseInt(id),
             payment_type: paymentType,
             amount: parseInt(amount),
-            note
+            note,
+            return_url: "http://localhost:3000/contracts/payments/" + id
         })
-
         if (response.status === 200) {
             sucessNotify("Thêm thành công")
             setRefresh(prev => !prev)
@@ -67,7 +68,9 @@ export default function AddPaymentDialog(
             <div className='flex  items-center justify-between mb-3'>
                 <p>Số tiền</p>
                 <Input
+                    type='number'
                     onChange={handleChangeAmount}
+                    onKeyDown={(evt) => ["e", "E", "+", "-"].includes(evt.key) && evt.preventDefault()}
                     value={amount}
                     style={{ width: 200 }}
                     placeholder='Nhập số tiền' />
