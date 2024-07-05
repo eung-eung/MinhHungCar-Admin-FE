@@ -28,21 +28,25 @@ export default function PaymentDetail({
     const [detail, setDetail] = useState<ICustomerContract>()
     const [loadingDetail, setLoadingDetail] = useState<boolean>(true)
     const [loadingQR, setloadingQR] = useState<boolean>(true)
+    const [loadingPayment, setLoadingPayment] = useState<boolean>(true)
     const [loadingAddPaymentDialog, setLoadingAddPaymentDialog] = useState<boolean>(true)
     const [paymentUrl, setPaymentUrl] = useState<any>()
     const [options, setOptions] = useState<any>()
 
 
     const getPaymentDetailByContractId = async (id: any) => {
+        setLoadingPayment(true)
         const response = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + id)
         setListPayment(response.data.data)
+        setLoadingPayment(false)
+
     }
 
     const getPaymentUrl = async (url: any) => {
         setOpenQr(true)
-        setloadingQR(true)
+        // setloadingQR(true)
         setPaymentUrl(url)
-        setloadingQR(false)
+        // setloadingQR(false)
     }
 
     const handleCompletedContract = async (id: any) => {
@@ -260,6 +264,7 @@ export default function PaymentDetail({
                 </div>
             </div>
             <PaymentTable
+                loading={loadingPayment}
                 getPaymentUrl={getPaymentUrl}
                 listPayment={listPayment}
                 setRefresh={setRefresh}
