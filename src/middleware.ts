@@ -15,11 +15,13 @@ export const config = {
         '/',
         '/contracts',
         '/contracts/payments',
+        '/contracts/payments/:path*',
         '/cars',
         '/cars/contract/:path*',
         '/chat',
         '/accounts',
         '/ratings',
-        '/payments'
+        '/payments',
+
     ]
 }
