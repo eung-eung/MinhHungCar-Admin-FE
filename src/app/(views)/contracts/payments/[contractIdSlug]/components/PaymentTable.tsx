@@ -10,11 +10,13 @@ export default function PaymentTable(
     {
         listPayment,
         getPaymentUrl,
-        setRefresh
+        setRefresh,
+        loading
     }: {
         listPayment?: IPayment[],
         getPaymentUrl: (id: any) => void,
-        setRefresh: React.Dispatch<SetStateAction<boolean>>
+        setRefresh: React.Dispatch<SetStateAction<boolean>>,
+        loading: boolean
     }
 ) {
     const { t } = useTranslation()
@@ -110,6 +112,7 @@ export default function PaymentTable(
     };
     return (
         <Table
+            loading={loading}
             rowKey={(record) => record.id}
             rowSelection={{
                 ...rowSelection,
