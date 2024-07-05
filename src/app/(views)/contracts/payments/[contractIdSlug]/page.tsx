@@ -137,7 +137,7 @@ export default function PaymentDetail({
                     <div className='flex flex-col'>
                         <div className='mt-5'>
                             <Tag
-                                style={{ width: 80, textAlign: 'center' }}
+                                style={{ width: 100, textAlign: 'center', fontSize: 14 }}
                                 color='cyan'
                             >
                                 Khách hàng
@@ -168,7 +168,7 @@ export default function PaymentDetail({
                         </div>
                         <div className='mt-5 mb-4'>
                             <Tag
-                                style={{ width: 80, textAlign: 'center', fontSize: 14 }}
+                                style={{ width: 100, textAlign: 'center', fontSize: 14 }}
                                 color='purple'
                             >
                                 Phí thuê xe

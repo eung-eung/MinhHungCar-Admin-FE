@@ -52,7 +52,11 @@ export default function Sidebar() {
     return (
         <div >
 
-            <aside id="sidebar-multi-level-sidebar" className="lineBorder fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <aside
+                style={{ borderInlineEnd: "1px solid rgba(5, 5, 5, 0.06)" }}
+                id="sidebar-multi-level-sidebar"
+                className="lineBorder fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+                aria-label="Sidebar">
                 <div className='title'>
                     <img
                         style={{ width: '70%' }}
