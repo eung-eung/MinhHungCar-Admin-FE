@@ -19,5 +19,6 @@ export interface ICustomerContract {
     created_at: Date
     updated_at: Date
     receiving_car_images: any[]
-    collateral_asset_images: any[]
+    collateral_asset_images: any[],
+    collateral_cash_amount: any
 }
