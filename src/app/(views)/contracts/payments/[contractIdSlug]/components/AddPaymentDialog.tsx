@@ -64,7 +64,7 @@ export default function AddPaymentDialog(
                 payment_type: paymentType,
                 amount: parseInt(amount),
                 note,
-                return_url: "http://localhost:3000/contracts/payments/" + id
+                return_url: `${process.env.WEB_HOST_PUBLIC}/${id}`
             })
             if (response.status === 200) {
                 sucessNotify("Thêm thành công")
