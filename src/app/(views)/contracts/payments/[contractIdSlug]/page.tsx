@@ -28,7 +28,11 @@ export default function PaymentDetail({
     const [detail, setDetail] = useState<ICustomerContract>()
     const [loadingDetail, setLoadingDetail] = useState<boolean>(true)
     const [loadingQR, setloadingQR] = useState<boolean>(true)
+    const [loadingAddPaymentDialog, setLoadingAddPaymentDialog] = useState<boolean>(true)
     const [paymentUrl, setPaymentUrl] = useState<any>()
+    const [options, setOptions] = useState<any>()
+
+
     const getPaymentDetailByContractId = async (id: any) => {
         const response = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + id)
         setListPayment(response.data.data)
@@ -48,6 +52,7 @@ export default function PaymentDetail({
             })
             if (resposne.status === 200) {
                 sucessNotify("Cập nhật thành công!")
+                setRefresh(prev => !prev)
             }
         } catch (error: any) {
             if (error.response.data.error_code === 10064) {
@@ -68,9 +73,50 @@ export default function PaymentDetail({
 
     useEffect(() => {
         getCustomerContractDetailById(contractIdSlug)
-    }, [contractIdSlug])
-    const handleModal = () => {
+    }, [contractIdSlug, refresh])
+
+    const handleModal = async (id: any) => {
         setOpen(true)
+        setLoadingAddPaymentDialog(true)
+        const resposne = await axiosAuth.get('/admin/contract/' + id)
+        const data: ICustomerContract = resposne.data.data
+        const isExistRemainingPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "remaining_pay")
+        const isExistReturnCollateralCashPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "return_collateral_cash")
+
+        if (data.collateral_type === 'cash') {
+            (isExistRemainingPayment && isExistReturnCollateralCashPayment) &&
+                setOptions([
+                    { label: 'Khác', value: 'other' },
+                ]);
+            (!isExistRemainingPayment && !isExistReturnCollateralCashPayment) &&
+                setOptions([
+                    { label: 'Khoản thanh toán còn lại', value: 'remaining_pay' },
+                    { label: 'Hoàn trả tiền thế chấp', value: 'return_collateral_cash' },
+                    { label: 'Khác', value: 'other' },
+                ]);
+            (!isExistRemainingPayment && isExistReturnCollateralCashPayment) &&
+                setOptions([
+                    { label: 'Khoản thanh toán còn lại', value: 'remaining_pay' },
+                    { label: 'Khác', value: 'other' },
+                ]);
+            (isExistRemainingPayment && !isExistReturnCollateralCashPayment) &&
+                setOptions([
+                    { label: 'Hoàn trả tiền thế chấp', value: 'return_collateral_cash' },
+                    { label: 'Khác', value: 'other' },
+                ]);
+        }
+        if (data.collateral_type === 'motorbike') {
+            isExistRemainingPayment &&
+                setOptions([
+                    { label: 'Khác', value: 'other' },
+                ]);
+            !isExistRemainingPayment &&
+                setOptions([
+                    { label: 'Khoản thanh toán còn lại', value: 'remaining_pay' },
+                    { label: 'Khác', value: 'other' }
+                ]);
+        }
+        setLoadingAddPaymentDialog(false)
     }
 
     return (
@@ -146,7 +192,7 @@ export default function PaymentDetail({
                             detail?.status === 'renting'
                             &&
                             <Button
-                                onClick={handleModal}
+                                onClick={() => handleModal(detail.id)}
                                 type='default'
                                 style={{ width: "fit-content" }}
                             >
@@ -219,13 +265,16 @@ export default function PaymentDetail({
                 setRefresh={setRefresh}
             />
             <Dialog
-                loading={false}
+                loading={loadingAddPaymentDialog}
                 open={open}
                 setOpen={setOpen}
                 title="Tạo khoản thanh toán mới cho chuyến đi"
                 width='50%'
             >
                 <AddPaymentDialog
+                    listPayment={listPayment}
+                    detail={detail}
+                    options={options}
                     setOpen={setOpen}
                     id={contractIdSlug}
                     setRefresh={setRefresh}
