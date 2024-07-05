@@ -77,17 +77,21 @@ export default function PaymentTable(
                 return record.status === 'paid' ?
                     <Tag color='green'>Đã thanh toán</Tag>
                     : <div className='flex items-center justify-between'>
-                        <Tag
+                        <Button
                             className='cursor-pointer'
-                            color='purple-inverse'
                             onClick={() => getPaymentUrl(record.payment_url)}>
                             Thanh toán
-                        </Tag>
-                        <Tag
+                        </Button>
+                        <Button
+                            style={{
+                                background: "#fff",
+                                border: '1px solid red',
+                                color: "red"
+                            }}
                             onClick={() => handleRemovePayment(record.id)}
                             className='cursor-pointer'
                             color='red-inverse'><RemoveIcon />
-                        </Tag>
+                        </Button>
                     </div>
 
             }
