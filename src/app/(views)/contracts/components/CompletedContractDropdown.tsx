@@ -2,6 +2,7 @@ import { Button, Dropdown, Menu } from 'antd'
 import React from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useRouter } from 'next/navigation';
+import nProgress from 'nprogress';
 export default function CompletedContractDropdown(
     {
         id
@@ -15,6 +16,7 @@ export default function CompletedContractDropdown(
     }
 
     const openPaymentByContractId = (id: any) => {
+        nProgress.start()
         router.push('/contracts/payments/' + id)
     }
     return (

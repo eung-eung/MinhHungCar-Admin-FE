@@ -1,11 +1,20 @@
 import { IPayment } from '@/app/models/Payment.model'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import { Button, Modal, Table, TableProps, Tag } from 'antd'
-import React, { SetStateAction } from 'react'
+import React, { SetStateAction, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import RemoveIcon from '@mui/icons-material/Remove';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { sucessNotify } from '@/app/utils/toast'
+import { FloatingNav } from '@/app/components/FloatingNavbar'
+import PlaylistRemoveRoundedIcon from '@mui/icons-material/PlaylistRemoveRounded';
+const navItems = [
+    {
+        name: "Bỏ chọn tất cả",
+        icon: <PlaylistRemoveRoundedIcon className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
+
+];
 export default function PaymentTable(
     {
         listPayment,
@@ -21,6 +30,8 @@ export default function PaymentTable(
 ) {
     const { t } = useTranslation()
     const axiosAuth = useAxiosAuth()
+    const [selectedKey, setSelectedRowKeys] = useState<React.Key[]>()
+    const [selectedRowsState, setSelectedRowsState] = useState<IPayment[]>()
     const handleRemovePayment = async (id: any) => {
 
         const { confirm } = Modal
@@ -103,22 +114,49 @@ export default function PaymentTable(
 
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: IPayment[]) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
+            setSelectedRowsState(selectedRows)
+
+            setSelectedRowKeys(selectedRowKeys)
+
         },
-        getCheckboxProps: (record: IPayment) => ({
-            disabled: record.payer === 'customer',
-            //   name: record.name,
-        }),
+        getCheckboxProps: (record: IPayment) => {
+            if (selectedRowsState && selectedRowsState.length > 0) {
+                const isSelectAdmin = selectedRowsState?.some(row => row.payer === 'admin')
+                if (isSelectAdmin) {
+                    return ({
+                        disabled: record.payer !== 'admin' || record.status === 'paid'
+                    })
+                } else {
+                    return ({
+                        disabled: record.status === 'paid' || record.payer === 'admin'
+
+                    })
+                }
+            } else {
+                return ({
+                    disabled: record.status === 'paid'
+                })
+            }
+        },
+        selectedRowKeys: selectedKey,
+        hideSelectAll: true
     };
     return (
-        <Table
-            loading={loading}
-            rowKey={(record) => record.id}
-            rowSelection={{
-                ...rowSelection,
-            }}
-            columns={column}
-            dataSource={listPayment}
-        />
+        <>
+            <FloatingNav
+                selectedKey={selectedKey}
+                navItems={navItems}
+                setSelectedRowKeys={setSelectedRowKeys}
+                setSelectedRowsState={setSelectedRowsState}
+            />
+            <Table
+                loading={loading}
+                rowKey={(record) => record.id}
+                rowSelection={{ ...rowSelection }}
+                columns={column}
+                dataSource={listPayment}
+            />
+        </>
     )
 }

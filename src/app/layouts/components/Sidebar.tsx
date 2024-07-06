@@ -34,7 +34,7 @@ export default function Sidebar() {
     NProgress.configure({ showSpinner: false });
 
     useEffect(() => {
-        nProgress.done();
+        nProgress.done()
     }, [pathname])
     const handleChangeRoute = (e: any) => {
         if (e.key === '/logout') {
@@ -69,7 +69,6 @@ export default function Sidebar() {
                     defaultOpenKeys={['']}
                     selectedKeys={[pathname]}
                     mode="inline"
-                    // theme='dark'
                     inlineCollapsed={collapsed}
                     items={items}
                 />

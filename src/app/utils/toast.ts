@@ -17,7 +17,7 @@ export const errorNotify = (title: any) => toast.error(title, {
         padding: '5px',
         color: '#F56C6C',
         background: '#FFEFF0',
-        fontSize: 14
+        fontSize: 14,
     },
     iconTheme: {
         primary: 'red',

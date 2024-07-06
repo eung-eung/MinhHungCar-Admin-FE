@@ -124,7 +124,6 @@ export default function ContractTable(
         const { confirm } = Modal
         const contractResponse = await axiosAuth.get("/admin/contract/" + id)
         const contractDetail: ICustomerContract = contractResponse.data.data
-        console.log(contractDetail);
 
         if (contractDetail.collateral_type === "cash"
             && contractDetail.receiving_car_images.length < 1

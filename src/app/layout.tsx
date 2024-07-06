@@ -74,6 +74,9 @@ export default function RootLayout(
                 Spin: {
                   colorBgMask: '#fff',
                   colorWhite: '#6C69FF'
+                },
+                Switch: {
+                  colorBgContainer: "#ddd"
                 }
               },
 

@@ -5,7 +5,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { useEffect, useState } from 'react'
 import PaymentTable from './components/PaymentTable';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { Button, Skeleton, Spin, Tag } from 'antd';
+import { Button, ConfigProvider, Modal, Skeleton, Spin, Switch, Tag } from 'antd';
 import Dialog from '@/app/components/Modal';
 import AddPaymentDialog from './components/AddPaymentDialog';
 import { ICustomerContract } from '@/app/models/CustomerContract';
@@ -32,8 +32,8 @@ export default function PaymentDetail({
     const [loadingAddPaymentDialog, setLoadingAddPaymentDialog] = useState<boolean>(true)
     const [paymentUrl, setPaymentUrl] = useState<any>()
     const [options, setOptions] = useState<any>()
-
-
+    const [checked, setChecked] = useState<boolean>()
+    const [loadingUpdate, setLoadingUpdate] = useState<boolean>(true)
     const getPaymentDetailByContractId = async (id: any) => {
         setLoadingPayment(true)
         const response = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + id)
@@ -46,30 +46,64 @@ export default function PaymentDetail({
         setOpenQr(true)
         // setloadingQR(true)
         setPaymentUrl(url)
-        // setloadingQR(false)
+        setloadingQR(false)
     }
 
     const handleCompletedContract = async (id: any) => {
-        try {
-            const resposne = await axiosAuth.put('/admin/contract/complete', {
-                customer_contract_id: parseInt(id)
-            })
-            if (resposne.status === 200) {
-                sucessNotify("Cập nhật thành công!")
-                setRefresh(prev => !prev)
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn hoàn thành hợp đồng này?",
+            onOk: async () => {
+                if (!checked && detail?.collateral_type === 'motorbike') {
+                    errorNotify("Vui lòng hoàn trả thế chấp")
+                    return
+                }
+                if (detail?.collateral_type === 'cash') {
+                    const list = listPayment?.filter(payment =>
+                        (payment.payment_type === "remaining_pay" && payment.status === 'paid')
+                        || (payment.payment_type === "return_collateral_cash" && payment.status === 'paid')
+                    )
+                    if (list && list?.length < 2) {
+                        console.log('list: ', list);
+                        errorNotify("Khoản thanh toán còn lại hoặc tiền thế chấp chưa được xử lí")
+                        return
+                    }
+                } else if (detail?.collateral_type === 'motorbike') {
+                    const list = listPayment?.filter(payment =>
+                        (payment.payment_type === "remaining_pay" && payment.status === 'paid')
+                    )
+                    if (list && list.length < 1 && !checked) {
+                        errorNotify("Khoản thanh toán còn lại hoặc xe thế chấp chưa được xử lí")
+                        return
+                    }
+                }
+                try {
+                    const resposne = await axiosAuth.put('/admin/contract/complete', {
+                        customer_contract_id: parseInt(id)
+                    })
+                    if (resposne.status === 200) {
+                        sucessNotify("Cập nhật thành công!")
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error: any) {
+                    if (error.response.data.error_code === 10064) {
+                        errorNotify("Vui lòng thanh toán hết các khoản")
+                    }
+                }
             }
-        } catch (error: any) {
-            if (error.response.data.error_code === 10064) {
-                errorNotify("Vui lòng thanh toán hết các khoản")
-            }
-        }
+        })
+
+
     }
 
     const getCustomerContractDetailById = async (id: any) => {
         setLoadingDetail(true)
+        setLoadingUpdate(true)
         const response = await axiosAuth.get('/admin/contract/' + id)
         setDetail(response.data.data)
         setLoadingDetail(false)
+        setChecked(response.data.data.is_return_collateral_asset)
+        setLoadingUpdate(false)
     }
     useEffect(() => {
         getPaymentDetailByContractId(contractIdSlug)
@@ -78,6 +112,35 @@ export default function PaymentDetail({
     useEffect(() => {
         getCustomerContractDetailById(contractIdSlug)
     }, [contractIdSlug, refresh])
+
+    const handleUpdateReturnCollateralAsset = async (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: 'Bạn có muốn thay đổi?',
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    setLoadingUpdate(true)
+                    const response = await axiosAuth.put('/admin/update_is_return_collateral_asset', {
+                        customer_contract_id: parseInt(id),
+                        new_status: !checked
+                    })
+                    if (response.status === 200) {
+                        setChecked(!checked)
+                    }
+                    setLoadingUpdate(false)
+                } catch (error) {
+                    setChecked(false)
+                    setLoadingUpdate(false)
+                }
+            },
+            onCancel: () => {
+
+            }
+        })
+
+
+    }
 
     const handleModal = async (id: any) => {
         setOpen(true)
@@ -193,6 +256,32 @@ export default function PaymentDetail({
                             }
                         </div>
                         {
+                            detail?.collateral_type === 'motorbike'
+                            &&
+                            <div>
+                                <Tag
+                                    style={{ textAlign: 'center', fontSize: 14, marginBottom: 20 }}
+                                    color='green'>
+                                    Hoàn trả thế chấp
+                                </Tag>
+                                <ConfigProvider
+                                    theme={{
+                                        token: {
+                                            colorPrimary: "#4cb863"
+                                        },
+                                    }}
+                                >
+                                    <Switch
+                                        disabled={detail.status === 'completed' ? true : false}
+                                        checked={checked}
+                                        onChange={() => handleUpdateReturnCollateralAsset(detail?.id)}
+                                        loading={loadingUpdate}
+                                    />
+
+                                </ConfigProvider>
+                            </div>
+                        }
+                        {
                             detail?.status === 'renting'
                             &&
                             <Button
@@ -206,8 +295,9 @@ export default function PaymentDetail({
                         }
 
                     </div>
+
                 </div>
-                <div className='w-1/2 text-end'>
+                <div className='w-1/2 text-end flex flex-col items-end'>
                     {
                         detail?.status === 'completed'
                         &&
@@ -257,10 +347,11 @@ export default function PaymentDetail({
                             onClick={() => handleCompletedContract(contractIdSlug)}
                         >
                             Hoàn thành hợp đồng
-                            <ArrowForwardIosIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                            <ArrowForwardIosIcon
+                                sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }}
+                            />
                         </button>
                     }
-
                 </div>
             </div>
             <PaymentTable
@@ -300,6 +391,6 @@ export default function PaymentDetail({
                     paymentUrl={paymentUrl}
                 />
             </Dialog>
-        </div>
+        </div >
     )
 }
