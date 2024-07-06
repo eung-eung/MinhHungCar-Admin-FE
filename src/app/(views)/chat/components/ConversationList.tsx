@@ -28,8 +28,9 @@ export default function ConversationList() {
 
     return (
         <div className={classes.container}>
-            {users.map(user =>
+            {users.map((user, index) =>
                 <ConversationItem
+                    key={index}
                     name={user.name}
                     image={user.image}
                 />
