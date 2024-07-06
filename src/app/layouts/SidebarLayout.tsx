@@ -12,7 +12,10 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <Sidebar />
             <Content>
                 <Header />
-                <div className='box'>
+                <div style={{
+                    margin: "0 15px",
+                    height: '88vh'
+                }}>
                     {children}
                 </div>
             </Content>
