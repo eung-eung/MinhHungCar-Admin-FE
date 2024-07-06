@@ -72,7 +72,7 @@ export default function PaymentDetail({
                     const list = listPayment?.filter(payment =>
                         (payment.payment_type === "remaining_pay" && payment.status === 'paid')
                     )
-                    if (list && list.length < 1 && !checked) {
+                    if ((list && list.length < 1) || !checked) {
                         errorNotify("Khoản thanh toán còn lại hoặc xe thế chấp chưa được xử lí")
                         return
                     }
