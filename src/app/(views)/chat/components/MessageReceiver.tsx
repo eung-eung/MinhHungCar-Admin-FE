@@ -1,14 +1,19 @@
 import React from 'react'
 
-export default function MessageReceiver() {
+export default function MessageReceiver({ content, image }: { content: any, image: any }) {
+    const handleBrokenImage = (e: any) => {
+        e.target.src = '/defaultUser.png'
+    }
     return (
-        <div className='flex items-center mt-5 mb-5'>
-            <img src='/avatarSample.jpg' style={{
-                width: 28,
-                height: 28,
+        <div className='flex items-center mt-5 mb-5 pl-3'>
+            <img src={image} style={{
+                width: 38,
+                height: 38,
                 objectFit: 'cover',
                 borderRadius: "50%",
-            }} />
+            }}
+                onError={handleBrokenImage}
+            />
             <p
                 style={{
                     maxWidth: '80%',
@@ -17,7 +22,7 @@ export default function MessageReceiver() {
                     padding: 7
                 }}
                 className='ml-4'>
-                asdasdasad     asdasdasad     asdasdasad     asdasdasad     asdasdasad     asdasdasad     asdasdasad
+                {content}
             </p>
         </div>
     )

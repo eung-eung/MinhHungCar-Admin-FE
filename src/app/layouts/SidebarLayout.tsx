@@ -13,8 +13,9 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
             <Content>
                 <Header />
                 <div style={{
-                    margin: "0 15px",
-                    height: '88vh'
+                    padding: "0 15px",
+                    // minHeight: '88vh',
+                    background: "#fbfcfd"
                 }}>
                     {children}
                 </div>

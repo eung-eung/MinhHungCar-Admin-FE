@@ -30,7 +30,7 @@ export default function RootLayout(
 
 
   return (
-    <html>
+    <html style={{ background: "#fbfcfd" }}>
       <body className={inter.className}>
 
         <AntdRegistry>
@@ -58,7 +58,8 @@ export default function RootLayout(
                 Table: {
                   headerColor: '#87888C',
                   rowExpandedBg: "#fff",
-                  rowHoverBg: ''
+                  rowHoverBg: '',
+                  headerBg: "#fff"
                 },
                 Menu: {
                   itemSelectedBg: "#d4d3ff",

@@ -3,6 +3,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import React, { useEffect, useState } from 'react'
 import ConversationItem from './ConversationItem'
 import classes from './index.module.css'
+import { usePathname } from 'next/navigation'
 
 const users = [
     {
@@ -23,16 +24,44 @@ const users = [
     }
 ]
 
-export default function ConversationList() {
+export default function ConversationList(
+    {
+        conversationList
+    }: {
+        conversationList?: IConversation[]
+    }
+) {
+    const path = usePathname()
+    const [activeId, setActiveId] = useState<any>()
+    useEffect(() => {
+        if (path) {
+            const numberRegExp = /^\/chat\/(\d+)$/
+            const match = path.match(numberRegExp)
 
+            if (match) {
+                setActiveId(parseInt(match[1], 10));
+
+            } else {
+                setActiveId(null)
+            }
+        }
+
+    }, [path])
 
     return (
         <div className={classes.container}>
-            {users.map((user, index) =>
+            {conversationList?.map((conversation, index) =>
                 <ConversationItem
+                    conversationId={conversation.id}
+                    activeId={activeId}
                     key={index}
-                    name={user.name}
-                    image={user.image}
+                    accountId={conversation.account_id}
+                    name={
+                        conversation.account.last_name
+                        + ' '
+                        + conversation.account.first_name
+                    }
+                    image={conversation.account.avatar_url}
                 />
             )}
 

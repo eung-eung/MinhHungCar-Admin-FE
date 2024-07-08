@@ -36,9 +36,11 @@
     display: flex;
     align-items: center;
     padding: 8px 24px;
+    height: 10%;
 }
 
 .chatZone {
-    height: 70vh;
+    height: calc(78%);
+    /* height: 85%; */
     overflow-y: auto;
 }

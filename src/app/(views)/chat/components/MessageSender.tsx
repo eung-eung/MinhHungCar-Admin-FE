@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default function MessageSender() {
+export default function MessageSender(
+    { content }: { content: any }
+) {
     return (
         <div className='flex items-center justify-end mt-5 mb-5'>
             <p
@@ -12,7 +14,7 @@ export default function MessageSender() {
                     color: "#fff"
                 }}
                 className='ml-4 mr-4'>
-                Xin chào bạn, có gì hotXin chào bạn, có gì hotXin chào bạn, có gì hotXin chào bạn, có gì hotXin chào bạn, có gì hot
+                {content}
             </p>
         </div>
     )
