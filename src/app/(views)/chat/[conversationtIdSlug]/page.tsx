@@ -20,12 +20,14 @@ export default function ChatZoneById({
             const messages = await axiosAuth.get(
                 `/admin/conversation/messages?conversation_id=${conversationtIdSlug}&offset=0&limit=10000`
             )
-            setMessages(messages.data.data)
-            const userProfile = messages.data.data.find((item: any) => item.sender != 1)
-            console.log(userProfile);
-
-            // const response = await axiosAuth.get('/admin/account/' + accountIdSlug)
-            setProfile(userProfile.account)
+            const sortMessages = messages.data.data.sort((a: any, b: any) => a.id - b.id);
+            setMessages(sortMessages)
+            const user = await axiosAuth.get(
+                'admin/conversations'
+            )
+            const accountId = user.data.data.find((user: any) => user.id == conversationtIdSlug)
+            const userProfile = await axiosAuth.get('/admin/account/' + accountId.account_id)
+            setProfile(userProfile.data.data)
         } catch (error) {
             console.log(error);
 
@@ -51,6 +53,7 @@ export default function ChatZoneById({
                     user={profile}
                     messages={messages}
                     conversationtId={conversationtIdSlug}
+                    setMessages={setMessages}
                 />
             }
         </div>
