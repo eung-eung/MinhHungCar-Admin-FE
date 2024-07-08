@@ -5,7 +5,7 @@ import MessageSender from './MessageSender'
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { IAccount } from '@/app/models/Account.model';
 import { useSession } from 'next-auth/react';
-import useWebSocket from 'react-use-websocket'
+
 const MessageTypes = {
     USER_JOIN: "USER_JOIN",
     ADMIN_JOIN: "ADMIN_JOIN",
@@ -51,6 +51,8 @@ export default function ChatZone(
         };
         ws.onmessage = (e) => {
             console.log('ws on message');
+            console.log(JSON.parse(e.data));
+
             const data = JSON.parse(e.data)
             if (data.sender === 'system') {
                 return

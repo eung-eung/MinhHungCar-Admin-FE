@@ -5,6 +5,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { IAccount } from '@/app/models/Account.model'
 import { Spin } from 'antd'
 import classes from '../components/index.module.css'
+import { IConversation } from '@/app/models/Conversation.model'
 export default function ChatZoneById({
     params: { conversationtIdSlug }
 }: {
@@ -25,7 +26,7 @@ export default function ChatZoneById({
             const user = await axiosAuth.get(
                 'admin/conversations'
             )
-            const accountId = user.data.data.find((user: any) => user.id == conversationtIdSlug)
+            const accountId = user.data.data.find((user: IConversation) => user.id == conversationtIdSlug)
             const userProfile = await axiosAuth.get('/admin/account/' + accountId.account_id)
             setProfile(userProfile.data.data)
         } catch (error) {
