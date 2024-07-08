@@ -8,7 +8,7 @@ export default function MessageSender(
             <p
                 style={{
                     maxWidth: '80%',
-                    background: "#0080ff",
+                    background: "conic-gradient(at right center, rgb(199, 210, 254), rgb(71, 85, 105), rgb(199, 210, 254))",
                     borderRadius: '18px',
                     padding: 7,
                     color: "#fff"

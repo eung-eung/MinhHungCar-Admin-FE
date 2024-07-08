@@ -33,6 +33,7 @@ export default function ChatZone(
     const [conversationId, setConversationId] = useState<string>(conversationtId)
     const { data: session } = useSession()
     const ws = useRef<WebSocket>(new WebSocket('wss://minhhungcar.xyz/chat')).current;
+    const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const chatBox = useRef<HTMLParagraphElement>(null)
     const soundAudioRef = useRef<HTMLAudioElement>(null)
     useEffect(() => {
@@ -58,10 +59,13 @@ export default function ChatZone(
                 return
             }
             if (data.sender === 'customer') {
-                soundAudioRef.current?.play()
+                soundAudioRef.current?.play().then(() => {
+                    setIsPlaying(true)
+                }).catch((error) => {
+                    console.error('Audio playback failed:', error);
+                });
             }
             setMessages((prev: any) => ([
-
                 ...prev,
                 {
                     content: data.content,
