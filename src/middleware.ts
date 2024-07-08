@@ -19,6 +19,7 @@ export const config = {
         '/cars',
         '/cars/contract/:path*',
         '/chat',
+        '/chat/:path*',
         '/accounts',
         '/ratings',
         '/payments',
