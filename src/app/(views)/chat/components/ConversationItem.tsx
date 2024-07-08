@@ -23,11 +23,12 @@ export default function ConversationItem({
     }
     return (
         <div
-            style={{
-                background: conversationId === activeId ? "rgb(239, 239, 239)" : ""
-            }}
             onClick={() => handleNavigateByClick(conversationId)}
-            className={classes.conversationItem}>
+            className={(conversationId === activeId ? `
+             animate-shimmer
+            border-slate-800 bg-[linear-gradient(110deg,#dcdcdc,45%,#f7f7f7,55%,#dcdcdc)]
+            bg-[length:200%_100%]  
+            `: '') + classes.conversationItem}>
             <div>
                 <img
                     onError={handleBrokenImage}
