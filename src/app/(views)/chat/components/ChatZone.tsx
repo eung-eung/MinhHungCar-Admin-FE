@@ -5,7 +5,7 @@ import MessageSender from './MessageSender'
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { IAccount } from '@/app/models/Account.model';
 import { useSession } from 'next-auth/react';
-
+import useWebSocket from 'react-use-websocket'
 const MessageTypes = {
     USER_JOIN: "USER_JOIN",
     ADMIN_JOIN: "ADMIN_JOIN",
@@ -18,78 +18,91 @@ export default function ChatZone(
     {
         user,
         messages,
-        conversationtId
+        conversationtId,
+        setMessages
     }: {
         user?: IAccount,
         messages: any,
-        conversationtId: any
+        conversationtId: string,
+        setMessages: any
     }) {
     const handleBrokenImage = (e: any) => {
         e.target.src = '/defaultUser.png'
     }
-
     const scrollBar = useRef<HTMLDivElement>(null)
-    const [conversationId, setConversationId] = useState<any>()
+    const [conversationId, setConversationId] = useState<string>(conversationtId)
     const { data: session } = useSession()
-    const socketRef = useRef<WebSocket | null>(null);
+    const ws = useRef<WebSocket>(new WebSocket('wss://minhhungcar.xyz/chat')).current;
+    const chatBox = useRef<HTMLParagraphElement>(null)
+    const soundAudioRef = useRef<HTMLAudioElement>(null)
     useEffect(() => {
-        if (!socketRef.current) {
-            const webSocket = new WebSocket('wss://minhhungcar.xyz/chat')
-            console.log(webSocket.CONNECTING);
-            webSocket.addEventListener('open', event => {
-                console.log(event);
-                webSocket.send(JSON.stringify({
-                    msg_type: MessageTypes.ADMIN_JOIN,
-                    access_token: `Bearer ${session?.access_token}`,
-                    conversation_id: conversationtId,
-                }))
-            })
-            webSocket.addEventListener('message', e => {
-                console.log('message: ', e);
-
-            })
-            //     webSocket.onopen = (data) => {
-            //         console.log('WebSocket connection opened', data);
-            //         webSocket.send(JSON.stringify({
-            //             msg_type: MessageTypes.ADMIN_JOIN,
-            //             access_token: `Bearer ${session?.access_token}`,
-            //             conversation_id: conversationtId,
-            //         }))
-
-            //     };
-            //     socketRef.current = webSocket;
-            // }
-
-            // socketRef.current.onmessage = (e) => {
-            //     // const data = JSON.parse(e.data);
-            //     console.log('Received message:', e);
-            //     // handleResponse(data);
-
+        ws.onopen = () => {
+            console.log('open ws');
+            ws.send(JSON.stringify({
+                msg_type: MessageTypes.ADMIN_JOIN,
+                access_token: `Bearer ${session?.access_token}`,
+                conversation_id: 82
+            }));
         };
 
-        return () => socketRef.current?.close();
+        ws.onerror = (e: any) => {
+            console.log('error:', e.message);
+
+        };
+        ws.onmessage = (e) => {
+            console.log('ws on message');
+            const data = JSON.parse(e.data)
+            if (data.sender === 'system') {
+                return
+            }
+            if (data.sender === 'customer') {
+                soundAudioRef.current?.play()
+            }
+            setMessages((prev: any) => ([
+
+                ...prev,
+                {
+                    content: data.content,
+                    sender: data.sender === "admin" ? 1 : data.sender
+                },
+            ]))
+
+        };
     }, []);
 
     const handleSubmit = () => {
-        if (socketRef.current) {
-            console.log('click');
-            socketRef.current.send(JSON.stringify({
+        if (ws && chatBox.current) {
+            if (chatBox.current.innerText === '') {
+                return
+            }
+            ws.send(JSON.stringify({
                 msg_type: MessageTypes.TEXTING,
-                content: "sadasdasd",
-                conversation_id: conversationId,
+                content: chatBox.current.innerText,
+                conversation_id: parseInt(conversationId),
                 access_token: `Bearer ${session?.access_token}`,
             }));
+            chatBox.current.innerText = ''
         }
     }
+    const handleKeyDown = (event: any) => {
 
+        if (event.key === 'Enter' && chatBox.current?.innerText.trim() !== '') {
+            event.preventDefault()
+            handleSubmit()
+        }
+        if (event.key === 'Enter' && chatBox.current?.innerText.trim() === '') {
+            event.preventDefault()
+        }
+    }
     useEffect(() => {
         if (scrollBar.current) {
             scrollBar.current.scrollTo(0, scrollBar.current.scrollHeight);
         }
-    }, []);
+    }, [messages]);
     return (
         <>
             <div className={classes.headerChat}>
+                <audio ref={soundAudioRef} id="mySound" src="/soundNoti.mp3"></audio>
                 <img
                     onError={handleBrokenImage}
                     src={user?.avatar_url}
@@ -103,15 +116,15 @@ export default function ChatZone(
             <div
                 ref={scrollBar}
                 className={classes.chatZone}>
-                {messages.map((message: any) => {
+                {messages.map((message: any, index: number) => {
                     if (message.sender === 1)
                         return <MessageSender
-                            key={message.id}
+                            key={index}
                             content={message.content} />
                     if (message.sender !== 1)
                         return <MessageReceiver
-                            image={message.account.avatar_url}
-                            key={message.id}
+                            image={user?.avatar_url}
+                            key={index}
                             content={message.content} />
                 })}
 
@@ -135,6 +148,8 @@ export default function ChatZone(
                     }}
                 >
                     <p
+                        onKeyDown={handleKeyDown}
+                        ref={chatBox}
                         style={{
                             outline: 'none',
                             width: '90%',
