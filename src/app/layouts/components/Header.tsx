@@ -9,7 +9,8 @@ export default function Header() {
         <div
             style={{
                 background: "#fbfcfd",
-                height: '8vh'
+                height: '8vh',
+                position: 'relative'
             }}
             className={classes.container + ' flex justify-end items-center pb-4'}>
             <DigitalClock />

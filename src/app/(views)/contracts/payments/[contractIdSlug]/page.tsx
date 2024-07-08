@@ -64,7 +64,6 @@ export default function PaymentDetail({
                         || (payment.payment_type === "return_collateral_cash" && payment.status === 'paid')
                     )
                     if (list && list?.length < 2) {
-                        console.log('list: ', list);
                         errorNotify("Khoản thanh toán còn lại hoặc tiền thế chấp chưa được xử lí")
                         return
                     }

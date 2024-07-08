@@ -17,7 +17,14 @@ export default function DigitalClock() {
     }, []);
     return (
 
-        <div style={{ position: 'absolute', left: '50%', transform: "translateX(-50%)", marginTop: 5 }}>
+        <div style={
+            {
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: "translate(-50%,-50%)",
+
+            }}>
             <div
                 className="relative inline-flex h-12 overflow-hidden rounded-full p-[2px] focus:outline-none">
                 <span className="absolute inset-[-1000%]  bg-[conic-gradient(from_90deg_at_60%_40%,#A5B4FC_0%,#C084FC_100%)]" />
