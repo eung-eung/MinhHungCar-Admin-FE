@@ -59,11 +59,7 @@ export default function ChatZone(
                 return
             }
             if (data.sender === 'customer') {
-                soundAudioRef.current?.play().then(() => {
-                    setIsPlaying(true)
-                }).catch((error) => {
-                    console.error('Audio playback failed:', error);
-                });
+                soundAudioRef.current?.play()
             }
             setMessages((prev: any) => ([
                 ...prev,
