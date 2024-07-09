@@ -6,6 +6,8 @@ import { IAccount } from '@/app/models/Account.model'
 import { Spin } from 'antd'
 import classes from '../components/index.module.css'
 import { IConversation } from '@/app/models/Conversation.model'
+import DefaultChatZone from '../components/DefaultChatZone'
+import { useRouter } from 'next/navigation'
 export default function ChatZoneById({
     params: { conversationtIdSlug }
 }: {
@@ -15,6 +17,8 @@ export default function ChatZoneById({
     const [loading, setLoading] = useState<boolean>(true)
     const [profile, setProfile] = useState<IAccount>()
     const [messages, setMessages] = useState<any>()
+    const [isError, setIsError] = useState<boolean>(true)
+    const router = useRouter()
     const getUserProfile = async () => {
         setLoading(true)
         try {
@@ -29,18 +33,24 @@ export default function ChatZoneById({
             const accountId = user.data.data.find((user: IConversation) => user.id == conversationtIdSlug)
             const userProfile = await axiosAuth.get('/admin/account/' + accountId.account_id)
             setProfile(userProfile.data.data)
+
+            setIsError(false)
         } catch (error) {
             console.log(error);
+            setIsError(true)
 
         }
         setLoading(false)
     }
 
     useEffect(() => {
+        console.log('error: ', isError);
+
         getUserProfile()
     }, [conversationtIdSlug])
     return (
         <div className={classes.right}>
+
             {loading ?
                 <div style={{
                     position: 'absolute',
@@ -50,13 +60,19 @@ export default function ChatZoneById({
                 }}>
                     <Spin size='large' />
                 </div> :
-                <ChatZone
-                    user={profile}
-                    messages={messages}
-                    conversationtId={conversationtIdSlug}
-                    setMessages={setMessages}
-                />
+                (isError
+                    ? <DefaultChatZone />
+                    :
+                    <ChatZone
+                        user={profile}
+                        messages={messages}
+                        conversationtId={conversationtIdSlug}
+                        setMessages={setMessages}
+                    />
+
+                )
             }
+
         </div>
     )
 }

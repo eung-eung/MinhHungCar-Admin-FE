@@ -26,7 +26,7 @@ export default function ConversationItem({
             onClick={() => handleNavigateByClick(conversationId)}
             className={(conversationId === activeId ? `
              animate-shimmer
-            border-slate-800 bg-[linear-gradient(110deg,#b688ff40,45%,#b688ff40,55%,#b688ff40)]
+            border-slate-800 bg-[linear-gradient(110deg,#b688ff40,45%,#eebfff40,55%,#b688ff40)]
             bg-[length:200%_100%]  
             `: '') + classes.conversationItem}>
             <div>

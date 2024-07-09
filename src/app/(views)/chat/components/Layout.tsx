@@ -9,20 +9,26 @@ export default function ChatLayout({ children }: Readonly<{ children: React.Reac
     const axiosAuth = useAxiosAuth()
     const [conversationList, setConversationList] = useState<IConversation[]>()
     const getConversationList = async () => {
-        const response = await axiosAuth.get('/admin/conversations?offset=0&limit=100')
-        const conversationList = response.data.data
+        try {
+            const response = await axiosAuth.get('/admin/conversations?offset=0&limit=100')
+            const conversationList = response.data.data
 
-        const renderList = await Promise.all(conversationList.map(
-            async (c: IConversation) => {
-                const response = await axiosAuth.get('/admin/account/' + c.account_id)
-                return {
-                    ...c,
-                    account: response.data.data
+            const renderList = await Promise.all(conversationList.map(
+                async (c: IConversation) => {
+                    const response = await axiosAuth.get('/admin/account/' + c.account_id)
+                    return {
+                        ...c,
+                        account: response.data.data
+                    }
                 }
-            }
-        ))
-        console.log('list: ', renderList);
-        setConversationList(renderList)
+            ))
+            console.log('list: ', renderList);
+            setConversationList(renderList)
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
     useEffect(() => {
         getConversationList()
