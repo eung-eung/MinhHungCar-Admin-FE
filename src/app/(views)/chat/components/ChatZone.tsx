@@ -42,7 +42,7 @@ export default function ChatZone(
             ws.send(JSON.stringify({
                 msg_type: MessageTypes.ADMIN_JOIN,
                 access_token: `Bearer ${session?.access_token}`,
-                conversation_id: 82
+                conversation_id: parseInt(conversationId)
             }));
         };
 
