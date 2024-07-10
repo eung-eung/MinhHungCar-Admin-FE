@@ -23,12 +23,14 @@
     height: 88vh;
     overflow-y: scroll;
     padding-right: 10px;
+    border-right: 1px solid rgb(219, 219, 219);
 
 }
 
 .right {
     width: 70%;
     position: relative;
+    border-top: 1px solid rgb(219, 219, 219);
 }
 
 .headerChat {
@@ -43,4 +45,5 @@
     height: calc(78%);
     /* height: 85%; */
     overflow-y: auto;
+    padding-left: 20px;
 }
