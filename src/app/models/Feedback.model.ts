@@ -1,12 +1,14 @@
+import { IAccount } from "./Account.model"
 import { ICar } from "./Car.model"
 
 export interface IFeedback {
     id: number
     customer_id: number
+    customer: IAccount
     car_id: number
     car: ICar
-    start_date: Date
-    end_date: Date
+    start_date: string
+    end_date: string
     status: string
     reason: string
     rent_price: number
