@@ -1,5 +1,7 @@
+'use client'
 import React from 'react';
 import { Button, Modal } from 'antd';
+import { useRouter } from 'next/navigation';
 
 export default function Dialog({ children, title, loading, open, setOpen, width }
     : {
@@ -10,6 +12,8 @@ export default function Dialog({ children, title, loading, open, setOpen, width 
         setOpen: any,
         width: any
     }) {
+    const router = useRouter()
+    const handleClose = () => router.back()
     return (
         <>
             <Modal
@@ -18,7 +22,7 @@ export default function Dialog({ children, title, loading, open, setOpen, width 
                 footer={null}
                 loading={loading}
                 open={open}
-                onCancel={() => setOpen(false)}
+                onCancel={handleClose}
             >
                 {children}
             </Modal>

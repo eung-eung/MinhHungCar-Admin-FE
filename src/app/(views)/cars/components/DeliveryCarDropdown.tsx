@@ -1,7 +1,9 @@
+'use client'
 import { Button, Dropdown, Menu, Modal } from 'antd'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { ICar } from '@/app/models/Car.model';
+import { useRouter } from 'next/navigation';
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -9,18 +11,16 @@ type IApproveRequest = {
 export default function DeliveryCarDropdown(
     {
         id,
-        handleOpenDetailDialog,
         setRefresh
     }: {
         id: any,
-        handleOpenDetailDialog: any,
         carDetail?: ICar,
         loadingDialog: boolean,
         setOpen: React.Dispatch<React.SetStateAction<boolean>>,
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()
-
+    const router = useRouter()
 
     const handleApproveCar = async (id: any) => {
         showConfirmModal("Bạn có muốn đưa xe vào hoạt động?")
@@ -77,7 +77,7 @@ export default function DeliveryCarDropdown(
                                 key: '1',
                                 label: 'Chi tiết',
                                 onClick: () =>
-                                    handleOpenDetailDialog(id)
+                                    router.push('/cars/' + id)
                             },
                             {
                                 key: '2',

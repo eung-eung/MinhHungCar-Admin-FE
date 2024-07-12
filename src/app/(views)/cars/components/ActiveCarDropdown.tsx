@@ -1,13 +1,12 @@
 import { Button, Dropdown, Menu } from 'antd'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import { useRouter } from 'next/navigation';
 
 export default function ActiveCarDropdown(
     {
         id,
-        handleOpenDetailDialog,
     }: {
         id: any,
-        handleOpenDetailDialog: (id: any) => void,
     }
 ) {
     const showCarContract = async (id: any) => {
@@ -16,6 +15,7 @@ export default function ActiveCarDropdown(
     const cancelCarContract = (id: any) => {
 
     }
+    const router = useRouter()
     return (
         <Dropdown
             dropdownRender={() => (
@@ -25,7 +25,7 @@ export default function ActiveCarDropdown(
                             key: '1',
                             label: 'Chi tiết',
                             onClick: () =>
-                                handleOpenDetailDialog(id)
+                                router.push('/cars/' + id)
                         },
                         {
                             key: '2',

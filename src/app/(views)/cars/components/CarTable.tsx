@@ -1,3 +1,4 @@
+'use client'
 import { ICar } from '@/app/models/Car.model'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib'
@@ -13,6 +14,7 @@ import CarDialog from './CarDialog'
 import ActiveCarDropdown from './ActiveCarDropdown'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import DeliveryCarDropdown from './DeliveryCarDropdown'
+import { useRouter } from 'next/navigation'
 export default function CarTable(
     {
         carData,
@@ -29,7 +31,7 @@ export default function CarTable(
     const [open, setOpen] = useState<boolean>(false);
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
     const [carDetail, setCarDetail] = useState<ICar>()
-
+    const router = useRouter()
     const handleOpenDetailDialog = async (id: any) => {
         setOpen(true);
         setLoadingDialog(true);
@@ -81,7 +83,6 @@ export default function CarTable(
                         filter === 'pending_approval' &&
                         <PendingApprovalDropdown
                             id={record.id}
-                            handleOpenDetailDialog={handleOpenDetailDialog}
                             carDetail={carDetail}
                             loadingDialog={loadingDialog}
                             setOpen={setOpen}
@@ -92,21 +93,19 @@ export default function CarTable(
                         filter === 'approved' &&
                         <RemoveRedEyeOutlinedIcon
                             className='cursor-pointer'
-                            onClick={() => handleOpenDetailDialog(record.id)}
+                            onClick={() => router.push('/cars/' + record.id)}
                         />
                     }
                     {
                         filter === 'active' &&
                         <ActiveCarDropdown
                             id={record.id}
-                            handleOpenDetailDialog={handleOpenDetailDialog}
                         />
                     }
                     {
                         filter === 'waiting_car_delivery' &&
                         <DeliveryCarDropdown
                             id={record.id}
-                            handleOpenDetailDialog={handleOpenDetailDialog}
                             carDetail={carDetail}
                             loadingDialog={loadingDialog}
                             setOpen={setOpen}

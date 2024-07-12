@@ -12,11 +12,9 @@ type IApproveRequest = {
 export default function PendingApprovalDropdown(
     {
         id,
-        handleOpenDetailDialog,
         setRefresh
     }: {
         id: any,
-        handleOpenDetailDialog: any,
         carDetail?: ICar,
         loadingDialog: boolean,
         setOpen: React.Dispatch<React.SetStateAction<boolean>>,
