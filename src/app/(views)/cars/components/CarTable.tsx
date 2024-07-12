@@ -126,7 +126,7 @@ export default function CarTable(
                 loading={loading}
                 dataSource={carData}
                 columns={columns} />
-            <Dialog
+            {/* <Dialog
                 width='50%'
                 loading={loadingDialog}
                 open={open}
@@ -136,7 +136,7 @@ export default function CarTable(
                 <CarDialog
                     detail={carDetail}
                 />
-            </Dialog>
+            </Dialog> */}
         </>
 
     )
