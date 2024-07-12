@@ -16,7 +16,7 @@ export default function RatingTable() {
     const [feedbackList, setFeedbackList] = useState<IFeedback[]>()
     const axiosAuth = useAxiosAuth()
     const [refresh, setRefresh] = useState<boolean>(true)
-    const [open, setOpen] = useState<boolean>(true)
+    const [open, setOpen] = useState<boolean>(false)
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true)
     const [carDetail, setCarDetail] = useState<ICar>()
     const handleUpdateFeedbackStatus = async (id: any, status: any) => {
