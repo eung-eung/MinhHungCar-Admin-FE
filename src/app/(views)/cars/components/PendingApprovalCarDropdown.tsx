@@ -3,6 +3,8 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { ICar } from '@/app/models/Car.model';
 import { errorNotify } from '@/app/utils/toast';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -21,7 +23,7 @@ export default function PendingApprovalDropdown(
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()
-
+    const router = useRouter()
 
     const handleApproveCar = async (id: any) => {
         showConfirmModal("Bạn có muốn duyệt xe này?")
@@ -86,7 +88,7 @@ export default function PendingApprovalDropdown(
                                 key: '1',
                                 label: 'Chi tiết',
                                 onClick: () =>
-                                    handleOpenDetailDialog(id)
+                                    router.push('/cars/' + id)
                             },
                             {
                                 key: '2',
