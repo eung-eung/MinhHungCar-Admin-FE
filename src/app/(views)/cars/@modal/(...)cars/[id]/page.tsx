@@ -8,6 +8,7 @@ import { ICar } from '@/app/models/Car.model'
 import { Transition } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
 import Modal from '../../../components/Modal'
+import CarDialog from '../../../components/CarDialog'
 
 
 export default function InterceptingCarDetail({
@@ -27,20 +28,25 @@ export default function InterceptingCarDetail({
         const detail: ICar = carDetail.data.data
         setCarDetail(detail)
         setLoadingDialog(false)
-
+        console.log('detail: ', detail);
     };
-    const router = useRouter()
-    const handleClose = () => router.back()
-
     useEffect(() => {
         console.log('zosss');
         handleOpenDetailDialog(id)
     }, [id])
     return (
         <>
-            <Modal>
-                <p>é</p>
-            </Modal>
+            <Dialog
+                width='50%'
+                loading={loadingDialog}
+                open={true}
+                setOpen={setOpen}
+                title='Thông tin xe'
+            >
+                <CarDialog
+                    detail={carDetail}
+                />
+            </Dialog>
         </>
     )
 }
