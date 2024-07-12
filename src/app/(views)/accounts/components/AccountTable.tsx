@@ -176,6 +176,7 @@ export default function AccountTable(
                 setOpen={setOpen}
                 title="Chi tiết tài khoản"
                 open={open}
+                isIntercept={false}
             >
                 <AccountDialog
                     detail={accountDetail}

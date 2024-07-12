@@ -365,6 +365,7 @@ export default function PaymentDetail({
                 setOpen={setOpen}
                 title="Tạo khoản thanh toán mới cho chuyến đi"
                 width='50%'
+                isIntercept={false}
             >
                 <AddPaymentDialog
                     listPayment={listPayment}
@@ -382,6 +383,7 @@ export default function PaymentDetail({
                 setOpen={setOpenQr}
                 title="Thanh toán chuyến đi"
                 width='50%'
+                isIntercept={false}
             >
                 <QRPaymentDialog
                     setOpen={setOpenQr}

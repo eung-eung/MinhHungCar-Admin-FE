@@ -42,6 +42,7 @@ export default function InterceptingCarDetail({
                 open={true}
                 setOpen={setOpen}
                 title='Thông tin xe'
+                isIntercept={true}
             >
                 <CarDialog
                     detail={carDetail}

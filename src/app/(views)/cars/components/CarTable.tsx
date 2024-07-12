@@ -125,17 +125,6 @@ export default function CarTable(
                 loading={loading}
                 dataSource={carData}
                 columns={columns} />
-            {/* <Dialog
-                width='50%'
-                loading={loadingDialog}
-                open={open}
-                setOpen={setOpen}
-                title='Thông tin xe'
-            >
-                <CarDialog
-                    detail={carDetail}
-                />
-            </Dialog> */}
         </>
 
     )

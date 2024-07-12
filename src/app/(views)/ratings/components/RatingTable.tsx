@@ -139,6 +139,7 @@ export default function RatingTable() {
                 open={open}
                 setOpen={setOpen}
                 title='Thông tin xe'
+                isIntercept={false}
             >
                 <CarDialog
                     detail={carDetail}
