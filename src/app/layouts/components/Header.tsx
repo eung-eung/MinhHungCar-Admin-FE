@@ -2,8 +2,8 @@ import { Avatar } from 'antd'
 import React from 'react'
 import classes from './Header.module.css'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import DigitalClock from '@/app/components/DigitalClock';
+import NotificationList from './NotificationList';
 export default function Header() {
     return (
         <div
@@ -14,9 +14,11 @@ export default function Header() {
             }}
             className={classes.container + ' flex justify-end items-center pb-4'}>
             <DigitalClock />
-            {/* <div className='flex justify-end items-center'> */}
             <div className={classes.notification}>
-                <NotificationsNoneIcon sx={{ color: '#000000', fontSize: '25px' }} />
+                <NotificationList
+                    notiList={[{
+                        title: "AAAA"
+                    }]} />
             </div>
             <Avatar size='default' src='/Minhhung.png' />
             <p className={classes.text}>Admin</p>
