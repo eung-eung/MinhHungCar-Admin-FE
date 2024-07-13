@@ -18,7 +18,7 @@ export default function NotificationList() {
                 >
                     {notifications && notifications.length > 0 && notifications.map((item: INotifcation, index: any) =>
                         <li key={index}>
-                            <Link href={item.url + '/nooverlay'}>
+                            <Link href={item.url.includes('cars') ? item.url + '/nooverlay' : item.url}>
                                 <div>
                                     <p style={{ fontWeight: 600, marginBottom: 7 }}>{item.title}</p>
                                     <p style={{ color: "#8f8f8f" }}>{item.content}</p>
