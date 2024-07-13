@@ -33,7 +33,6 @@ export default function ChatZone(
     const [conversationId, setConversationId] = useState<string>(conversationtId)
     const { data: session } = useSession()
     const ws = useRef<WebSocket>(new WebSocket('wss://minhhungcar.xyz/chat')).current;
-    const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const chatBox = useRef<HTMLParagraphElement>(null)
     const soundAudioRef = useRef<HTMLAudioElement>(null)
     useEffect(() => {
