@@ -94,6 +94,16 @@ export default function AccountTable(
                 </Tag>
             )
         },
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'action',
+            render: (_: any, record: any) => (
+                <RemoveRedEyeOutlinedIcon
+                    onClick={() => handleOpenDetailDialog(record.id)}
+                    className='mr-3 cursor-pointer' />
+            )
+        }
     ];
     return (
         <>
