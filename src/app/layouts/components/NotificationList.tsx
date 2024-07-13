@@ -18,7 +18,7 @@ export default function NotificationList() {
                 >
                     {notifications && notifications.length > 0 && notifications.map((item: INotifcation, index: any) =>
                         <li key={index}>
-                            <Link href={item.url}>
+                            <Link href={item.url} replace>
                                 <div>
                                     <p style={{ fontWeight: 600, marginBottom: 7 }}>{item.title}</p>
                                     <p style={{ color: "#8f8f8f" }}>{item.content}</p>
