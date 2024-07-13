@@ -40,10 +40,9 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
         console.log('event');
         const data = JSON.parse(event.data) as any
         console.log('provider: ', data);
-        if (data.msg_type === 'ERROR') {
+        if (data.msg_type === 'ERROR' && session?.access_token) {
             console.log('vao error');
             signOut()
-            router.replace('/login')
         } else {
             setNotifications((prev: INotifcation[]) => [...prev, {
                 url: data.data.redirect_url,
