@@ -33,33 +33,6 @@ export default function AccountTable(
     const [accountDetail, setAccountDetail] = useState<IAccount>()
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true)
 
-    const handleUpdateStatusAccount = async (id: any, status: any, title: any) => {
-        showConfirmModal(title)
-            .then(async () => {
-                try {
-                    const response = await axiosAuth.put('/admin/account/status', {
-                        account_id: id,
-                        status: status
-                    } as IUpdateAccountStatusRequest)
-                    if (status === 'active') {
-                        sucessNotify('Gỡ khóa thành công')
-                    }
-                    else if (status === 'inactive') {
-                        sucessNotify('Đã khóa tài khoản')
-                    }
-                    setRefresh(prev => !prev)
-                } catch (error: any) {
-                    if (status === 'active') {
-                        errorNotify('Gỡ khóa thất bại. Hãy thử lại')
-                    }
-                    else if (status === 'inactive') {
-                        errorNotify('Khóa tài khoản thất bại. Hãy thử lại')
-                    }
-                }
-
-            })
-    }
-
     const showConfirmModal = (title: any) => {
         const { confirm } = Modal
         return new Promise((res, rej) => {
@@ -119,48 +92,6 @@ export default function AccountTable(
                 <Tag color={record.status === 'active' ? "green" : "red"} key={record}>
                     {t(`accountStatus:${record.status}`)}
                 </Tag>
-            )
-
-
-        },
-        {
-            title: '',
-            dataIndex: 'action',
-            key: 'action',
-            render: (_: any, record: any) => (
-                <div className='flex items-center'>
-                    <RemoveRedEyeOutlinedIcon
-                        onClick={() => handleOpenDetailDialog(record.id)}
-                        className='mr-3 cursor-pointer' />
-                    {
-                        record.status === 'active' && <Tag onClick={
-                            () =>
-                                handleUpdateStatusAccount(
-                                    record.id,
-                                    'inactive',
-                                    'Bạn có muốn khóa tài khoản này?'
-                                )}
-                            color='red'
-                            className='ml-3 cursor-pointer'>
-                            Khóa
-                        </Tag>
-                    }
-                    {record.status === 'inactive' &&
-                        <Tag onClick={
-                            () =>
-                                handleUpdateStatusAccount(
-                                    record.id,
-                                    'active',
-                                    'Bạn có muốn gỡ khóa tài khoản này?'
-                                )}
-                            color='default'
-                            className='ml-3 cursor-pointer'>
-                            Gỡ khóa
-                        </Tag>
-                    }
-
-                </div>
-
             )
         },
     ];
