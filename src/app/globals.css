@@ -37,3 +37,24 @@ html {
     text-wrap: balance;
   }
 }
+
+.notiList {
+  width: 300px;
+  background: "#fff";
+  top: '150%';
+  max-height: 500px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.notiList:hover {
+  overflow-y: scroll;
+  opacity: 1;
+  transition: opacity 1.5s;
+}
+
+.notiList {
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

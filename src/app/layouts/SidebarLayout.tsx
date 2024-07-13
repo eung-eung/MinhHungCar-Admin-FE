@@ -8,10 +8,6 @@ import '../globals.css'
 import { WebSocketNotiProvider } from '../store/WebsocketNotiProvider'
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
-
-    // useEffect(() => {
-    //     const socket = new WebSocket("wss://minhhungcar.xyz/admin/subscribe_notification")
-    // }, [])
     return (
         <>  <WebSocketNotiProvider>
             <Sidebar />
@@ -19,7 +15,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
                 <Header />
                 <div style={{
                     padding: "0 15px",
-                    // minHeight: '88vh',
                     background: "#fbfcfd"
                 }}>
                     {children}

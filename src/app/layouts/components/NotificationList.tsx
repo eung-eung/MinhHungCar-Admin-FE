@@ -1,10 +1,13 @@
-
-import React, { Fragment, useContext } from 'react'
+'use client'
+import React, { Fragment, useContext, useEffect } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Badge } from '@mui/material'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { WebSocketContext } from '@/app/store/WebsocketNotiProvider';
 import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
+import Link from 'next/link';
+import { INotifcation } from '@/app/models/Notification';
+import '../../../app/globals.css'
 export default function NotificationList({
     notiList,
 }: {
@@ -12,21 +15,24 @@ export default function NotificationList({
 }) {
     const { notifications } = useContext(WebSocketContext)
     console.log('notifications: ', notifications);
+    const notificationList = async () => {
+
+    }
 
     return (
         <>
             <div className="dropdown dropdown-end">
                 <NotificationsNoneIcon tabIndex={0} sx={{ color: '#000000', fontSize: '25px' }} />
-                <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                    style={{ width: '500px', background: "#f3f7ff", top: '150%', maxHeight: 500, overflowY: 'scroll' }}>
-                    {notifications && notifications.length > 0 && notifications.map((item: any, index: any) =>
+                <ul tabIndex={0} className={"notiList flex flex-nowrap flex-col dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"}
+                >
+                    {notifications && notifications.length > 0 && notifications.map((item: INotifcation, index: any) =>
                         <li key={index}>
-                            <a>
+                            <Link href={item.url}>
                                 <div>
-                                    <p style={{ fontWeight: 600, marginBottom: 7 }}>Thông báo từ đối tác</p>
-                                    <p style={{ color: "#8f8f8f" }}>Chuyến xe đã được đăng ký</p>
+                                    <p style={{ fontWeight: 600, marginBottom: 7 }}>{item.title}</p>
+                                    <p style={{ color: "#8f8f8f" }}>{item.content}</p>
                                 </div>
-                            </a>
+                            </Link>
                         </li>
 
                     )}

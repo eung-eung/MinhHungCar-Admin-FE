@@ -1,6 +1,7 @@
 'use client'
 import { signOut, useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
+import useAxiosAuth from "../utils/hooks/useAxiosAuth";
 
 interface WebSocketContextValue {
     ws: WebSocket | null;
@@ -19,6 +20,17 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
     const [isConnected, setIsConnected] = useState(false);
     const [notifications, setNotifications] = useState<any>()
     const { data: session } = useSession()
+    const axiosAuth = useAxiosAuth()
+    useEffect(() => {
+        getNotificationList()
+    }, [])
+
+
+    const getNotificationList = async () => {
+        const response = await axiosAuth.get('/admin/notifications?offset=0&limit=100')
+        console.log(response.data.data);
+        setNotifications(response.data.data)
+    }
     const handleSocketMessage = (event: MessageEvent) => {
         console.log('event');
 

@@ -32,7 +32,6 @@ export default function RootLayout(
   return (
     <html style={{ background: "#fbfcfd" }}>
       <body className={inter.className}>
-
         <AntdRegistry>
           <ConfigProvider
             theme={{
