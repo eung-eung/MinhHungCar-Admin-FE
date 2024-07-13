@@ -2,6 +2,10 @@
 import { signOut, useSession } from "next-auth/react";
 import { createContext, useEffect, useState } from "react";
 import useAxiosAuth from "../utils/hooks/useAxiosAuth";
+import ToastNotification from "../layouts/components/ToastNotification";
+import toast from "react-hot-toast";
+import { INotifcation } from "../models/Notification";
+import { useRouter } from "next/navigation";
 
 interface WebSocketContextValue {
     ws: WebSocket | null;
@@ -19,6 +23,7 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
     const [ws, setWs] = useState<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
     const [notifications, setNotifications] = useState<any>()
+    const router = useRouter()
     const { data: session } = useSession()
     const axiosAuth = useAxiosAuth()
     useEffect(() => {
@@ -33,13 +38,48 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
     }
     const handleSocketMessage = (event: MessageEvent) => {
         console.log('event');
-
         const data = JSON.parse(event.data) as any
         console.log('provider: ', data);
         if (data.msg_type === 'ERROR') {
+            console.log('vao error');
             signOut()
+            router.replace('/login')
         } else {
-            setNotifications((prev: any) => [...prev, data])
+            setNotifications((prev: INotifcation[]) => [...prev, {
+                url: data.data.redirect_url,
+                title: data.title,
+                content: data.body
+            }])
+            toast.custom((t) => (
+                <div
+                    style={{ width: '350px' }}
+                    className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                >
+                    <div className="flex-1 w-0 p-4">
+                        <div className="flex items-start">
+                            <div className="ml-3 flex-1">
+                                <p className="text-sm font-medium text-gray-900">
+                                    {data.title}
+                                </p>
+                                <p className="mt-1 text-sm text-gray-500">
+                                    {data.body}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex border-l border-gray-200">
+                        <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            ), {
+                position: "bottom-left"
+            })
         }
 
     };

@@ -17,9 +17,9 @@ const config: Config = {
       },
       animation: {
         aurora: "aurora 60s linear infinite",
-
+        enter: "fadeInRight 300ms ease-out",
+        leave: "fadeOutLeft 300ms ease-in forwards",
         shimmer: "shimmer 2s linear infinite"
-
       },
       keyframes: {
         aurora: {
@@ -36,6 +36,24 @@ const config: Config = {
           },
           to: {
             "backgroundPosition": "-200% 0"
+          }
+        },
+        fadeInRight: {
+          "0%": {
+            opacity: "0",
+            transform: "translate(2rem)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translate(0)"
+          }
+        },
+        fadeOutLeft: {
+          "0%": {
+            opacity: "1"
+          },
+          "100%": {
+            opacity: "0"
           }
         }
       },

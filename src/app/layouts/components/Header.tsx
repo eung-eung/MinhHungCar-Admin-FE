@@ -16,10 +16,7 @@ export default function Header() {
             className={classes.container + ' flex justify-end items-center pb-4'}>
             <DigitalClock />
             <div className={classes.notification}>
-                <NotificationList
-                    notiList={[{
-                        title: "AAAA"
-                    }]} />
+                <NotificationList />
             </div>
             <Avatar size='default' src='/Minhhung.png' />
             <p className={classes.text}>Admin</p>

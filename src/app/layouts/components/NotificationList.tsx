@@ -8,17 +8,8 @@ import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneR
 import Link from 'next/link';
 import { INotifcation } from '@/app/models/Notification';
 import '../../../app/globals.css'
-export default function NotificationList({
-    notiList,
-}: {
-    notiList: any,
-}) {
-    const { notifications } = useContext(WebSocketContext)
-    console.log('notifications: ', notifications);
-    const notificationList = async () => {
-
-    }
-
+export default function NotificationList() {
+    const { notifications, ws, isConnected } = useContext(WebSocketContext)
     return (
         <>
             <div className="dropdown dropdown-end">
