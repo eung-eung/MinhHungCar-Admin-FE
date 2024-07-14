@@ -23,5 +23,6 @@
     "pending": "Chờ thanh toán",
     "other": "Khác",
     "return_collateral_cash": "Trả tiền thế chấp",
-    "remaining_pay": "Khoản thanh toán còn lại"
+    "remaining_pay": "Khoản thanh toán còn lại",
+    "collateral_cash": "Tiền thế chấp"
 }
