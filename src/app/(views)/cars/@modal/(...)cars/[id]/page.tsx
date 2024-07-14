@@ -20,7 +20,7 @@ export default function InterceptingCarDetail({
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
     const [carDetail, setCarDetail] = useState<ICar>()
     const [open, setOpen] = useState<boolean>(false);
-
+    const [refresh, setRefresh] = useState<boolean>(false)
     const handleOpenDetailDialog = async (id: any) => {
         // setOpen(true);
         setLoadingDialog(true);
@@ -33,7 +33,7 @@ export default function InterceptingCarDetail({
     useEffect(() => {
         console.log('zosss');
         handleOpenDetailDialog(id)
-    }, [id])
+    }, [id, refresh])
     return (
         <>
             <Dialog
@@ -45,6 +45,7 @@ export default function InterceptingCarDetail({
                 isIntercept={true}
             >
                 <CarDialog
+                    setRefresh={setRefresh}
                     detail={carDetail}
                 />
             </Dialog>

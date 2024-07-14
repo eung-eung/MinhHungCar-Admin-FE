@@ -44,7 +44,10 @@ export default function Cars() {
         setLoadingCurrentSeats(false)
 
     }
+    useEffect(() => {
+        console.log('effect cars');
 
+    }, [])
     useEffect(() => {
         if (!searchValue) {
             getCarList(filter)
