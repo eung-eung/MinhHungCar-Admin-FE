@@ -9,12 +9,14 @@ import Link from 'next/link';
 import { INotifcation } from '@/app/models/Notification';
 import '../../../app/globals.css'
 import dayjs from 'dayjs';
-import zIndex from '@mui/material/styles/zIndex';
+
 import { useRouter } from 'next/navigation';
 export default function NotificationList() {
     const { notifications, ws, isConnected } = useContext(WebSocketContext)
     const [open, setOpen] = useState<boolean>(false)
     const router = useRouter()
+    console.log(open);
+
     return (
         <>
             <div
@@ -30,7 +32,6 @@ export default function NotificationList() {
                     } : {
                         opacity: 0,
                         visibility: "hidden",
-                        zIndex: 999
                     }}
                     className={"notiList flex flex-nowrap flex-col dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"}
                 >
@@ -39,8 +40,7 @@ export default function NotificationList() {
                             <div
                                 className='linkNotification'
                                 onClick={() => {
-                                    setOpen(false)
-                                    router.push(item.url.includes('cars') ? item.url + '/nooverlay' : item.url)
+                                    router.push('/cars')
                                 }}
                             >
                                 <div>
