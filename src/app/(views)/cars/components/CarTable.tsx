@@ -15,6 +15,7 @@ import ActiveCarDropdown from './ActiveCarDropdown'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import DeliveryCarDropdown from './DeliveryCarDropdown'
 import { useRouter } from 'next/navigation'
+import { useTranslation } from 'react-i18next'
 export default function CarTable(
     {
         carData,
@@ -32,6 +33,7 @@ export default function CarTable(
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
     const [carDetail, setCarDetail] = useState<ICar>()
     const router = useRouter()
+    const { t } = useTranslation()
     const handleOpenDetailDialog = async (id: any) => {
         setOpen(true);
         setLoadingDialog(true);
@@ -43,6 +45,13 @@ export default function CarTable(
     };
 
     const columns: TableProps<ICar>['columns'] = [
+        {
+            title: 'Tên chủ xe',
+            dataIndex: 'account',
+            key: 'id',
+            render: (account: IAccount) =>
+                <>{`${account.first_name + ' ' + account.last_name}`}</>
+        },
         {
             title: 'Hãng xe',
             dataIndex: 'car_model',
@@ -67,11 +76,16 @@ export default function CarTable(
             render: (price: Number) => <>{formatCurrency(price)}</>
         },
         {
-            title: 'Tên chủ xe',
-            dataIndex: 'account',
+            title: 'Nơi đậu xe',
+            dataIndex: 'parking_lot',
             key: 'id',
-            render: (account: IAccount) =>
-                <>{`${account.first_name + ' ' + account.last_name}`}</>
+            render: (parking) => t(`common:${parking}`)
+        },
+        {
+            title: 'Số chỗ',
+            dataIndex: 'car_model',
+            key: 'id',
+            render: (car_model: ICarModel) => car_model.number_of_seats
         },
         {
             title: '',
