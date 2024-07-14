@@ -15,30 +15,6 @@ import { Skeleton } from 'antd';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 
-const items = [
-    {
-        title: "1.000.000đ",
-        description: "Tổng doanh thu",
-        header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
-    },
-    {
-        title: "500",
-        description: "Tổng hợp đồng thuê xe",
-        header: <ReceiptLongRoundedIcon sx={{ color: '#A9DFD8' }} />,
-    },
-    {
-        title: "100",
-        description: "Tổng partner",
-        header: <HandshakeRoundedIcon sx={{ color: '#F2C8ED' }} />,
-    },
-    {
-        title: "100",
-        description:
-            "Số khách hàng đã sử dụng dịch vụ",
-        header: <Person4RoundedIcon sx={{ color: '#20AEF3' }} />,
-    },
-
-];
 const DynamicAreaChart = dynamic(() => import('./components/AreaChart'), {
     loading: () => <Skeleton active />
 })
@@ -56,13 +32,10 @@ const DynamicLineChart = dynamic(() => import('./components/LineChart'), {
 })
 export default function Dashboard() {
     const axiosAuth = useAxiosAuth()
-    const [items, setItems] = useState<any>({
-        totalActiveCustomers: 0,
-        totalActivePartners: 0,
-        totalCustomerContracts: 0,
-        totalPartnerCustomerContracts: 0
-    })
+    const [items, setItems] = useState<any>()
+    const [loadingItems, setLoadingItems] = useState<boolean>(true)
     const getItems = async () => {
+        setLoadingItems(true)
         const response = await axiosAuth.get(
             '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=60&rented_cars_back_off_day=60'
         )
@@ -90,6 +63,7 @@ export default function Dashboard() {
                 header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
             },
         })
+        setLoadingItems(false)
     }
     useEffect(() => {
         getItems()
@@ -98,30 +72,41 @@ export default function Dashboard() {
         <div className='pt-5'>
             <div>
                 <StatisTicItemGrid>
-                    <StatisticItem
-                        title={items.totalActiveCustomers.title}
-                        description={items.totalActiveCustomers.description}
-                        header={items.totalActiveCustomers.header}
-                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                    />
-                    <StatisticItem
-                        title={items.totalActivePartners.title}
-                        description={items.totalActivePartners.description}
-                        header={items.totalActivePartners.header}
-                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                    />
-                    <StatisticItem
-                        title={items.totalCustomerContracts.title}
-                        description={items.totalCustomerContracts.description}
-                        header={items.totalCustomerContracts.header}
-                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                    />
-                    <StatisticItem
-                        title={items.revenue.title}
-                        description={items.revenue.description}
-                        header={items.revenue.header}
-                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                    />
+                    {
+                        loadingItems ?
+                            <>
+                                <Skeleton active />
+                                <Skeleton active />
+                                <Skeleton active />
+                                <Skeleton active />
+                            </>
+                            : <>
+                                <StatisticItem
+                                    title={items.totalActiveCustomers.title}
+                                    description={items.totalActiveCustomers.description}
+                                    header={items.totalActiveCustomers.header}
+                                // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                                />
+                                <StatisticItem
+                                    title={items.totalActivePartners.title}
+                                    description={items.totalActivePartners.description}
+                                    header={items.totalActivePartners.header}
+                                // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                                />
+                                <StatisticItem
+                                    title={items.totalCustomerContracts.title}
+                                    description={items.totalCustomerContracts.description}
+                                    header={items.totalCustomerContracts.header}
+                                // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                                />
+                                <StatisticItem
+                                    title={items.revenue.title}
+                                    description={items.revenue.description}
+                                    header={items.revenue.header}
+                                // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                                />
+                            </>
+                    }
                 </StatisTicItemGrid>
 
             </div>
