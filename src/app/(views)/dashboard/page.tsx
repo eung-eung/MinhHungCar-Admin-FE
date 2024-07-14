@@ -12,6 +12,8 @@ import Person4RoundedIcon from '@mui/icons-material/Person4Rounded';
 import classes from './index.module.css'
 import dynamic from 'next/dynamic';
 import { Skeleton } from 'antd';
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import { formatCurrency } from '@/app/utils/formatCurrency';
 
 const items = [
     {
@@ -53,19 +55,73 @@ const DynamicLineChart = dynamic(() => import('./components/LineChart'), {
 
 })
 export default function Dashboard() {
+    const axiosAuth = useAxiosAuth()
+    const [items, setItems] = useState<any>({
+        totalActiveCustomers: 0,
+        totalActivePartners: 0,
+        totalCustomerContracts: 0,
+        totalPartnerCustomerContracts: 0
+    })
+    const getItems = async () => {
+        const response = await axiosAuth.get(
+            '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=60&rented_cars_back_off_day=60'
+        )
+        console.log(response.data.data);
+        setItems({
+            totalActiveCustomers: {
+                title: response.data.data.total_active_customers,
+                description: "Số lượng khách hàng",
+                header: <Person4RoundedIcon sx={{ color: '#20AEF3' }} />,
+            },
+            totalActivePartners: {
+                title: response.data.data.total_active_partners,
+                description: "Số lượng đối tác",
+                header: <HandshakeRoundedIcon sx={{ color: '#F2C8ED' }} />,
+            },
+            totalCustomerContracts: {
+                title: response.data.data.total_customer_contracts,
+                description: "Tổng hợp đồng thuê xe",
+                header: <ReceiptLongRoundedIcon sx={{ color: '#A9DFD8' }} />,
+
+            },
+            revenue: {
+                title: formatCurrency(response.data.data.revenue),
+                description: "Tổng doanh thu",
+                header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
+            },
+        })
+    }
+    useEffect(() => {
+        getItems()
+    }, [])
     return (
         <div className='pt-5'>
             <div>
                 <StatisTicItemGrid>
-                    {items.map((item, i) => (
-                        <StatisticItem
-                            key={i}
-                            title={item.title}
-                            description={item.description}
-                            header={item.header}
-                            className={i === 4 || i === 6 ? "md:col-span-2" : ""}
-                        />
-                    ))}
+                    <StatisticItem
+                        title={items.totalActiveCustomers.title}
+                        description={items.totalActiveCustomers.description}
+                        header={items.totalActiveCustomers.header}
+                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                    />
+                    <StatisticItem
+                        title={items.totalActivePartners.title}
+                        description={items.totalActivePartners.description}
+                        header={items.totalActivePartners.header}
+                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                    />
+                    <StatisticItem
+                        title={items.totalCustomerContracts.title}
+                        description={items.totalCustomerContracts.description}
+                        header={items.totalCustomerContracts.header}
+                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                    />
+                    <StatisticItem
+                        title={items.revenue.title}
+                        description={items.revenue.description}
+                        header={items.revenue.header}
+                    // className={i === 4 || i === 6 ? "md:col-span-2" : ""}
+                    />
                 </StatisTicItemGrid>
 
             </div>

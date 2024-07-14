@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import PaymentTable from './components/PaymentTable'
 import dayjs from 'dayjs'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
-import { convertDate } from '@/app/utils/convertDate'
 import { IPayment } from '@/app/models/Payment.model'
 
 export default function Payments() {
