@@ -40,7 +40,7 @@ export default function NotificationList() {
                             <div
                                 className='linkNotification'
                                 onClick={() => {
-                                    router.push('/cars')
+                                    router.push(item.url.includes('cars') ? item.url + '/nooverlay' : item.url)
                                 }}
                             >
                                 <div>
