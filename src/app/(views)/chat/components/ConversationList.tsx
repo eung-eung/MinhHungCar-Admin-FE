@@ -57,9 +57,9 @@ export default function ConversationList(
                     key={index}
                     accountId={conversation.account_id}
                     name={
-                        conversation.account.last_name
+                        conversation.account.first_name
                         + ' '
-                        + conversation.account.first_name
+                        + conversation.account.last_name
                     }
                     image={conversation.account.avatar_url}
                 />

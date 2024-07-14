@@ -226,9 +226,9 @@ export default function PaymentDetail({
                                         }}
                                     >
                                         {
-                                            detail?.customer.last_name
+                                            detail?.customer.first_name
                                             + ' '
-                                            + detail?.customer.first_name}
+                                            + detail?.customer.last_name}
                                     </span>
                             }
                         </div>
