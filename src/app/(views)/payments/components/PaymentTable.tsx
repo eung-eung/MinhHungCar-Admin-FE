@@ -1,79 +1,74 @@
+'use client'
 import { Button, Table, Tag } from 'antd'
 import React from 'react'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
-export default function PaymentTable() {
+import { IPayment } from '@/app/models/Payment.model';
+import { IAccount } from '@/app/models/Account.model';
+import { formatCurrency } from '@/app/utils/formatCurrency';
+import { useRouter } from 'next/navigation';
 
-    const data = [
-        {
-            id: 0,
-            car_owner: "AAAAA asdadsasd",
-            bank_number: '12312312323',
-            from: "12/05/2024",
-            to: "12/10/2024",
-            price: 131231,
-            status: 'Chưa thanh toán'
-        },
-        {
-            id: 1,
-            car_owner: "AAAAA asdadsasd",
-            bank_number: '12312312323',
-            from: "12/05/2024",
-            to: "12/10/2024",
-            price: 131231,
-            status: 'Chưa thanh toán'
-        },
-        {
-            id: 2,
-            car_owner: "AAAAA asdadsasd",
-            bank_number: '12312312323',
-            from: "12/05/2024",
-            to: "12/10/2024",
-            price: 131231,
-            status: 'Chưa thanh toán'
-        },
-        {
-            id: 3,
-            car_owner: "AAAAA asdadsasd",
-            bank_number: '12312312323',
-            from: "12/05/2024",
-            to: "12/10/2024",
-            price: 131231,
-            status: 'Đã thanh toán'
-        }
-    ]
-
+export default function PaymentTable(
+    {
+        payments,
+        loading
+    }: {
+        payments?: IPayment[],
+        loading: boolean
+    }
+) {
+    const router = useRouter()
+    const handlePayment = (url: any) => {
+        router.push(url)
+    }
     const columns = [
         {
-            title: 'Tên chủ xe',
-            dataIndex: 'car_owner',
-            key: 'id'
+            title: 'Tên đối tác',
+            dataIndex: 'partner',
+            key: 'id',
+            render: (partner: IAccount) => partner.first_name + ' ' + partner.last_name
         },
         {
-            title: 'Tài khoản ngân hàng',
-            dataIndex: 'bank_number',
-            key: 'id'
+            title: 'Số điện thoại',
+            dataIndex: 'partner',
+            key: 'id',
+            render: (partner: IAccount) => partner.phone_number
         },
         {
             title: 'Từ ngày',
-            dataIndex: 'from',
-            key: 'id'
+            dataIndex: 'start_date',
+            key: 'id',
+            render: (date: any) => <p>
+                {
+                    new Date(date).getDate().toString().padStart(2, '0')
+                    + '/' + (new Date(date).getMonth() + 1).toString().padStart(2, '0')
+                    + '/' + new Date(date).getFullYear().toString().padStart(2, '0')
+                }
+            </p>
         },
         {
             title: 'Đến ngày',
-            dataIndex: 'car_owner',
-            key: 'id'
+            dataIndex: 'end_date',
+            key: 'id',
+            render: (date: any) => <p>
+                {
+                    new Date(date).getDate().toString().padStart(2, '0')
+                    + '/' + (new Date(date).getMonth() + 1).toString().padStart(2, '0')
+                    + '/' + new Date(date).getFullYear().toString().padStart(2, '0')
+                }
+            </p>
         },
         {
             title: 'Số tiền',
-            dataIndex: 'price',
-            key: 'id'
+            dataIndex: 'amount',
+            key: 'id',
+            render: (amount: any) => formatCurrency(amount)
         },
         {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'id',
-            render: (status: any) => status === 'Chưa thanh toán'
+            render: (status: any) => status === 'pending'
                 ?
                 <CancelOutlinedIcon sx={{ color: 'red' }} />
                 :
@@ -83,14 +78,17 @@ export default function PaymentTable() {
             title: '',
             dataIndex: 'action',
             key: 'id',
-            render: () =>
-                <Button >Thanh toán</Button>
+            render: (_: any, record: any) => record.status === 'pending'
+                ? <Button onClick={() => handlePayment(record.payment_url)}>Thanh toán</Button>
+                : <Tag color='green'>Đã thanh toán</Tag>
+
         }
     ]
     return (
         <Table
-            dataSource={data}
+            dataSource={payments}
             columns={columns}
+            loading={loading}
         />
     )
 }
