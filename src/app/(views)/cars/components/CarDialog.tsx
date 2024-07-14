@@ -27,7 +27,7 @@ export default function CarDialog(
                         <CarInformation
                             showAction={false}
                             detail={detail}
-                            setRefresh={setRefresh} />
+                            setRefresh={setRefresh && setRefresh} />
                     </div>
                 </div>
                 <div>
