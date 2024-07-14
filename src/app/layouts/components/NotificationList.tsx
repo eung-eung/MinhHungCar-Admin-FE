@@ -35,6 +35,7 @@ export default function NotificationList() {
                     {notifications && notifications.length > 0 && notifications.map((item: INotifcation, index: any) =>
                         <li key={index} style={{ borderBottom: '1px solid rgba(5, 5, 5, 0.06)' }}>
                             <Link
+                                className='linkNotification'
                                 onClick={() => setOpen(false)}
                                 href={item.url.includes('cars') ? item.url + '/nooverlay' : item.url}>
                                 <div>

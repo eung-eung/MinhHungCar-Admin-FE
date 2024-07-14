@@ -9,6 +9,18 @@
   --grayBackground: #efefef
 }
 
+.linkNotification {
+  background: #fff !important;
+}
+
+.linkNotification:focus {
+  color: #000000 !important;
+}
+
+.linkNotification:hover {
+  background-color: #ebebeb !important;
+
+}
 
 
 input::-webkit-outer-spin-button,
@@ -46,6 +58,13 @@ html {
   overflow: hidden;
   opacity: 0;
 }
+
+.dropdown-content {
+  --tw-scale-y: 0 !important;
+  --tw-scale-y: 0 !important;
+  transform: none !important;
+}
+
 
 .notiList:hover {
   overflow-y: scroll;
