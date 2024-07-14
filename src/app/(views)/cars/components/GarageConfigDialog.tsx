@@ -59,7 +59,10 @@ export default function GarageConfigDialog(
             setOpen(false);
             setConfirmLoading(false);
         } catch (error: any) {
-            errorNotify('Cập nhật thất bại')
+
+            if (error.response.data.error_code === 10029) {
+                errorNotify('Số xe đang ở garage lớn hơn số bạn vừa nhập')
+            }
             setConfirmLoading(false);
         }
 
