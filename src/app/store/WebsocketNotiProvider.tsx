@@ -44,11 +44,13 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
             console.log('vao error');
             signOut()
         } else {
-            setNotifications((prev: INotifcation[]) => [...prev, {
-                url: data.data.redirect_url,
-                title: data.title,
-                content: data.body
-            }])
+            setNotifications((prev: INotifcation[]) => [
+                {
+                    url: data.data.redirect_url,
+                    title: data.title,
+                    content: data.body
+                },
+                ...prev])
             toast.custom((t) => (
                 <div
                     style={{ width: '350px' }}
