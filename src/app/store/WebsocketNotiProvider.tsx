@@ -73,8 +73,8 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
                     setIsConnected(true)
                     newWs.send(JSON.stringify({ access_token: `Bearer ${session?.access_token}` }))
                 }
-                newWs.onmessage = handleSocketMessage
-                newWs.onerror = handleSocketError
+                // newWs.onmessage = handleSocketMessage
+                // newWs.onerror = handleSocketError
 
                 // conversation socket
                 chatCoversationWs.onopen = () => {
@@ -83,7 +83,7 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
                 }
 
                 // chatCoversationWs.onmessage = handleConversationSocketMessage
-                chatCoversationWs.onerror = handleConversationSocketError
+                // chatCoversationWs.onerror = handleConversationSocketError
 
                 setConversationWs(chatCoversationWs)
                 setWs(newWs);

@@ -10,15 +10,23 @@ import { INotifcation } from '@/app/models/Notification';
 import '../../../app/globals.css'
 import dayjs from 'dayjs';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 export default function NotificationList() {
     const { notifications, sound, conversationWs, ws, setNotifications } = useContext(WebSocketContext)
     const [open, setOpen] = useState<boolean>(false)
+    const icon = useRef<HTMLUListElement>(null)
     const router = useRouter()
     const soundAudioRef = useRef<HTMLAudioElement>(null)
     const { data: session } = useSession()
+    const pathName = usePathname()
+    useEffect(() => {
+        console.log('zo path');
+
+        icon.current?.blur()
+    }, [pathName])
+
     useEffect(() => {
         if (conversationWs != null) {
             conversationWs.onmessage = (event: MessageEvent) => {
@@ -116,15 +124,8 @@ export default function NotificationList() {
                 }
             }
         }
-        return () => {
-            if (ws) {
-                ws.close(); // Clean up on unmount
-            }
-            if (conversationWs) {
-                conversationWs.close()
-            }
-        };
-    }, [])
+
+    }, [ws, conversationWs])
     return (
         <>
             <div
@@ -133,6 +134,7 @@ export default function NotificationList() {
                 <NotificationsNoneIcon
                     sx={{ color: '#000000', fontSize: '25px' }} />
                 <ul
+                    ref={icon}
                     tabIndex={0}
                     className={"notiList flex flex-nowrap flex-col dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"}
                 >
