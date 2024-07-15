@@ -1,5 +1,5 @@
 'use client'
-import React, { Fragment, useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Badge } from '@mui/material'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -12,29 +12,26 @@ import dayjs from 'dayjs';
 
 import { useRouter } from 'next/navigation';
 export default function NotificationList() {
-    const { notifications, ws, isConnected } = useContext(WebSocketContext)
+    const { notifications, sound } = useContext(WebSocketContext)
     const [open, setOpen] = useState<boolean>(false)
     const router = useRouter()
-    console.log(open);
+    const soundAudioRef = useRef<HTMLAudioElement>(null)
 
+    useEffect(() => {
+        soundAudioRef.current?.play()
+    }, [sound])
     return (
         <>
             <div
-                onClick={() => setOpen(prev => !prev)}
-                className="dropdown dropdown-end">
+                tabIndex={0}
+                className="dropdown dropdown-end cursor-pointer">
                 <NotificationsNoneIcon
                     sx={{ color: '#000000', fontSize: '25px' }} />
                 <ul
-                    style={open ? {
-                        opacity: 1,
-                        visibility: "visible",
-                        zIndex: 999
-                    } : {
-                        opacity: 0,
-                        visibility: "hidden",
-                    }}
+                    tabIndex={0}
                     className={"notiList flex flex-nowrap flex-col dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"}
                 >
+                    <audio ref={soundAudioRef} id="mySound" src="/soundNoti.mp3"></audio>
                     {notifications && notifications.length > 0 && notifications.map((item: INotifcation, index: any) =>
                         <li key={index} style={{ borderBottom: '1px solid rgba(5, 5, 5, 0.06)' }}>
                             <div
