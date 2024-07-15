@@ -69,6 +69,7 @@ export default function ChatZone(
             ]))
 
         };
+        return () => ws.close()
     }, []);
 
     const handleSubmit = () => {
