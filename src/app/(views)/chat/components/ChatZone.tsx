@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import classes from './index.module.css'
 import MessageReceiver from './MessageReceiver'
 import MessageSender from './MessageSender'
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { IAccount } from '@/app/models/Account.model';
 import { useSession } from 'next-auth/react';
+import { WebSocketContext } from '@/app/store/WebsocketNotiProvider';
 
 const MessageTypes = {
     USER_JOIN: "USER_JOIN",
@@ -36,6 +37,7 @@ export default function ChatZone(
     const chatBox = useRef<HTMLParagraphElement>(null)
     const soundAudioRef = useRef<HTMLAudioElement>(null)
     useEffect(() => {
+
         ws.onopen = () => {
             console.log('open ws');
             ws.send(JSON.stringify({
@@ -57,7 +59,7 @@ export default function ChatZone(
             if (data.sender === 'system') {
                 return
             }
-            if (data.sender === 'customer') {
+            if (data.sender === 'customer' || data.sender === 'partner') {
                 soundAudioRef.current?.play()
             }
             setMessages((prev: any) => ([
