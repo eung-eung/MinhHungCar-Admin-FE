@@ -13,6 +13,8 @@ import useAxiosAuth from "../utils/hooks/useAxiosAuth";
 import { useRouter } from "next/navigation";
 
 export const FloatingNav = ({
+    url,
+    body,
     navItems,
     className,
     selectedKey,
@@ -23,6 +25,8 @@ export const FloatingNav = ({
         name: string,
         icon?: JSX.Element,
     }[],
+    url: any,
+    body: any,
     className?: string,
     selectedKey?: React.Key[],
     setSelectedRowKeys: React.Dispatch<SetStateAction<any>>,
@@ -36,10 +40,7 @@ export const FloatingNav = ({
             return
         } else {
             try {
-                const response = await axiosAuth.post('/admin/customer_payment/multiple/generate_qr', {
-                    customer_payment_ids: selectedKey,
-                    return_url: process.env.WEB_HOST_PUBLIC
-                })
+                const response = await axiosAuth.post(url, body)
                 router.push(response.data.data.payment_url)
             } catch (error) {
 

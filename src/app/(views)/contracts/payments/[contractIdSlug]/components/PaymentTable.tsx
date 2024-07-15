@@ -145,6 +145,11 @@ export default function PaymentTable(
     return (
         <>
             <FloatingNav
+                url='/admin/customer_payment/multiple/generate_qr'
+                body={{
+                    customer_payment_ids: selectedKey,
+                    return_url: process.env.WEB_HOST_PUBLIC + '/contracts/payments'
+                }}
                 selectedKey={selectedKey}
                 navItems={navItems}
                 setSelectedRowKeys={setSelectedRowKeys}

@@ -15,7 +15,6 @@ import { signOut, useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 export default function NotificationList() {
     const { notifications, sound, conversationWs, ws, setNotifications } = useContext(WebSocketContext)
-    const [open, setOpen] = useState<boolean>(false)
     const icon = useRef<HTMLUListElement>(null)
     const router = useRouter()
     const soundAudioRef = useRef<HTMLAudioElement>(null)

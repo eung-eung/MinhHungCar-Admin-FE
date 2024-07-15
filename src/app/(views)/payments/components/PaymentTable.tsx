@@ -1,13 +1,21 @@
 'use client'
 import { Button, Table, Tag } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import { IPayment } from '@/app/models/Payment.model';
 import { IAccount } from '@/app/models/Account.model';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { useRouter } from 'next/navigation';
+import PlaylistRemoveRoundedIcon from '@mui/icons-material/PlaylistRemoveRounded';
+import { FloatingNav } from '@/app/components/FloatingNavbar';
+const navItems = [
+    {
+        name: "Bỏ chọn tất cả",
+        icon: <PlaylistRemoveRoundedIcon className="h-4 w-4 text-neutral-500 dark:text-white" />,
+    },
 
+];
 export default function PaymentTable(
     {
         payments,
@@ -18,6 +26,8 @@ export default function PaymentTable(
     }
 ) {
     const router = useRouter()
+    const [selectedKey, setSelectedRowKeys] = useState<React.Key[]>()
+    const [selectedRowsState, setSelectedRowsState] = useState<IPayment[]>()
     const handlePayment = (url: any) => {
         router.push(url)
     }
@@ -84,11 +94,45 @@ export default function PaymentTable(
 
         }
     ]
+    const rowSelection = {
+        onChange: (selectedRowKeys: React.Key[], selectedRows: IPayment[]) => {
+            console.log('row keys: ', selectedRows);
+            setSelectedRowKeys(selectedRowKeys)
+            setSelectedRowsState(selectedRows)
+        },
+        getCheckboxProps: (record: IPayment) => {
+            return ({
+                disabled: record.status === 'paid'
+
+            })
+        },
+        selectedRowKeys: selectedKey,
+        hideSelectAll: true
+    };
+
     return (
-        <Table
-            dataSource={payments}
-            columns={columns}
-            loading={loading}
-        />
+        <>
+            <FloatingNav
+                url='/admin/monthly_partner_payment/multiple/generate_qr'
+                body={{
+                    partner_payment_ids: selectedKey,
+                    return_url: process.env.WEB_HOST_PUBLIC + '/payments'
+                }}
+                selectedKey={selectedKey}
+                navItems={navItems}
+                setSelectedRowKeys={setSelectedRowKeys}
+                setSelectedRowsState={setSelectedRowsState}
+
+            />
+
+            <Table
+                rowKey={(record) => record.id}
+                rowSelection={{ ...rowSelection }}
+                dataSource={payments}
+                columns={columns}
+                loading={loading}
+            />
+        </>
+
     )
 }

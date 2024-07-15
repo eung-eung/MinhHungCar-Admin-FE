@@ -95,27 +95,27 @@ export default function TopFilterTable(
                         <SettingsOutlinedIcon />
                     </Button>
                 }
-                {
-                    showDatepicker &&
-                    <ConfigProvider locale={locale}>
-                        <DatePicker
-                            allowClear={false}
-                            onChange={handleChangeDatepick}
-                            disabledDate={handleDisableMonth}
-                            removeIcon={false}
-                            defaultValue={dayjs(
-                                (
-                                    datepick && (datepick.getMonth() + 1).toString().padStart(2, '0')
-                                    + '/'
-                                    + datepick?.getFullYear()
-                                ),
-                                monthFormat)}
-                            format={monthFormat}
-                            picker="month"
-                        />
-                    </ConfigProvider>
-                }
             </div>
+            {
+                showDatepicker &&
+                <ConfigProvider locale={locale}>
+                    <DatePicker
+                        allowClear={false}
+                        onChange={handleChangeDatepick}
+                        disabledDate={handleDisableMonth}
+                        removeIcon={false}
+                        defaultValue={dayjs(
+                            (
+                                datepick && (datepick.getMonth() + 1).toString().padStart(2, '0')
+                                + '/'
+                                + datepick?.getFullYear()
+                            ),
+                            monthFormat)}
+                        format={monthFormat}
+                        picker="month"
+                    />
+                </ConfigProvider>
+            }
             {showGarageConfig && <GarageConfigDialog open={open} setOpen={setOpen} />}
         </div>
     )

@@ -12,6 +12,7 @@ export default function Payments() {
     const [payments, setPayments] = useState<IPayment[]>()
     const [datepick, setDatepick] = useState<any>(new Date())
     const [loading, setLoading] = useState<boolean>(true)
+    const [filter, setFilter] = useState<any>('paid')
     const handleChangeDatepick = async (date: any) => {
         setLoading(true)
         setDatepick(new Date(date))
@@ -21,7 +22,7 @@ export default function Payments() {
         const formattedUtcEndDate = endDate.format('YYYY-MM-DDTHH:mm:ss');
         try {
             const response = await axiosAuth
-                .get(`/admin/monthly_partner_payments?start_date=${formattedUtcStartDate + 'Z'}&end_date=${formattedUtcEndDate + 'Z'}&offset=0&limit=100`)
+                .get(`/admin/monthly_partner_payments?start_date=${formattedUtcStartDate + 'Z'}&end_date=${formattedUtcEndDate + 'Z'}&status=${filter}&offset=0&limit=100`)
             setPayments(response.data.data)
             setLoading(false)
         } catch (error) {
@@ -29,10 +30,12 @@ export default function Payments() {
             setLoading(false)
         }
     }
-
+    const handleChange = (e: string) => {
+        setFilter(e)
+    }
     useEffect(() => {
-        handleChangeDatepick(new Date())
-    }, [])
+        handleChangeDatepick(datepick)
+    }, [filter])
     return (
         <>
             <TopFilterTable
@@ -40,17 +43,18 @@ export default function Payments() {
                 searchValue='a'
                 setRefresh={setRefresh}
                 handleChangeDatepick={handleChangeDatepick}
+                handleChange={handleChange}
                 optionList={[
                     {
-                        value: 'waiting_payment',
+                        value: 'pending',
                         label: 'Chờ thanh toán'
                     },
                     {
-                        value: "complete",
+                        value: "paid",
                         label: 'Đã thanh toán'
                     }
                 ]}
-                defaultValue='waiting_payment'
+                defaultValue={filter}
                 showSearch={false}
                 showDatepicker={true}
             />
