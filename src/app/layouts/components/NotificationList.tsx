@@ -135,6 +135,7 @@ export default function NotificationList() {
                 <ul
                     ref={icon}
                     tabIndex={0}
+                    style={{ zIndex: 99 }}
                     className={"notiList flex flex-nowrap flex-col dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"}
                 >
                     <audio ref={soundAudioRef} id="mySound" src="/soundNoti.mp3"></audio>
