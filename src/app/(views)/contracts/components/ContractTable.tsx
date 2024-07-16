@@ -55,13 +55,13 @@ export default function ContractTable(
             title: 'Ngày nhận xe',
             dataIndex: 'start_date',
             key: 'id',
-            render: (date) => dayjs(date).format('DD/MM/YYYY')
+            render: (date) => <p>{new Date(date).toLocaleString()}</p>
         },
         {
             title: 'Ngày trả xe',
             dataIndex: 'end_date',
             key: 'id',
-            render: (date) => dayjs(date).format('DD/MM/YYYY')
+            render: (date) => <p>{new Date(date).toLocaleString()}</p>
         },
         {
             title: 'Số điện thoại',
