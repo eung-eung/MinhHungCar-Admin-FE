@@ -24,5 +24,9 @@
     "other": "Khác",
     "return_collateral_cash": "Trả tiền thế chấp",
     "remaining_pay": "Khoản thanh toán còn lại",
-    "collateral_cash": "Tiền thế chấp"
+    "collateral_cash": "Tiền thế chấp",
+    "renting": "Đang thuê",
+    "completed": "Đã hoàn thành",
+    "ordered": "Đã đặt",
+    "canceled": "Đã hủy"
 }
