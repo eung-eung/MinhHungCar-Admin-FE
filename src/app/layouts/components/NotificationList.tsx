@@ -70,8 +70,9 @@ export default function NotificationList() {
                     ), {
                         position: "bottom-left"
                     })
+                    soundAudioRef.current?.play()
                 }
-                soundAudioRef.current?.play()
+
             }
         }
         if (ws != null) {
@@ -123,7 +124,7 @@ export default function NotificationList() {
                 }
             }
         }
-
+        return () => conversationWs?.close()
     }, [ws, conversationWs])
     return (
         <>
@@ -151,7 +152,7 @@ export default function NotificationList() {
                                     <p style={{ fontWeight: 600, marginBottom: 7 }}>{item.title}</p>
                                     <p style={{ color: "#8f8f8f" }}>{item.content}</p>
                                     <p style={{ color: "#0866FF", fontWeight: 600, fontSize: '10px' }}>
-                                        {dayjs(item.created_at).format('DD-MM-YYYY')}
+                                        {item.created_at ? new Date(item.created_at).toLocaleString() : new Date().toLocaleString()}
                                     </p>
                                 </div>
                             </div>
