@@ -28,6 +28,8 @@ export default function ExpandRowRecievingCar(
     const axiosAuth = useAxiosAuth()
     const [previewOpen, setPreviewOpen] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState<any>('');
+    console.log('my status: ', status);
+
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj as FileType);

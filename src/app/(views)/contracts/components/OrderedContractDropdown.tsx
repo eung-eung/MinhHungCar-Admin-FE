@@ -1,6 +1,7 @@
 import { Button, Dropdown, Menu } from 'antd'
 import React from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
+import { useRouter } from 'next/navigation';
 export default function OrderedContractDropdown(
     {
         id,
@@ -12,8 +13,9 @@ export default function OrderedContractDropdown(
         rejectCustomerContract: (id: any) => void
     }
 ) {
+    const router = useRouter()
     const showCustomerContract = (id: any) => {
-        window.open('/contracts/' + id, '_blank')
+        router.push('/contracts/' + id)
     }
     return (
         <>
@@ -23,7 +25,7 @@ export default function OrderedContractDropdown(
                         items={[
                             {
                                 key: '1',
-                                label: 'Hợp đồng',
+                                label: 'Chi tiết',
                                 onClick: () =>
                                     showCustomerContract(id)
                             },

@@ -47,9 +47,9 @@ export default function ExpandRowCollateral(
     }
 
     const handleUpload: UploadProps['beforeUpload'] = ({ type, }) => {
-        const isJPG = type === 'image/jpeg' || 'image/png';
+        const isJPG = type === 'image/jpeg';
         if (!isJPG) {
-            errorNotify('Bạn chỉ được thêm ảnh dạng jpg/png');
+            errorNotify('Bạn chỉ được thêm ảnh dạng jpg');
         }
         return true
     }

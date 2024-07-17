@@ -12,7 +12,7 @@ export default function CompletedContractDropdown(
 ) {
     const router = useRouter()
     const showCustomerContract = (id: any) => {
-        window.open('/contracts/' + id, '_blank')
+        router.push('/contracts/' + id)
     }
 
     const openPaymentByContractId = (id: any) => {
@@ -27,7 +27,7 @@ export default function CompletedContractDropdown(
                         items={[
                             {
                                 key: '1',
-                                label: 'Hợp đồng',
+                                label: 'Chi tiết',
                                 onClick: () => showCustomerContract(id)
                             },
                             {
