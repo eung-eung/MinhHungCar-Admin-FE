@@ -317,7 +317,7 @@ export default function ContractPage({
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
                                     >
-                                        Quản lý các khoản thanh toán của chuyến đi
+                                        Quản lý các khoản thanh toán của hợp đồng
                                         <PriceCheckOutlinedIcon sx={{ color: '#fff', fontSize: 20, marginLeft: 2 }} />
                                     </button>
                                 </div>
