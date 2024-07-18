@@ -41,7 +41,8 @@ export default NextAuth({
                     id: user.user.id,
                     role: user.user.role,
                     access_token: user.access_token,
-                    refresh_token: user.refresh_token
+                    refresh_token: user.refresh_token,
+                    expires: user.access_token_expires_at
                 }
             }
             return token

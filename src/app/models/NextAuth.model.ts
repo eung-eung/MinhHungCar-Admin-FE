@@ -8,12 +8,13 @@ declare module "next-auth" {
         access_token: string;
         refresh_token: string;
         role?: string;
-
+        expires: string;
     }
 
     interface User extends DefaultUser {
         access_token: string,
-        refresh_token: string
+        refresh_token: string,
+        access_token_expires_at: string,
         user: {
             role: string,
             id: string
