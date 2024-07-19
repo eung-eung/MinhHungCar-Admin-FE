@@ -6,7 +6,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
-import { Button, Modal, Result, Spin, Tag, UploadFile } from 'antd';
+import { Button, Modal, Result, Spin, Table, Tag, UploadFile } from 'antd';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import { ICustomerContract } from '@/app/models/CustomerContract';
 import ExpandRowCollateral from '../components/ExpandRowCollateral';
@@ -17,6 +17,10 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import PriceCheckOutlinedIcon from '@mui/icons-material/PriceCheckOutlined';
 import { useRouter } from 'next/navigation';
+import { ICar } from '@/app/models/Car.model';
+import { TableProps } from 'antd/lib';
+import { ICarModel } from '@/app/models/CarModel.model';
+import { IAccount } from '@/app/models/Account.model';
 export default function ContractPage({
     params: { customerIdSlug }
 }: {
@@ -29,6 +33,9 @@ export default function ContractPage({
     const [customerContractDetail, setCustomerContractDetail] = useState<ICustomerContract>()
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [openContractPdf, setOpenContractPdf] = useState<boolean>(false)
+    const [openReplaceCarList, setOpenReplaceCarList] = useState<boolean>(false)
+    const [loadingReplaceCarList, setLoadingReplaceCarList] = useState<boolean>(true)
+    const [replaceCarList, setReplaceCarList] = useState<ICar[]>()
     const transform: TransformToolbarSlot = (slot: ToolbarSlot) => ({
         ...slot,
         Open: () => <></>,
@@ -52,7 +59,50 @@ export default function ContractPage({
         renderToolbar,
     });
     const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
-
+    const column: TableProps<ICar>['columns'] = [
+        // {
+        //     title: 'Tên chủ xe',
+        //     dataIndex: 'account',
+        //     key: 'id',
+        //     render: (account: IAccount) =>
+        //         <>{`${account.first_name + ' ' + account.last_name}`}</>
+        // },
+        {
+            title: 'Hãng xe',
+            dataIndex: 'car_model',
+            key: 'id',
+            render: (model: any) => <>{model.brand}</>
+        },
+        {
+            title: 'Mẫu xe',
+            dataIndex: 'car_model',
+            key: 'id',
+            render: (model: ICarModel) => <>{model.model}</>
+        },
+        {
+            title: 'Biển số xe',
+            dataIndex: 'license_plate',
+            key: 'id',
+        },
+        {
+            title: 'Giá cho thuê',
+            dataIndex: 'price',
+            key: 'id',
+            render: (price: Number) => <>{formatCurrency(price)}</>
+        },
+        {
+            title: 'Nơi đậu xe',
+            dataIndex: 'parking_lot',
+            key: 'id',
+            render: (parking) => t(`common:${parking}`)
+        },
+        {
+            title: 'Số chỗ',
+            dataIndex: 'car_model',
+            key: 'id',
+            render: (car_model: ICarModel) => car_model.number_of_seats
+        },
+    ]
     const getContractByCarId = async (id: any) => {
         setLoading(true)
         try {
@@ -66,6 +116,24 @@ export default function ContractPage({
         }
 
     }
+
+    const handleOpenReplaceCarList = async () => {
+        if (!openReplaceCarList) {
+            setLoadingReplaceCarList(true)
+            // const response = await axiosAuth.get(
+            //     `/admin/find_change_cars?start_date=${customerContractDetail?.start_date}&end_date=${customerContractDetail?.end_date}&fuels=${customerContractDetail?.car.fuel}&motions=${customerContractDetail?.car.motion}&number_of_seats=${customerContractDetail?.car.car_model.number_of_seats}&parking_lots=${customerContractDetail?.car.parking_lot}`
+            // )
+            const response = await axiosAuth.get(
+                `/admin/find_change_cars?start_date=2024-07-19T16:00:07Z&end_date=2024-07-20T16:00:07Z&fuels=oil,gas&motions=manual_transmission&number_of_seats=4,7,15&parking_lots=home,garage`
+            )
+            console.log('responses: ', response.data.data);
+            setReplaceCarList(response.data.data)
+            setLoadingReplaceCarList(false)
+        }
+        setOpenReplaceCarList(prev => !prev)
+    }
+
+
 
     const approveCustomerContract = async (id: any) => {
         const { confirm } = Modal
@@ -170,6 +238,7 @@ export default function ContractPage({
     }
     useEffect(() => {
         getContractDetailById(customerIdSlug)
+
     }, [customerIdSlug, refresh])
     return (
         <>
@@ -335,15 +404,24 @@ export default function ContractPage({
                                 /></div>
                             }
                             {
-                                <div className='mt-4 mb-7'>    <ExpandRowRecievingCar
-                                    id={customerIdSlug}
-                                    fileList={fileCarCondition}
-                                    status={customerContractDetail?.status}
-                                    expandLoading={loading}
-                                    setFileCarCondition={setFileCarCondition}
-                                    getDataForExpand={getContractDetailById}
-                                />
+                                <div className='mt-4 mb-7'>
+                                    <ExpandRowRecievingCar
+                                        id={customerIdSlug}
+                                        fileList={fileCarCondition}
+                                        status={customerContractDetail?.status}
+                                        expandLoading={loading}
+                                        setFileCarCondition={setFileCarCondition}
+                                        getDataForExpand={getContractDetailById}
+                                    />
                                 </div>
+                            }
+                            {
+                                customerContractDetail?.status === 'ordered' &&
+                                <Button
+                                    className='mb-5'
+                                    onClick={handleOpenReplaceCarList}>
+                                    {!openReplaceCarList ? 'Thay đổi xe cho thuê' : 'Đóng'}
+                                </Button>
                             }
                             <Button
                                 className='mb-5'
@@ -368,6 +446,14 @@ export default function ContractPage({
                                 plugins={[defaultLayoutPluginInstance]}
                             />
                         </Worker>
+                    }
+                    {
+                        !error && openReplaceCarList &&
+                        <Table
+                            dataSource={replaceCarList}
+                            loading={loadingReplaceCarList}
+                            columns={column}
+                        />
                     }
                 </>
             }
