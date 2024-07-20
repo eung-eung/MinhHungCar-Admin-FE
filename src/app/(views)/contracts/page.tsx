@@ -17,12 +17,19 @@ export default function Contracts() {
     const [contractData, setContractData] = useState<ICustomerContract[]>()
     const [loading, setLoading] = useState<boolean>(true)
     const getListContractByStatus = async (status: any) => {
-        setLoading(true)
-        const response = await axiosAuth.get(
-            `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
-        )
-        setContractData(response.data.data.contracts)
-        setLoading(false)
+        try {
+            setLoading(true)
+            const response = await axiosAuth.get(
+                `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
+            )
+            setContractData(response.data.data.contracts)
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+
+            setLoading(false)
+        }
+
     }
     useEffect(() => {
         getListContractByStatus(filter)

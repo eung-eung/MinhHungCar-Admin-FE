@@ -45,12 +45,17 @@ export default function PendingApprovalDropdown(
     const handleRejectCar = async (id: any) => {
         showConfirmModal("Bạn có muốn từ chối xe này?")
             .then(async () => {
-                const response = await axiosAuth.put('/admin/car_application', {
-                    car_id: id,
-                    action: "reject"
-                } as IApproveRequest)
-                if (response.status === 200) {
-                    setRefresh(prev => !prev)
+                try {
+                    const response = await axiosAuth.put('/admin/car_application', {
+                        car_id: id,
+                        action: "reject"
+                    } as IApproveRequest)
+                    if (response.status === 200) {
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+                    console.log(error);
+
                 }
             })
 

@@ -28,20 +28,32 @@ export default function Cars() {
 
     const getCarList = async (filter: any) => {
         setCarData([])
-        setLoading(true)
-        const carList = await axiosAuth.get(
-            `/admin/cars?car_status=${filter}`
-        )
-        setCarData(carList.data.data.cars)
-        setLoading(false)
+        try {
+            setLoading(true)
+            const carList = await axiosAuth.get(
+                `/admin/cars?car_status=${filter}`
+            )
+            setCarData(carList.data.data.cars)
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+
+            setLoading(false)
+        }
+
     }
 
     const getCurrentSeats = async () => {
-        setLoadingCurrentSeats(true)
-        const currentSeats = await axiosAuth.get('/admin/garage_config')
-        const filterData = removeKeys(currentSeats.data.data, keyToRemove)
-        setCurrentSeats(filterData)
-        setLoadingCurrentSeats(false)
+        try {
+            setLoadingCurrentSeats(true)
+            const currentSeats = await axiosAuth.get('/admin/garage_config')
+            const filterData = removeKeys(currentSeats.data.data, keyToRemove)
+            setCurrentSeats(filterData)
+            setLoadingCurrentSeats(false)
+        } catch (error) {
+            setLoadingCurrentSeats(false)
+        }
+
 
     }
     useEffect(() => {

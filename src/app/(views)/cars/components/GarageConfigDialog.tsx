@@ -29,11 +29,16 @@ export default function GarageConfigDialog(
     })
     const keysToRemove = ["current_4_seats", "current_7_seats", "current_15_seats", "current_total"];
     const getGarageConfig = async () => {
-        setLoading(true)
-        const response = await axiosAuth.get('/admin/garage_config')
-        const filterData = removeKeys(response.data.data, keysToRemove)
-        setGarageConfig(filterData)
-        setLoading(false)
+        try {
+            setLoading(true)
+            const response = await axiosAuth.get('/admin/garage_config')
+            const filterData = removeKeys(response.data.data, keysToRemove)
+            setGarageConfig(filterData)
+            setLoading(false)
+        } catch (error) {
+            console.log(error);
+            setLoading(false)
+        }
     }
     useEffect(() => {
         if (open) {

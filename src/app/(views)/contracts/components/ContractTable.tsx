@@ -122,42 +122,48 @@ export default function ContractTable(
 
     const approveCustomerContract = async (id: any) => {
         const { confirm } = Modal
-        const contractResponse = await axiosAuth.get("/admin/contract/" + id)
-        const contractDetail: ICustomerContract = contractResponse.data.data
+        try {
+            const contractResponse = await axiosAuth.get("/admin/contract/" + id)
+            const contractDetail: ICustomerContract = contractResponse.data.data
 
-        if (contractDetail.collateral_type === "cash"
-            && contractDetail.receiving_car_images.length < 1
-        ) {
-            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
-            return
-        }
-        if (contractDetail.collateral_type === "motorbike"
-            &&
-            (
-                contractDetail.receiving_car_images.length < 1
-                || contractDetail.collateral_asset_images.length < 1
-            )) {
-            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
-            return
-        }
-        confirm({
-            title: 'Bạn có muốn đưa vào đang thuê?',
-            onOk: async () => {
-                const response = await axiosAuth.put('/admin/contract', {
-                    customer_contract_id: id,
-                    action: "approve"
-                })
-
-                if (response.status === 200) {
-                    setRefresh(prev => !prev)
-                    sucessNotify('Cập nhật hợp đồng thành công')
-                    setExpandedRowKeys([])
-                }
-            },
-            onCancel: () => {
-
+            if (contractDetail.collateral_type === "cash"
+                && contractDetail.receiving_car_images.length < 1
+            ) {
+                errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+                return
             }
-        })
+            if (contractDetail.collateral_type === "motorbike"
+                &&
+                (
+                    contractDetail.receiving_car_images.length < 1
+                    || contractDetail.collateral_asset_images.length < 1
+                )) {
+                errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+                return
+            }
+            confirm({
+                title: 'Bạn có muốn đưa vào đang thuê?',
+                onOk: async () => {
+                    const response = await axiosAuth.put('/admin/contract', {
+                        customer_contract_id: id,
+                        action: "approve"
+                    })
+
+                    if (response.status === 200) {
+                        setRefresh(prev => !prev)
+                        sucessNotify('Cập nhật hợp đồng thành công')
+                        setExpandedRowKeys([])
+                    }
+                },
+                onCancel: () => {
+
+                }
+            })
+        } catch (error) {
+            console.log(error);
+
+        }
+
 
     }
 

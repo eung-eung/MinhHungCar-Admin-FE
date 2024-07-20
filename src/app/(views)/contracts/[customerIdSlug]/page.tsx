@@ -213,12 +213,17 @@ export default function ContractPage({
         }
     }
     const handleOpenDetailDialog = async (id: any) => {
-        setOpen(true);
-        setLoadingDialog(true);
-        const carDetail = await axiosAuth.get(`/car/${id}`)
-        const detail: ICar = carDetail.data.data
-        setCarDetail(detail)
-        setLoadingDialog(false)
+        try {
+            setOpen(true);
+            setLoadingDialog(true);
+            const carDetail = await axiosAuth.get(`/car/${id}`)
+            const detail: ICar = carDetail.data.data
+            setCarDetail(detail)
+            setLoadingDialog(false)
+        } catch (error) {
+            console.log(error);
+
+        }
 
     };
     const approveCustomerContract = async (id: any) => {
@@ -244,14 +249,18 @@ export default function ContractPage({
         confirm({
             title: 'Bạn có muốn đồng ý cho thuê?',
             onOk: async () => {
-                const response = await axiosAuth.put('/admin/contract', {
-                    customer_contract_id: id,
-                    action: "approve"
-                })
+                try {
+                    const response = await axiosAuth.put('/admin/contract', {
+                        customer_contract_id: id,
+                        action: "approve"
+                    })
 
-                if (response.status === 200) {
-                    setRefresh(prev => !prev)
-                    sucessNotify('Cập nhật hợp đồng thành công')
+                    if (response.status === 200) {
+                        setRefresh(prev => !prev)
+                        sucessNotify('Cập nhật hợp đồng thành công')
+                    }
+                } catch (error) {
+
                 }
             },
             onCancel: () => {

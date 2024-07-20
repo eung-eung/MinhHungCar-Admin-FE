@@ -36,34 +36,38 @@ export default function Dashboard() {
     const [loadingItems, setLoadingItems] = useState<boolean>(true)
     const getItems = async () => {
         setLoadingItems(true)
-        const response = await axiosAuth.get(
-            '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=60&rented_cars_back_off_day=60'
-        )
-        console.log(response.data.data);
-        setItems({
-            totalActiveCustomers: {
-                title: response.data.data.total_active_customers,
-                description: "Số lượng khách hàng",
-                header: <Person4RoundedIcon sx={{ color: '#20AEF3' }} />,
-            },
-            totalActivePartners: {
-                title: response.data.data.total_active_partners,
-                description: "Số lượng đối tác",
-                header: <HandshakeRoundedIcon sx={{ color: '#F2C8ED' }} />,
-            },
-            totalCustomerContracts: {
-                title: response.data.data.total_customer_contracts,
-                description: "Tổng hợp đồng thuê xe",
-                header: <ReceiptLongRoundedIcon sx={{ color: '#A9DFD8' }} />,
+        try {
+            const response = await axiosAuth.get(
+                '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=60&rented_cars_back_off_day=60'
+            )
+            setItems({
+                totalActiveCustomers: {
+                    title: response.data.data.total_active_customers,
+                    description: "Số lượng khách hàng",
+                    header: <Person4RoundedIcon sx={{ color: '#20AEF3' }} />,
+                },
+                totalActivePartners: {
+                    title: response.data.data.total_active_partners,
+                    description: "Số lượng đối tác",
+                    header: <HandshakeRoundedIcon sx={{ color: '#F2C8ED' }} />,
+                },
+                totalCustomerContracts: {
+                    title: response.data.data.total_customer_contracts,
+                    description: "Tổng hợp đồng thuê xe",
+                    header: <ReceiptLongRoundedIcon sx={{ color: '#A9DFD8' }} />,
 
-            },
-            revenue: {
-                title: formatCurrency(response.data.data.revenue),
-                description: "Tổng doanh thu",
-                header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
-            },
-        })
-        setLoadingItems(false)
+                },
+                revenue: {
+                    title: formatCurrency(response.data.data.revenue),
+                    description: "Tổng doanh thu",
+                    header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
+                },
+            })
+            setLoadingItems(false)
+        } catch (error) {
+            console.log(error);
+
+        }
     }
     useEffect(() => {
         getItems()

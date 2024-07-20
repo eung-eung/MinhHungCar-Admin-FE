@@ -44,12 +44,16 @@ export default function CarInformation(
     const handleBringCarToActive = async (id: any) => {
         showConfirmModal("Bạn có muốn đưa xe vào hoạt động?")
             .then(async () => {
-                const response = await axiosAuth.put('/admin/car_application', {
-                    car_id: id,
-                    action: "approve_delivery"
-                } as IApproveRequest)
-                if (setRefresh) {
-                    setRefresh(prev => !prev)
+                try {
+                    const response = await axiosAuth.put('/admin/car_application', {
+                        car_id: id,
+                        action: "approve_delivery"
+                    } as IApproveRequest)
+                    if (setRefresh) {
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
             })
     }
@@ -82,15 +86,21 @@ export default function CarInformation(
     const handleRejectCar = async (id: any) => {
         showConfirmModal("Bạn có muốn từ chối xe này?")
             .then(async () => {
-                const response = await axiosAuth.put('/admin/car_application', {
-                    car_id: id,
-                    action: "reject"
-                } as IApproveRequest)
-                if (response.status === 200) {
-                    if (setRefresh) {
-                        setRefresh(prev => !prev)
+                try {
+                    const response = await axiosAuth.put('/admin/car_application', {
+                        car_id: id,
+                        action: "reject"
+                    } as IApproveRequest)
+                    if (response.status === 200) {
+                        if (setRefresh) {
+                            setRefresh(prev => !prev)
+                        }
                     }
+                } catch (error) {
+                    console.log(error);
+
                 }
+
             })
 
     }

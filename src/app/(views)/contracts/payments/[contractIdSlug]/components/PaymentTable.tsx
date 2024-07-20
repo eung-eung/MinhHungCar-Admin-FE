@@ -38,13 +38,17 @@ export default function PaymentTable(
         confirm({
             title: 'Bạn có muốn xóa thanh toán này?',
             onOk: async () => {
-                const response = await axiosAuth.put('/admin/customer_payment/cancel', {
-                    customer_payment_id: id,
-                })
+                try {
+                    const response = await axiosAuth.put('/admin/customer_payment/cancel', {
+                        customer_payment_id: id,
+                    })
 
-                if (response.status === 200) {
-                    sucessNotify('Đã xóa thành công!')
-                    setRefresh(prev => !prev)
+                    if (response.status === 200) {
+                        sucessNotify('Đã xóa thành công!')
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+
                 }
             },
             onCancel: () => {

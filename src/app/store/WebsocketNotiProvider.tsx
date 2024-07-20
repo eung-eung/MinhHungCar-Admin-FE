@@ -41,8 +41,13 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
 
     // get notification list with api
     const getNotificationList = async () => {
-        const response = await axiosAuth.get('/admin/notifications?offset=0&limit=100')
-        setNotifications(response.data.data)
+        try {
+            const response = await axiosAuth.get('/admin/notifications?offset=0&limit=100')
+            setNotifications(response.data.data)
+        } catch (error) {
+            console.log(error);
+
+        }
     }
     // onmessage with notification socket
     const handleSocketMessage = (event: MessageEvent) => {
