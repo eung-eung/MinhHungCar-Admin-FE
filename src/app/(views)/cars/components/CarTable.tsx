@@ -34,15 +34,7 @@ export default function CarTable(
     const [carDetail, setCarDetail] = useState<ICar>()
     const router = useRouter()
     const { t } = useTranslation()
-    const handleOpenDetailDialog = async (id: any) => {
-        setOpen(true);
-        setLoadingDialog(true);
-        const carDetail = await axiosAuth.get(`/car/${id}`)
-        const detail: ICar = carDetail.data.data
-        setCarDetail(detail)
-        setLoadingDialog(false)
 
-    };
 
     const columns: TableProps<ICar>['columns'] = [
         {
