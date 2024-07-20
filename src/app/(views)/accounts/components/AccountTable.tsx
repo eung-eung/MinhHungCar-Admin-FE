@@ -33,22 +33,6 @@ export default function AccountTable(
     const [accountDetail, setAccountDetail] = useState<IAccount>()
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true)
 
-    const showConfirmModal = (title: any) => {
-        const { confirm } = Modal
-        return new Promise((res, rej) => {
-            confirm({
-                title: title,
-                onOk: () => {
-                    res(true)
-                },
-                cancelText: "Hủy",
-                onCancel: () => {
-                    rej(true)
-                }
-            })
-        })
-    }
-
     const handleOpenDetailDialog = async (id: any) => {
         setOpen(true)
         setLoadingDialog(true)
