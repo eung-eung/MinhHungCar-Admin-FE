@@ -52,25 +52,35 @@ export default function RatingTable() {
     const openCarDetail = async (id: any) => {
         setOpen(true)
         setLoadingDialog(true)
-        const response = await axiosAuth.get("/car/" + id)
-        setCarDetail(response.data.data)
-        setLoadingDialog(false)
+        try {
+            const response = await axiosAuth.get("/car/" + id)
+            setCarDetail(response.data.data)
+            setLoadingDialog(false)
+        } catch (error) {
+            setLoadingDialog(false)
+        }
+
     }
     const getFeedbackList = async () => {
-        const response = await axiosAuth.get('/admin/feedbacks?offset=0&limit=10')
-        console.log(response.data.data.feedbacks);
-        const feedbacks: IFeedback[] = response.data.data.feedbacks
-        const licensePlates = await Promise.all(feedbacks.map(async (fb: IFeedback) => {
-            const response = await axiosAuth.get('/car/' + fb.car_id)
-            return {
-                ...fb,
-                car: {
-                    ...response.data.data
+        try {
+            const response = await axiosAuth.get('/admin/feedbacks?offset=0&limit=10')
+            const feedbacks: IFeedback[] = response.data.data.feedbacks
+            const licensePlates = await Promise.all(feedbacks.map(async (fb: IFeedback) => {
+                const response = await axiosAuth.get('/car/' + fb.car_id)
+                return {
+                    ...fb,
+                    car: {
+                        ...response.data.data
+                    }
                 }
-            }
-        }))
+            }))
 
-        setFeedbackList(licensePlates)
+            setFeedbackList(licensePlates)
+        } catch (error) {
+            console.log('error: ', error);
+
+        }
+
     }
     const columns: TableProps<IFeedback>['columns'] = [
         {
