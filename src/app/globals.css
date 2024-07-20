@@ -3,6 +3,11 @@
 @tailwind utilities;
 @import './nprogress.css';
 
+html {
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: #fff;
   --darkBackground: #000000;
