@@ -34,9 +34,6 @@
 
 .infor {
     font-size: 17px;
-    height: 100px;
-    overflow: auto;
-    scrollbar-width: thin;
 }
 
 .caveats {

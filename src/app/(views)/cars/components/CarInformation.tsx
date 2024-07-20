@@ -292,7 +292,7 @@ export default function CarInformation(
                 <p className={classes.label}>
                     Mô tả
                 </p>
-                <p className={classes.infor}>
+                <p className={classes.infor} style={{ height: '100px', overflow: 'auto' }}>
                     {detail?.description}
                 </p>
             </div>
