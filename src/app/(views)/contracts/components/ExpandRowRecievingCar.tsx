@@ -89,9 +89,9 @@ export default function ExpandRowRecievingCar(
 
     }
     const handleUpload: UploadProps['beforeUpload'] = ({ type, }) => {
-        const isJPG = type === 'image/jpeg';
+        const isJPG = type === 'image/jpeg' || type === 'image/png';
         if (!isJPG) {
-            errorNotify('Bạn chỉ được thêm ảnh jpg');
+            errorNotify('Bạn chỉ được thêm ảnh jpg/png');
 
         }
         return true
