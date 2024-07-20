@@ -31,7 +31,7 @@ export default function OrderedContractDropdown(
                             },
                             {
                                 key: '2',
-                                label: 'Đưa vào đang thuê',
+                                label: 'Đồng ý cho thuê',
                                 onClick: () =>
                                     approveCustomerContract(id)
                             },
