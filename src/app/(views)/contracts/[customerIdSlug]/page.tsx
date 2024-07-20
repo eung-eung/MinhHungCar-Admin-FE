@@ -21,6 +21,11 @@ import { ICar } from '@/app/models/Car.model';
 import { TableProps } from 'antd/lib';
 import { ICarModel } from '@/app/models/CarModel.model';
 import MultipleSelect from './components/MultipleSelect';
+import ReplaceCarDropdown from './components/ReplaceCarDropdown';
+import Dialog from '@/app/components/Modal';
+import CarDialog from '../../cars/components/CarDialog';
+import AccountDialog from '../../accounts/components/AccountDialog';
+import { IAccount } from '@/app/models/Account.model';
 type Option = {
     label: string,
     valeu: string
@@ -40,6 +45,7 @@ export default function ContractPage({
     const [openReplaceCarList, setOpenReplaceCarList] = useState<boolean>(false)
     const [loadingReplaceCarList, setLoadingReplaceCarList] = useState<boolean>(true)
     const [replaceCarList, setReplaceCarList] = useState<ICar[]>()
+    const [open, setOpen] = useState<boolean>(false)
     const transform: TransformToolbarSlot = (slot: ToolbarSlot) => ({
         ...slot,
         Open: () => <></>,
@@ -57,10 +63,23 @@ export default function ContractPage({
     const { t } = useTranslation()
     const router = useRouter()
     const [fuelOptions, setFuelOptions] = useState<Option[]>()
-    const [seatOPtions, setSeatOptions] = useState<Option[]>()
     const [motionOptions, setMotionOptions] = useState<Option[]>()
     const [parkingLotOptions, setParkingLotOption] = useState<Option[]>()
-    const [paramReplaceCar, setParamReplaceCar] = useState<any>()
+    const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
+    const [carDetail, setCarDetail] = useState<ICar>()
+    const [openAccountDialog, setOpenAccountDialog] = useState<boolean>(false)
+    const [loadingAccountDialog, setLoadingAccountDialog] = useState<boolean>(false)
+    const [accountDetail, setAccountDetail] = useState<IAccount>()
+    const [paramReplaceCar, setParamReplaceCar] = useState<any>(
+        {
+            start_date: '',
+            end_date: '',
+            fuels: '',
+            parking_lots: '',
+            motions: '',
+            number_of_seats: ''
+        }
+    )
     const renderToolbar = (Toolbar: (props: ToolbarProps) => React.ReactElement) => (
         <Toolbar>{renderDefaultToolbar(transform)}</Toolbar>
     );
@@ -68,7 +87,6 @@ export default function ContractPage({
         renderToolbar,
     });
     const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
-
     const column: TableProps<ICar>['columns'] = [
         {
             title: 'Hãng xe',
@@ -105,35 +123,104 @@ export default function ContractPage({
             key: 'id',
             render: (car_model: ICarModel) => car_model.number_of_seats
         },
-    ]
-    const getContractByCarId = async (id: any) => {
-        setLoading(true)
-        try {
-            const response = await axiosAuth.get('/admin/contract/' + id)
-            setPdfUrl(response.data.data.url)
-            setLoading(false)
-            setCustomerContractDetail(response.data.data)
-        } catch (error: any) {
-            setError(error.response.status)
-
+        {
+            title: '',
+            dataIndex: 'action',
+            key: 'id',
+            render: (_, record) => <ReplaceCarDropdown
+                setOpenContractPdf={setOpenContractPdf}
+                changeCarForCustomer={() => changeCarForCustomer(record.id, customerIdSlug)}
+                handleOpenAccountDetailDialog={() => handleOpenAccountDetailDialog(record.partner_id)}
+                handleOpenDetailDialog={() => handleOpenDetailDialog(record.id)} />
         }
+    ]
+    const changeCarForCustomer = async (carId: any, customerContractId: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: 'Bạn có muốn thay bằng xe này?',
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    setOpenContractPdf(false)
+                    const response = await axiosAuth.post('/admin/customer_contract/change_car', {
+                        customer_contract_id: parseInt(customerContractId),
+                        new_car_id: parseInt(carId)
+                    })
+                    console.log('response change: ', response.data.data);
+                    setRefresh(prev => !prev)
+                } catch (error) {
+
+                }
+            },
+            onCancel: () => {
+
+            }
+        })
 
     }
-
     const handleOpenReplaceCarList = async () => {
-        if (!openReplaceCarList) {
-            setLoadingReplaceCarList(true)
+        setOpenReplaceCarList(true)
+        setLoadingReplaceCarList(true)
+        try {
             const response = await axiosAuth.get(
-                `/admin/find_change_cars?start_date=${customerContractDetail?.start_date}&end_date=${customerContractDetail?.end_date}&fuels=${paramReplaceCar.fuels.join(',')}&motions=${paramReplaceCar.motions.join(',')}&number_of_seats=${paramReplaceCar.number_of_seats.join(',')}&parking_lots=${paramReplaceCar.parking_lots.join(',')}`
+                `/admin/find_change_cars`, {
+                params: {
+                    start_date: customerContractDetail?.start_date,
+                    end_date: customerContractDetail?.end_date,
+                    fuels: paramReplaceCar.fuels && paramReplaceCar.fuels.join(','),
+                    motions: paramReplaceCar.motions && paramReplaceCar.motions.join(','),
+                    number_of_seats: paramReplaceCar.number_of_seats && paramReplaceCar.number_of_seats.join(','),
+                    parking_lots: paramReplaceCar.parking_lots && paramReplaceCar.parking_lots.join(',')
+                }
+            }
             )
+
             setReplaceCarList(response.data.data)
             setLoadingReplaceCarList(false)
+        } catch (error: any) {
+            if (error.response.data.error_code === 10049) {
+                errorNotify("Ngày bắt đầu phải sau thời gian hiện tại")
+                setOpenReplaceCarList(true)
+                setLoadingReplaceCarList(false)
+            }
         }
-        setOpenReplaceCarList(prev => !prev)
     }
+    const handleViewContract = async (id: any) => {
 
+        if (!openContractPdf) {
+            try {
+                const response = await axiosAuth.get(
+                    '/admin/contract/' + id
+                )
+                setPdfUrl(response.data.data.url)
 
+            } catch (error) {
+                setOpenContractPdf(prev => !prev)
+            }
+        }
+        setOpenContractPdf(prev => !prev)
+    }
+    const handleOpenAccountDetailDialog = async (id: any) => {
+        try {
+            setOpenAccountDialog(true)
+            setLoadingAccountDialog(true)
+            const response = await axiosAuth.get('/admin/account/' + id)
+            setAccountDetail(response.data.data)
+            setLoadingAccountDialog(false)
+        } catch (error) {
+            console.log(error);
 
+        }
+    }
+    const handleOpenDetailDialog = async (id: any) => {
+        setOpen(true);
+        setLoadingDialog(true);
+        const carDetail = await axiosAuth.get(`/car/${id}`)
+        const detail: ICar = carDetail.data.data
+        setCarDetail(detail)
+        setLoadingDialog(false)
+
+    };
     const approveCustomerContract = async (id: any) => {
         const { confirm } = Modal
         const contractResponse = await axiosAuth.get("/admin/contract/" + id)
@@ -155,7 +242,7 @@ export default function ContractPage({
             return
         }
         confirm({
-            title: 'Bạn có muốn đưa vào đang thuê?',
+            title: 'Bạn có muốn đồng ý cho thuê?',
             onOk: async () => {
                 const response = await axiosAuth.put('/admin/contract', {
                     customer_contract_id: id,
@@ -203,9 +290,8 @@ export default function ContractPage({
             const response = await axiosAuth.get(
                 '/admin/contract/' + id
             )
-            setPdfUrl(response.data.data.url)
+            getMetadataFromCar()
             setCustomerContractDetail(response.data.data)
-            console.log(response.data.data);
 
             setFileList(
                 response.data
@@ -260,34 +346,33 @@ export default function ContractPage({
     }
 
     const getMetadataFromCar = async () => {
-        const response = await axiosAuth.get('/register_car_metadata')
-        setParkingLotOption(response.data.parking_lot.map((data: any) => (
-            {
-                label: data.text,
-                value: data.code
-            }
-        )))
-        setMotionOptions(response.data.motions.map((data: any) => (
-            {
-                label: data.text,
-                value: data.code
-            }
-        )))
-        setFuelOptions(response.data.fuels.map((data: any) => (
-            {
-                label: data.text,
-                value: data.code
-            }
-        )))
+        try {
+            const response = await axiosAuth.get('/register_car_metadata')
+            setParkingLotOption(response.data.parking_lot.map((data: any) => (
+                {
+                    label: data.text,
+                    value: data.code
+                }
+            )))
+            setMotionOptions(response.data.motions.map((data: any) => (
+                {
+                    label: data.text,
+                    value: data.code
+                }
+            )))
+            setFuelOptions(response.data.fuels.map((data: any) => (
+                {
+                    label: data.text,
+                    value: data.code
+                }
+            )))
+        } catch (error) {
+            console.log(error);
+        }
     }
     useEffect(() => {
         getContractDetailById(customerIdSlug)
-
     }, [customerIdSlug, refresh])
-
-    useEffect(() => {
-        getMetadataFromCar()
-    }, [])
     return (
         <>
             {
@@ -297,6 +382,30 @@ export default function ContractPage({
             {
                 !loading &&
                 <>
+                    <Dialog
+                        width='50%'
+                        loading={loadingDialog}
+                        open={open}
+                        setOpen={setOpen}
+                        title='Thông tin xe'
+                        isIntercept={false}
+                    >
+                        <CarDialog
+                            detail={carDetail}
+                        />
+                    </Dialog>
+                    <Dialog
+                        width='45%'
+                        loading={loadingAccountDialog}
+                        setOpen={setOpenAccountDialog}
+                        title="Chi tiết tài khoản"
+                        open={openAccountDialog}
+                        isIntercept={false}
+                    >
+                        <AccountDialog
+                            detail={accountDetail}
+                        />
+                    </Dialog>
                     {
                         !error && <>
                             <div className='flex justify-between'>
@@ -354,9 +463,9 @@ export default function ContractPage({
                                         }</p>
                                     }
                                 </div>
-                                <div>
+                                <div className='flex flex-col items-baseline'>
                                     {customerContractDetail?.status === 'ordered' &&
-                                        <div className='flex justify-end'>
+                                        <div className='flex justify-between w-full'>
                                             <button
                                                 style={{
                                                     color: '#fff',
@@ -419,9 +528,11 @@ export default function ContractPage({
                                             border: 'none',
                                             cursor: 'pointer',
                                             background: 'orange',
-                                            marginRight: '20px'
+                                            width: '100%'
                                         }}
-                                        onClick={() => router.push('/contracts/payments/' + customerIdSlug)}
+                                        onClick={
+                                            () => router.push('/contracts/payments/' + customerIdSlug)
+                                        }
                                         className="inline-flex
                                                 animate-shimmer 
                                                 items-center 
@@ -463,71 +574,103 @@ export default function ContractPage({
                                     />
                                 </div>
                             }
+
                             {
                                 customerContractDetail?.status === 'ordered' &&
-                                <>
-                                    <h1
-                                        style={{
-                                            fontWeight: 600,
-                                            marginBottom: 10
-                                        }}
-                                    >
-                                        Tìm xe mới để thay thế
-                                    </h1>
-                                    <div className='grid grid-cols-2 gap-5'>
-                                        <MultipleSelect
-                                            handleChange={handleChangeFuels}
-                                            placeholder={'Chọn nhiêu liệu'}
-                                            options={fuelOptions}
-                                        />
-                                        <MultipleSelect
-                                            handleChange={handleChangeMotions}
-                                            placeholder={'Chọn động cơ'}
-                                            options={motionOptions}
-                                        />
-                                        <MultipleSelect
-                                            handleChange={handleChangeSeats}
-                                            placeholder={'Chọn số chỗ ngồi'}
-                                            options={[
-                                                {
-                                                    label: "4 chỗ",
-                                                    value: 4
-                                                },
-                                                {
-                                                    label: '7 chỗ',
-                                                    value: 7
-                                                },
-                                                {
-                                                    label: '15 chỗ',
-                                                    value: 15
-                                                }
-                                            ]}
-                                        />
-                                        <MultipleSelect
-                                            handleChange={handleChangeParkingLots}
-                                            placeholder={'Chọn chỗ để xe'}
-                                            options={parkingLotOptions}
-                                        />
+                                <><h1
+                                    style={{
+                                        fontWeight: 600,
+                                        marginBottom: 10,
+                                        color: "#9250fa"
+                                    }}
+                                >
+                                    Tìm xe mới để thay thế
+                                </h1>
+                                    <div style={{
+                                        background: '#fff',
+                                        padding: 10,
+                                        border: '1px solid #efefef'
+                                    }}>
+
+                                        <div className='grid grid-cols-2 gap-5'>
+                                            <MultipleSelect
+                                                handleChange={handleChangeFuels}
+                                                placeholder={'Chọn nhiêu liệu'}
+                                                options={fuelOptions}
+                                            />
+                                            <MultipleSelect
+                                                handleChange={handleChangeMotions}
+                                                placeholder={'Chọn động cơ'}
+                                                options={motionOptions}
+                                            />
+                                            <MultipleSelect
+                                                handleChange={handleChangeSeats}
+                                                placeholder={'Chọn số chỗ ngồi'}
+                                                options={[
+                                                    {
+                                                        label: "4 chỗ",
+                                                        value: 4
+                                                    },
+                                                    {
+                                                        label: '7 chỗ',
+                                                        value: 7
+                                                    },
+                                                    {
+                                                        label: '15 chỗ',
+                                                        value: 15
+                                                    }
+                                                ]}
+                                            />
+                                            <MultipleSelect
+                                                handleChange={handleChangeParkingLots}
+                                                placeholder={'Chọn chỗ để xe'}
+                                                options={parkingLotOptions}
+                                            />
+                                        </div>
+                                        {
+                                            customerContractDetail?.status === 'ordered' &&
+                                            <>
+                                                <Button
+                                                    style={{ width: '200px' }}
+                                                    className='mb-5 mt-5'
+                                                    onClick={handleOpenReplaceCarList}>
+                                                    Tìm xe
+                                                </Button>
+                                            </>
+
+                                        }
+                                        {
+                                            !error && openReplaceCarList &&
+                                            <Table
+                                                dataSource={replaceCarList}
+                                                loading={loadingReplaceCarList}
+                                                columns={column}
+                                            />
+                                        }
                                     </div>
                                 </>
                             }
-                            <div className='flex flex-col'>
-                                {
-                                    customerContractDetail?.status === 'ordered' &&
-                                    <Button
-                                        style={{ width: '200px' }}
-                                        className='mb-5 mt-5'
-                                        onClick={handleOpenReplaceCarList}>
-                                        {!openReplaceCarList ? 'Tìm danh sách xe' : 'Đóng'}
-                                    </Button>
-                                }
-                                <Button
-                                    style={{ width: '200px' }}
-                                    className='mb-5'
-                                    onClick={() => setOpenContractPdf(prev => !prev)}>
-                                    {!openContractPdf ? 'Xem hợp đồng' : 'Đóng'}
-                                </Button>
-                            </div>
+                            <Button
+                                type='primary'
+                                style={{ width: '200px' }}
+                                className='mb-5 mt-10'
+                                onClick={() => handleViewContract(customerIdSlug)}>
+                                {!openContractPdf ? 'Xem hợp đồng' : 'Đóng'}
+                            </Button>
+                            {
+                                openContractPdf &&
+                                <div style={{
+                                    minHeight: '500px'
+                                }}>
+                                    <Worker
+                                        workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                                        <Viewer
+                                            fileUrl={pdfUrl}
+                                            plugins={[defaultLayoutPluginInstance]}
+                                        />
+                                    </Worker>
+                                </div>
+                            }
                         </>
                     }
                     {
@@ -538,23 +681,8 @@ export default function ContractPage({
                             subTitle="Xin lỗi, không tìm thấy hợp đồng nào"
                         />
                     }
-                    {
-                        !error && openContractPdf &&
-                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                            <Viewer
-                                fileUrl={pdfUrl}
-                                plugins={[defaultLayoutPluginInstance]}
-                            />
-                        </Worker>
-                    }
-                    {
-                        !error && openReplaceCarList &&
-                        <Table
-                            dataSource={replaceCarList}
-                            loading={loadingReplaceCarList}
-                            columns={column}
-                        />
-                    }
+
+
                 </>
             }
         </>
