@@ -8,6 +8,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { sucessNotify } from '@/app/utils/toast'
 import { FloatingNav } from '@/app/components/FloatingNavbar'
 import PlaylistRemoveRoundedIcon from '@mui/icons-material/PlaylistRemoveRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 const navItems = [
     {
         name: "Bỏ chọn tất cả",
@@ -161,6 +162,13 @@ export default function PaymentTable(
                 setSelectedRowKeys={setSelectedRowKeys}
                 setSelectedRowsState={setSelectedRowsState}
             />
+            <Button
+                size='middle'
+                onClick={() => setRefresh(prev => !prev)}
+                type='default'
+                className='mr-5'>
+                <RefreshRoundedIcon />
+            </Button>
             <Table
                 loading={loading}
                 rowKey={(record) => record.id}
