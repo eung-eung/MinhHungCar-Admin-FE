@@ -372,6 +372,7 @@ export default function PaymentDetail({
                     </div>
                 </div>
                 <PaymentTable
+                    contractId={contractIdSlug}
                     loading={loadingPayment}
                     getPaymentUrl={getPaymentUrl}
                     listPayment={listPayment}

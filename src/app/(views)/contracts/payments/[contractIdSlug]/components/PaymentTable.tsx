@@ -20,12 +20,14 @@ export default function PaymentTable(
         listPayment,
         getPaymentUrl,
         setRefresh,
-        loading
+        loading,
+        contractId
     }: {
         listPayment?: IPayment[],
         getPaymentUrl: (id: any) => void,
         setRefresh: React.Dispatch<SetStateAction<boolean>>,
-        loading: boolean
+        loading: boolean,
+        contractId: any
     }
 ) {
     const { t } = useTranslation()
@@ -152,7 +154,7 @@ export default function PaymentTable(
                 url='/admin/customer_payment/multiple/generate_qr'
                 body={{
                     customer_payment_ids: selectedKey,
-                    return_url: process.env.WEB_HOST_PUBLIC + '/contracts/payments'
+                    return_url: process.env.WEB_HOST_PUBLIC + '/contracts/payments/' + contractId
                 }}
                 selectedKey={selectedKey}
                 navItems={navItems}
