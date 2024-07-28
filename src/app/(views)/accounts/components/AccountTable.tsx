@@ -47,7 +47,7 @@ export default function AccountTable(
             title: 'Họ và tên',
             key: 'name',
             render: (_: any, record: IAccount) =>
-                <p>{record.first_name + ' ' + record.last_name}</p>
+                <p>{record.last_name + ' ' + record.first_name}</p>
         },
         {
             title: 'Số điện thoại',

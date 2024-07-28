@@ -42,7 +42,7 @@ export default function CarTable(
             dataIndex: 'account',
             key: 'id',
             render: (account: IAccount) =>
-                <>{`${account.first_name + ' ' + account.last_name}`}</>
+                <>{`${account.last_name + ' ' + account.first_name}`}</>
         },
         {
             title: 'Hãng xe',

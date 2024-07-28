@@ -36,7 +36,7 @@ export default function PaymentTable(
             title: 'Tên đối tác',
             dataIndex: 'partner',
             key: 'id',
-            render: (partner: IAccount) => partner.first_name + ' ' + partner.last_name
+            render: (partner: IAccount) => partner.last_name + ' ' + partner.first_name
         },
         {
             title: 'Số điện thoại',

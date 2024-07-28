@@ -113,7 +113,7 @@ export default function ChatZone(
                     className={classes.imgAvatar} />
                 <div className='ml-3'>
                     <p className='font-bold'>
-                        {user?.first_name + ' ' + user?.last_name}
+                        {user?.last_name + ' ' + user?.first_name}
                     </p>
                 </div>
             </div>

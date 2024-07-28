@@ -16,7 +16,7 @@ export default function AccountDialog({ detail }: { detail?: IAccount }) {
                             Tên
                         </p>
                         <p className={classes.infor}>
-                            {detail?.first_name + ' ' + detail?.last_name}                            </p>
+                            {detail?.last_name + ' ' + detail?.first_name}                            </p>
                     </div>
                     {/* item */}
                     <div className={classes.inforItem}>

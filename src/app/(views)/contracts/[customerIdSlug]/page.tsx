@@ -422,9 +422,9 @@ export default function ContractPage({
                                     <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
                                         <span className='italic'>{
                                             ' '
-                                            + customerContractDetail?.customer.first_name
-                                            + ' '
                                             + customerContractDetail?.customer.last_name
+                                            + ' '
+                                            + customerContractDetail?.customer.first_name
                                         }
                                         </span>
                                         {

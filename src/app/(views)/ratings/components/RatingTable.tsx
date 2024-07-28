@@ -87,7 +87,7 @@ export default function RatingTable() {
             title: 'Tên khách hàng',
             dataIndex: 'customer',
             key: 'id',
-            render: (customer: IAccount) => <>{customer.first_name + ' ' + customer.last_name}</>
+            render: (customer: IAccount) => <>{customer.last_name + ' ' + customer.first_name}</>
         },
         {
             title: 'Biển số xe',
