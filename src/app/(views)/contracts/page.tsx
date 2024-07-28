@@ -15,30 +15,37 @@ export default function Contracts() {
     const [refresh, setRefresh] = useState<boolean>(true)
     const [filter, setFilter] = useState<any>('ordered')
     const [contractData, setContractData] = useState<ICustomerContract[]>()
+    const [searchValue, setSearchValue] = useState<any>()
     const [loading, setLoading] = useState<boolean>(true)
-    const getListContractByStatus = async (status: any) => {
+    const getListContractByStatus = async (status: any, searchValue: any) => {
         try {
             setLoading(true)
             const response = await axiosAuth.get(
-                `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
+                `admin/contracts?customer_contract_status=${status}&search_param=${searchValue}&limit=100&offset=0`
             )
             setContractData(response.data.data.contracts)
             setLoading(false)
         } catch (error) {
             console.log(error);
-
             setLoading(false)
         }
 
     }
     useEffect(() => {
-        getListContractByStatus(filter)
-    }, [filter, refresh])
+        if (!searchValue) {
+            getListContractByStatus(filter, searchValue)
+        } else {
+            const getData = setTimeout(() => {
+                getListContractByStatus(filter, searchValue)
+            }, 500)
+            return () => clearTimeout(getData)
+        }
+    }, [filter, refresh, searchValue])
 
 
 
-    const handleSearch = () => {
-
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value)
     }
 
     const handleChange = (e: string) => {
@@ -46,14 +53,16 @@ export default function Contracts() {
         setContractData([])
         setFilter(e)
         setLoading(false)
+        setSearchValue('')
     }
     return (
         <>
             <TopFilterTable
                 setRefresh={setRefresh}
-                placeholder='Tìm kiếm theo biển số xe/tên khách hàng'
+                placeholder='Tìm kiếm theo biển số xe/số điện thoại của khách hàng'
                 defaultValue='ordered'
                 handleChange={handleChange}
+                showSearch={true}
                 optionList={[
                     { label: 'Đã đặt', value: 'ordered' },
                     { label: 'Đang thuê', value: 'renting' },
