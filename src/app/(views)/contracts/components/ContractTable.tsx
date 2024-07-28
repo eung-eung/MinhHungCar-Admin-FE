@@ -70,12 +70,6 @@ export default function ContractTable(
             render: (customer: IAccount) => <>{customer.phone_number}</>
         },
         {
-            title: 'Loại thế chấp',
-            dataIndex: 'collateral_type',
-            key: 'id',
-            render: (type) => t(`common:${type}`)
-        },
-        {
             title: '',
             dataIndex: 'action',
             key: 'id',
