@@ -227,7 +227,7 @@ export default function ContractPage({
 
     };
     const approveCustomerContract = async (id: any) => {
-        const { confirm } = Modal
+        const { confirm, error } = Modal
         const contractResponse = await axiosAuth.get("/admin/contract/" + id)
         const contractDetail: ICustomerContract = contractResponse.data.data
 
@@ -259,8 +259,13 @@ export default function ContractPage({
                         setRefresh(prev => !prev)
                         sucessNotify('Cập nhật hợp đồng thành công')
                     }
-                } catch (error) {
-
+                } catch (e: any) {
+                    console.log(e);
+                    if (e.response.data.error_code == 10032) {
+                        error({
+                            title: 'Chiếc xe này đã dừng hoạt động, vui lòng thay xe hoặc hoàn trả thế chấp',
+                        })
+                    }
                 }
             },
             onCancel: () => {
@@ -464,6 +469,14 @@ export default function ContractPage({
                                         ' '
                                         + t(`common:${customerContractDetail?.collateral_type}`)
                                     }</p>
+                                    <p className='font-medium mt-3'>Ngày nhận xe:   {
+                                        customerContractDetail?.start_date && new Date(customerContractDetail.start_date).toLocaleString()
+                                    }
+                                    </p>
+                                    <p className='font-medium mt-3'>Ngày trả xe:   {
+                                        customerContractDetail?.end_date && new Date(customerContractDetail.end_date).toLocaleString()
+                                    }
+                                    </p>
                                     {
                                         customerContractDetail?.collateral_type === 'cash' &&
                                         <p className='font-medium mt-3'>Số tiền đã thế chấp:   {
