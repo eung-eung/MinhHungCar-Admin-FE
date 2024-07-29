@@ -7,7 +7,7 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 export interface RouteType {
     icon: JSX.Element;
     title: string;
@@ -38,13 +38,13 @@ export const sidebarRoutes: RouteType[] = [
         children: [
             {
                 icon: <ReceiptLongOutlinedIcon />,
-                title: "Thông tin",
+                title: "Hợp đồng khách hàng",
                 link: "/contracts",
             },
             {
-                icon: <PaymentsOutlinedIcon />,
-                title: "Thanh toán",
-                link: "/contracts/payments",
+                icon: <SettingsRoundedIcon />,
+                title: "Chỉnh sửa hợp đồng",
+                link: "/contracts/setting",
             },
         ]
     },
