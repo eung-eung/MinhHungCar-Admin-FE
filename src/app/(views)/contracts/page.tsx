@@ -20,10 +20,19 @@ export default function Contracts() {
     const getListContractByStatus = async (status: any, searchValue: any) => {
         try {
             setLoading(true)
-            const response = await axiosAuth.get(
-                `admin/contracts?customer_contract_status=${status}&search_param=${searchValue}&limit=100&offset=0`
-            )
-            setContractData(response.data.data.contracts)
+            if (searchValue) {
+                const response = await axiosAuth.get(
+                    `admin/contracts?customer_contract_status=${status}&search_param=${searchValue}&limit=100&offset=0`
+                )
+                setContractData(response.data.data.contracts)
+            } else {
+                const response = await axiosAuth.get(
+                    `admin/contracts?customer_contract_status=${status}&limit=100&offset=0`
+                )
+                setContractData(response.data.data.contracts)
+            }
+
+
             setLoading(false)
         } catch (error) {
             console.log(error);
