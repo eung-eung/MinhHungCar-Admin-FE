@@ -17,6 +17,7 @@ export interface ICar {
     period_code: number;
     images: Array<string>;
     caveats: Array<string>;
+    warning_count: number;
     created_at: Date;
     updated_at: Date;
 }
