@@ -9,6 +9,7 @@ import { Transition } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
 import Modal from '../../../components/Modal'
 import CarDialog from '../../../components/CarDialog'
+import { IContractRule } from '@/app/models/ContractRule'
 
 
 export default function InterceptingCarDetail({
@@ -21,17 +22,18 @@ export default function InterceptingCarDetail({
     const [carDetail, setCarDetail] = useState<ICar>()
     const [open, setOpen] = useState<boolean>(false);
     const [refresh, setRefresh] = useState<boolean>(false)
+    const [contractRules, setContractRules] = useState<IContractRule>()
     const handleOpenDetailDialog = async (id: any) => {
         // setOpen(true);
         setLoadingDialog(true);
         const carDetail = await axiosAuth.get(`/car/${id}`)
+        const contractRules = await axiosAuth.get('/admin/contract_rule')
         const detail: ICar = carDetail.data.data
+        setContractRules(contractRules.data.data)
         setCarDetail(detail)
         setLoadingDialog(false)
-        console.log('detail: ', detail);
     };
     useEffect(() => {
-        console.log('zosss');
         handleOpenDetailDialog(id)
     }, [id, refresh])
     return (
@@ -45,6 +47,7 @@ export default function InterceptingCarDetail({
                 isIntercept={true}
             >
                 <CarDialog
+                    contractRules={contractRules}
                     setRefresh={setRefresh}
                     detail={carDetail}
                 />
