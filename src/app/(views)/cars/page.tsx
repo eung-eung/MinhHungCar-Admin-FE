@@ -8,6 +8,8 @@ import { TableParams } from '@/app/models/TableParams.model'
 import CarTable from './components/CarTable'
 import { removeKeys } from '@/app/utils/removeKeysFromObject'
 import { Flex, Skeleton, Tag } from 'antd'
+import { IContractRule } from '@/app/models/ContractRule'
+import { usePathname } from 'next/navigation'
 
 export default function Cars() {
     const axiosAuth = useAxiosAuth()
@@ -18,7 +20,9 @@ export default function Cars() {
     const [loadingCurrentSeats, setLoadingCurrentSeats] = useState<boolean>(true)
     const [searchValue, setSearchValue] = useState<string>()
     const [currentSeats, setCurrentSeats] = useState<any>()
+    const [contractRules, setContractRules] = useState<IContractRule>()
     const keyToRemove = ["max_4_seats", "max_7_seats", "max_15_seats", "total"]
+    const path = usePathname()
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
             current: 1,
@@ -33,6 +37,8 @@ export default function Cars() {
             const carList = await axiosAuth.get(
                 `/admin/cars?car_status=${filter}`
             )
+            const ruleResponse = await axiosAuth.get('/admin/contract_rule')
+            setContractRules(ruleResponse.data.data)
             setCarData(carList.data.data.cars)
             setLoading(false)
         } catch (error) {
@@ -57,9 +63,10 @@ export default function Cars() {
 
     }
     useEffect(() => {
-        console.log('effect cars');
-
-    }, [])
+        if (path === '/cars') {
+            setRefresh(prev => !prev)
+        }
+    }, [path])
     useEffect(() => {
         if (!searchValue) {
             getCarList(filter)
@@ -101,6 +108,7 @@ export default function Cars() {
                     { label: 'Xe đã duyệt', value: 'approved' },
                     { label: 'Xe đang chờ giao', value: 'waiting_car_delivery' },
                     { label: 'Xe đang hoạt động', value: 'active' },
+                    { label: 'Xe dừng hoạt động', value: 'inactive' },
                 ]}
                 handleSearch={handleSearch}
                 showGarageConfig={true}
@@ -124,6 +132,7 @@ export default function Cars() {
                 </Flex>
             </div>
             <CarTable
+                contractRules={contractRules}
                 loading={loading}
                 carData={carData}
                 filter={filter}

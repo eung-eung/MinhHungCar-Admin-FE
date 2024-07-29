@@ -3,10 +3,11 @@ import { ICar } from '@/app/models/Car.model'
 import React, { SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import classes from './CarDialog.module.css'
-import { Button, Modal, Tag } from 'antd'
+import { Button, InputNumber, Modal, Tag } from 'antd'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { errorNotify } from '@/app/utils/toast'
+import { IContractRule } from '@/app/models/ContractRule'
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -15,11 +16,13 @@ export default function CarInformation(
     {
         detail,
         setRefresh,
-        showAction
+        showAction,
+        contractRules
     }: {
         detail?: ICar,
         setRefresh?: React.Dispatch<SetStateAction<boolean>>
-        showAction: boolean
+        showAction: boolean,
+        contractRules?: IContractRule
     }) {
     const { t } = useTranslation()
     const axiosAuth = useAxiosAuth()
@@ -265,6 +268,18 @@ export default function CarInformation(
                                 padding: 3
                             }}
                             color='magenta'>
+                            {t(`common:${detail?.status}`)}
+                        </Tag>
+                    }
+                    {
+                        t('carStatus:inactive') === detail?.status &&
+                        <Tag
+                            style={{
+                                margin: 0,
+                                fontSize: 14,
+                                padding: 3
+                            }}
+                            color='error'>
                             {t(`common:${detail?.status}`)}
                         </Tag>
                     }

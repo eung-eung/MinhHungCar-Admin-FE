@@ -6,14 +6,17 @@ import { useTranslation } from 'react-i18next';
 import CarouselImages from './Carousel';
 import CarInformation from './CarInformation';
 import { SetStateAction } from 'react';
+import { IContractRule } from '@/app/models/ContractRule';
 
 
 export default function CarDialog(
     {
         detail,
-        setRefresh
+        setRefresh,
+        contractRules
     }: {
         detail?: ICar,
+        contractRules?: IContractRule,
         setRefresh?: React.Dispatch<SetStateAction<boolean>>
     }) {
     return (
@@ -25,6 +28,7 @@ export default function CarDialog(
                     </div>
                     <div className={classes.carInfo}>
                         <CarInformation
+                            contractRules={contractRules}
                             showAction={false}
                             detail={detail}
                             setRefresh={setRefresh && setRefresh} />
