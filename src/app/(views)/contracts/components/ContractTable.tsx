@@ -115,7 +115,7 @@ export default function ContractTable(
     }, [expandedRowKeys])
 
     const approveCustomerContract = async (id: any) => {
-        const { confirm } = Modal
+        const { confirm, error } = Modal
         try {
             const contractResponse = await axiosAuth.get("/admin/contract/" + id)
             const contractDetail: ICustomerContract = contractResponse.data.data
@@ -138,15 +138,24 @@ export default function ContractTable(
             confirm({
                 title: 'Bạn có muốn đưa vào đang thuê?',
                 onOk: async () => {
-                    const response = await axiosAuth.put('/admin/contract', {
-                        customer_contract_id: id,
-                        action: "approve"
-                    })
+                    try {
+                        const response = await axiosAuth.put('/admin/contract', {
+                            customer_contract_id: id,
+                            action: "approve"
+                        })
 
-                    if (response.status === 200) {
-                        setRefresh(prev => !prev)
-                        sucessNotify('Cập nhật hợp đồng thành công')
-                        setExpandedRowKeys([])
+                        if (response.status === 200) {
+                            setRefresh(prev => !prev)
+                            sucessNotify('Cập nhật hợp đồng thành công')
+                            setExpandedRowKeys([])
+                        }
+                    } catch (e: any) {
+                        console.log(e);
+                        if (e.response.data.error_code == 10032) {
+                            error({
+                                title: 'Chiếc xe này đã dừng hoạt động, vui lòng thay xe hoặc hoàn trả thế chấp',
+                            })
+                        }
                     }
                 },
                 onCancel: () => {
