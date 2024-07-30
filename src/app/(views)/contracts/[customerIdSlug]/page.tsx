@@ -421,11 +421,16 @@ export default function ContractPage({
                         />
                     </Dialog>
                     {
-                        !error && <>
+                        !error && <div className='shadow-sm' style={{
+                            background: '#fff',
+                            padding: 10,
+                            margin: 10,
+                            borderRadius: 15
+                        }}>
                             <div className='flex justify-between'>
                                 <div>
                                     <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
-                                        <span className='italic'>{
+                                        <span>{
                                             ' '
                                             + customerContractDetail?.customer.last_name
                                             + ' '
@@ -434,25 +439,25 @@ export default function ContractPage({
                                         </span>
                                         {
                                             customerContractDetail?.status === 'ordered' &&
-                                            <Tag color='blue' style={{ fontSize: 20, padding: 5, marginLeft: 10 }}>
+                                            <Tag color='blue' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
                                                 {t(`common:${customerContractDetail?.status}`)}
                                             </Tag>
                                         }
                                         {
                                             customerContractDetail?.status === 'renting' &&
-                                            <Tag color='orange' style={{ fontSize: 20, padding: 5, marginLeft: 10 }}>
+                                            <Tag color='orange' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
                                                 {t(`common:${customerContractDetail?.status}`)}
                                             </Tag>
                                         }
                                         {
                                             customerContractDetail?.status === 'completed' &&
-                                            <Tag color='green' style={{ fontSize: 20, padding: 5, marginLeft: 10 }}>
+                                            <Tag color='green' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
                                                 {t(`common:${customerContractDetail?.status}`)}
                                             </Tag>
                                         }
                                         {
                                             customerContractDetail?.status === 'canceled' &&
-                                            <Tag color='red' style={{ fontSize: 20, padding: 5, marginLeft: 10 }}>
+                                            <Tag color='red' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
                                                 {t(`common:${customerContractDetail?.status}`)}
                                             </Tag>
                                         }
@@ -693,7 +698,7 @@ export default function ContractPage({
                                     </Worker>
                                 </div>
                             }
-                        </>
+                        </div>
                     }
                     {
                         error &&
