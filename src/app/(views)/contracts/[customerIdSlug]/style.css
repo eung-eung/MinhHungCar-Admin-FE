@@ -1,0 +1,147 @@
+/* completed */
+.ribbonCompleted {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, rgb(21, 203, 4), rgb(0, 216, 54));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonCompleted::before,
+.cardRibbon .ribbonCompleted::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: rgb(0, 122, 0);
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonCompleted::before {
+    background: rgb(21, 203, 4);
+}
+
+.cardRibbon .ribbonCompleted::after {
+    background: rgb(0, 144, 0);
+    border-top-left-radius: 1rem;
+}
+
+/* ordered */
+.ribbonOrdered {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, blue, rgb(0, 63, 253));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonOrdered::before,
+.cardRibbon .ribbonOrdered::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: blue;
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonOrdered::before {
+    background: blue;
+}
+
+.cardRibbon .ribbonOrdered::after {
+    background: navy;
+    border-top-left-radius: 1rem;
+}
+
+/* renting */
+.ribbonRenting {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, orange, rgb(255, 164, 36));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonRenting::before,
+.cardRibbon .ribbonRenting::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: orange;
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonRenting::before {
+    background: orange;
+}
+
+.cardRibbon .ribbonRenting::after {
+    background: rgb(218, 123, 0);
+    border-top-left-radius: 1rem;
+}
+
+/* canceled */
+.ribbonCanceled {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, red, rgb(255, 0, 0));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonCanceled::before,
+.cardRibbon .ribbonCanceled::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: red;
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonCanceled::before {
+    background: red;
+}
+
+.cardRibbon .ribbonCanceled::after {
+    background: rgb(203, 0, 0);
+    border-top-left-radius: 1rem;
+}
