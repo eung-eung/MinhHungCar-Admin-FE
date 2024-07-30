@@ -26,6 +26,8 @@ import Dialog from '@/app/components/Modal';
 import CarDialog from '../../cars/components/CarDialog';
 import AccountDialog from '../../accounts/components/AccountDialog';
 import { IAccount } from '@/app/models/Account.model';
+import './style.css'
+import Ribbon from './components/Ribbon';
 type Option = {
     label: string,
     valeu: string
@@ -421,14 +423,14 @@ export default function ContractPage({
                         />
                     </Dialog>
                     {
-                        !error && <div className='shadow-sm' style={{
+                        !error && <div className='shadow-sm relative' style={{
                             background: '#fff',
                             padding: 10,
                             margin: 10,
                             borderRadius: 15
                         }}>
-                            <div className='flex justify-between'>
-                                <div>
+                            <div className='flex justify-between cardRibbon'>
+                                <div className='mt-10'>
                                     <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
                                         <span>{
                                             ' '
@@ -437,30 +439,7 @@ export default function ContractPage({
                                             + customerContractDetail?.customer.first_name
                                         }
                                         </span>
-                                        {
-                                            customerContractDetail?.status === 'ordered' &&
-                                            <Tag color='blue' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
-                                                {t(`common:${customerContractDetail?.status}`)}
-                                            </Tag>
-                                        }
-                                        {
-                                            customerContractDetail?.status === 'renting' &&
-                                            <Tag color='orange' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
-                                                {t(`common:${customerContractDetail?.status}`)}
-                                            </Tag>
-                                        }
-                                        {
-                                            customerContractDetail?.status === 'completed' &&
-                                            <Tag color='green' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
-                                                {t(`common:${customerContractDetail?.status}`)}
-                                            </Tag>
-                                        }
-                                        {
-                                            customerContractDetail?.status === 'canceled' &&
-                                            <Tag color='red' style={{ fontSize: 15, padding: 3, marginLeft: 10 }}>
-                                                {t(`common:${customerContractDetail?.status}`)}
-                                            </Tag>
-                                        }
+                                        <Ribbon status={customerContractDetail?.status} content={t(`common:${customerContractDetail?.status}`)} />
                                     </p>
                                     <p className='font-medium mt-4'>Loại xe:   {
                                         ' '
