@@ -214,7 +214,7 @@ export default function CarInformation(
                     Thời hạn thuê
                 </p>
                 <p className={classes.infor}>
-                    {detail?.period_code} tháng
+                    {detail?.period} tháng
                 </p>
             </div>
             {/* item */}
