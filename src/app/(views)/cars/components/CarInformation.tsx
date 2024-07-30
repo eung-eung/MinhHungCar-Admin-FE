@@ -313,7 +313,7 @@ export default function CarInformation(
                 </p>
             </div>
             {/* item */}
-            <div className={classes.inforItem}>
+            <div className={classes.inforItem} style={{ alignItems: 'flex-start' }}>
                 <p className={classes.label}>
                     Mô tả
                 </p>
