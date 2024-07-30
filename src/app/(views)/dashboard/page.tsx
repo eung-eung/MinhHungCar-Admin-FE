@@ -11,9 +11,10 @@ import Person4RoundedIcon from '@mui/icons-material/Person4Rounded';
 
 import classes from './index.module.css'
 import dynamic from 'next/dynamic';
-import { Skeleton } from 'antd';
+import { Flex, Skeleton } from 'antd';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { formatCurrency } from '@/app/utils/formatCurrency';
+import TopRentCarTable from './components/TopRentCarTable';
 
 const DynamicAreaChart = dynamic(() => import('./components/AreaChart'), {
     loading: () => <Skeleton active />
@@ -121,19 +122,36 @@ export default function Dashboard() {
                     title={<p>Doanh thu 6 ngày gần nhất</p>}
                 />
             </div>
+            <Flex className='mt-5 mb-5 justify-between gap-4' style={{
+                height: 400
+            }}>
+                <div className={classes.middleChartBox} style={{
+                    flex: 4,
+                    height: '100%'
+                }}>
+                    <StatisticItem
+                        style={{
+                            height: 400
+                        }}
+                        header={<DynamicLineChart />}
+                    />
 
-            <div className={classes.middleChartBox}>
-                <StatisticItem
+                </div>
+                <div
                     style={{
-                        flex: 3,
-                        marginTop: '30px'
+                        flex: 2,
+                        height: '100%'
                     }}
-                    header={<DynamicLineChart />}
-                    title={<p>Doanh thu 6 ngày gần nhất</p>}
-                />
-
-            </div>
-
+                >
+                    <StatisticItem
+                        style={{
+                            height: 400,
+                            overflow: 'auto'
+                        }}
+                        header={<TopRentCarTable />}
+                    />
+                </div>
+            </Flex>
             <div>
                 <StatisticItem
                     style={{
