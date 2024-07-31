@@ -100,7 +100,7 @@ export default function ExpandRowCollateral(
             <h2
                 style={{ color: "#9250fa" }}
                 className='text-base mb-3 font-semibold '
-            >Hình ảnh xe thế chấp
+            >Hình ảnh giấy tờ xe thế chấp
             </h2>
             {
                 !expandLoading &&
