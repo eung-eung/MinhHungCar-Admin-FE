@@ -59,7 +59,7 @@ export default function Dashboard() {
 
                 },
                 revenue: {
-                    title: formatCurrency(response.data.data.revenue),
+                    title: formatCurrency(response.data.data.revenue.total_revenue),
                     description: "Tổng doanh thu",
                     header: <EqualizerRoundedIcon sx={{ color: '#FEB95A' }} />,
                 },
