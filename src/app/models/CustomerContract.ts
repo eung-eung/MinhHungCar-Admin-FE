@@ -18,6 +18,9 @@ export interface ICustomerContract {
     url: string
     created_at: Date
     updated_at: Date
+    prepay_percent: any
+    revenue_sharing_percent: any
+    insurance_percent: any
     receiving_car_images: any[]
     collateral_asset_images: any[],
     collateral_cash_amount: any
