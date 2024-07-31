@@ -8,6 +8,7 @@ import TopFilterTable from '@/app/components/TopFilterTable'
 import { IContractRule } from '@/app/models/ContractRule'
 import { Button, InputNumber } from 'antd'
 import Item from './components/Item'
+import { sucessNotify } from '@/app/utils/toast'
 type Error = {
     revenueSharing: boolean,
     maxWarningCount: boolean,
@@ -66,6 +67,7 @@ export default function Setting() {
                     max_warning_count: rulesBody.maxWarningCount
                 })
                 setUpdateLoading(false)
+                sucessNotify('Cập nhật thành công')
             } catch (error) {
                 console.log(error);
                 setUpdateLoading(false)
