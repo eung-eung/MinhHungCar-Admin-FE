@@ -46,7 +46,12 @@ export default function AddPaymentDialog(
         setAmount('')
         if (e === 'remaining_pay' && detail?.rent_price) {
             setDisabled(true)
-            setAmount(detail.rent_price - (detail?.rent_price + detail?.insurance_amount) * 30 / 100)
+            setAmount(detail.rent_price - (detail?.rent_price + detail?.insurance_amount) * detail.prepay_percent / 100)
+            return
+        }
+        if (e === 'refund_pre_pay' && detail?.rent_price) {
+            setDisabled(true)
+            setAmount((detail.rent_price + detail.insurance_amount) * detail.prepay_percent / 100)
             return
         }
         if (e === 'return_collateral_cash' && detail?.collateral_cash_amount) {
