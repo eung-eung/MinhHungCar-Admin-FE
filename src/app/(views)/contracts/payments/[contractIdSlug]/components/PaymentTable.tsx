@@ -22,13 +22,15 @@ export default function PaymentTable(
         getPaymentUrl,
         setRefresh,
         loading,
-        contractId
+        contractId,
+        contractStatus
     }: {
         listPayment?: IPayment[],
         getPaymentUrl: (id: any) => void,
         setRefresh: React.Dispatch<SetStateAction<boolean>>,
         loading: boolean,
-        contractId: any
+        contractId: any,
+        contractStatus: any
     }
 ) {
     const { t } = useTranslation()
@@ -102,16 +104,19 @@ export default function PaymentTable(
                             onClick={() => getPaymentUrl(record.payment_url)}>
                             Thanh toán
                         </Button>
-                        <Button
-                            style={{
-                                background: "#fff",
-                                border: '1px solid red',
-                                color: "red"
-                            }}
-                            onClick={() => handleRemovePayment(record.id)}
-                            className='cursor-pointer'
-                            color='red-inverse'><RemoveIcon />
-                        </Button>
+                        {
+                            contractStatus === 'renting' &&
+                            <Button
+                                style={{
+                                    background: "#fff",
+                                    border: '1px solid red',
+                                    color: "red"
+                                }}
+                                onClick={() => handleRemovePayment(record.id)}
+                                className='cursor-pointer'
+                                color='red-inverse'><RemoveIcon />
+                            </Button>
+                        }
                     </div>
 
             }
