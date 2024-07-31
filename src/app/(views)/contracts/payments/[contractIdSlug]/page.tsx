@@ -163,9 +163,20 @@ export default function PaymentDetail({
         const resposne = await axiosAuth.get('/admin/contract/' + id)
         const data: ICustomerContract = resposne.data.data
         const isExistRemainingPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "remaining_pay")
+        const isExistRefundPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "refund_pre_pay")
         const isExistReturnCollateralCashPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "return_collateral_cash")
+        console.log('isExistRefundPayment: ', isExistRefundPayment);
 
-        if (data.collateral_type === 'cash') {
+        if (data.status === 'ordered') {
+            if (!isExistRefundPayment) {
+                setOptions([
+                    { label: 'Hoàn trả tiền cọc', value: 'refund_pre_pay' },
+                ]);
+            } else {
+                setOptions([]);
+            }
+        }
+        if (data.collateral_type === 'cash' && data.status === 'renting') {
             (isExistRemainingPayment && isExistReturnCollateralCashPayment) &&
                 setOptions([
                     { label: 'Khác', value: 'other' },
@@ -187,7 +198,7 @@ export default function PaymentDetail({
                     { label: 'Khác', value: 'other' },
                 ]);
         }
-        if (data.collateral_type === 'motorbike') {
+        if (data.collateral_type === 'motorbike' && data.status === 'renting') {
             isExistRemainingPayment &&
                 setOptions([
                     { label: 'Khác', value: 'other' },
@@ -335,7 +346,7 @@ export default function PaymentDetail({
                                     </div>
                                 }
                                 {
-                                    detail?.status === 'renting'
+                                    (detail?.status === 'renting' || detail?.status === 'ordered')
                                     &&
                                     <Button
                                         onClick={() => handleModal(detail.id)}
@@ -420,7 +431,7 @@ export default function PaymentDetail({
                     loading={loadingAddPaymentDialog}
                     open={open}
                     setOpen={setOpen}
-                    title="Tạo khoản thanh toán mới cho chuyến đi"
+                    title="Tạo khoản thanh toán mới"
                     width='50%'
                     isIntercept={false}
                 >
