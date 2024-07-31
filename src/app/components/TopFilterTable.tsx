@@ -51,7 +51,7 @@ export default function TopFilterTable(
     }
     const monthFormat = 'MM/YYYY';
     const handleDisableMonth: DatePickerProps['disabledDate'] = (current) => {
-        return current && current > dayjs().startOf('month')
+        return current && current >= dayjs().startOf('month')
     };
 
     return (
@@ -106,7 +106,7 @@ export default function TopFilterTable(
                         removeIcon={false}
                         defaultValue={dayjs(
                             (
-                                datepick && (datepick.getMonth() + 1).toString().padStart(2, '0')
+                                datepick && (datepick.getMonth()).toString().padStart(2, '0')
                                 + '/'
                                 + datepick?.getFullYear()
                             ),
