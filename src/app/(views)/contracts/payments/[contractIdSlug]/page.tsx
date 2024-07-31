@@ -267,7 +267,7 @@ export default function PaymentDetail({
                             </p>
                             <div className='flex flex-col'>
                                 <div className='mt-5'>
-                                    <Tag
+                                    {/* <Tag
                                         style={{ width: 100, textAlign: 'center', fontSize: 14 }}
                                         color='cyan'
                                     >
@@ -295,10 +295,10 @@ export default function PaymentDetail({
                                                     + ' '
                                                     + detail?.customer.first_name}
                                             </span>
-                                    }
+                                    } */}
                                 </div>
                                 <div className='mt-5 mb-4'>
-                                    <Tag
+                                    {/* <Tag
                                         style={{ width: 100, textAlign: 'center', fontSize: 14 }}
                                         color='purple'
                                     >
@@ -317,7 +317,7 @@ export default function PaymentDetail({
                                             >
                                                 {formatCurrency(detail?.rent_price)}
                                             </span>
-                                    }
+                                    } */}
                                 </div>
                                 {
                                     detail?.collateral_type === 'motorbike'
