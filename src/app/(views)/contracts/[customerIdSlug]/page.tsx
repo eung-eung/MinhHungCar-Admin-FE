@@ -29,6 +29,7 @@ import { IAccount } from '@/app/models/Account.model';
 import './style.css'
 import Ribbon from './components/Ribbon';
 import Link from 'next/link';
+import { IPayment } from '@/app/models/Payment.model';
 type Option = {
     label: string,
     valeu: string
@@ -233,24 +234,48 @@ export default function ContractPage({
     };
     const approveCustomerContract = async (id: any) => {
         const { confirm, error } = Modal
-        const contractResponse = await axiosAuth.get("/admin/contract/" + id)
-        const contractDetail: ICustomerContract = contractResponse.data.data
+        try {
+            const contractResponse = await axiosAuth.get("/admin/contract/" + id)
+            const contractDetail: ICustomerContract = contractResponse.data.data
+            const paymentListResponse = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + customerContractDetail?.id)
+            const paymentList = paymentListResponse.data.data
+            const refundPayment = paymentList.find(
+                (payment: IPayment) => (payment.payment_type === "refund_pre_pay")
+            )
+            const returnCollateralCash = paymentList.find(
+                (payment: IPayment) => payment.payment_type === 'return_collateral_cash')
 
-        if (contractDetail.collateral_type === "cash"
-            && contractDetail.receiving_car_images.length < 1
-        ) {
-            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
-            return
+            if (returnCollateralCash && returnCollateralCash.status === 'paid') {
+                errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền thế chấp cho khách hàng")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'pending') {
+                errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'paid') {
+                errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền cọc cho khách hàng")
+                return
+            }
+            if (contractDetail.collateral_type === "cash"
+                && contractDetail.receiving_car_images.length < 1
+            ) {
+                errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+                return
+            }
+            if (contractDetail.collateral_type === "motorbike"
+                &&
+                (
+                    contractDetail.receiving_car_images.length < 1
+                    || contractDetail.collateral_asset_images.length < 1
+                )) {
+                errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
+                return
+            }
+        } catch (error) {
+
         }
-        if (contractDetail.collateral_type === "motorbike"
-            &&
-            (
-                contractDetail.receiving_car_images.length < 1
-                || contractDetail.collateral_asset_images.length < 1
-            )) {
-            errorNotify("Vui lòng thêm ảnh trước khi bàn giao")
-            return
-        }
+
         confirm({
             title: 'Bạn có muốn đồng ý cho thuê?',
             onOk: async () => {
@@ -283,21 +308,42 @@ export default function ContractPage({
     const rejectCustomerContract = (id: any) => {
         const { confirm } = Modal
         confirm({
-            title: "Bạn có muốn từ chối hợp đồngss này?",
+            title: "Bạn có muốn từ chối hợp đồng này?",
             cancelText: "Hủy",
             onOk: async () => {
                 try {
-                    console.log('detail: ', customerContractDetail?.collateral_type);
-                    console.log('detail: ', customerContractDetail);
-
-                    // const response = await axiosAuth.put("/admin/contract", {
-                    //     customer_contract_id: id,
-                    //     action: "reject"
-                    // })
-                    // if (response.status === 200) {
-                    //     sucessNotify("Đã từ chối hợp đồng thành công")
-                    //     setRefresh(prev => !prev)
-                    // }
+                    const paymentListResponse = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + customerContractDetail?.id)
+                    const paymentList = paymentListResponse.data.data
+                    const refundPayment = paymentList.find(
+                        (payment: IPayment) => payment.payment_type === "refund_pre_pay"
+                            && payment.status === "paid"
+                    )
+                    if (customerContractDetail?.collateral_type === 'motorbike') {
+                        if (!refundPayment) {
+                            errorNotify("Vui lòng hoàn trả tiền cọc trước khi từ chối")
+                            return
+                        }
+                    }
+                    if (customerContractDetail?.collateral_type === 'cash') {
+                        const isReturnCollateralPayment = paymentList.find(
+                            (payment: IPayment) => (
+                                payment.payment_type === "return_collateral_cash")
+                                && payment.status === 'paid'
+                        )
+                        if (!isReturnCollateralPayment || !refundPayment) {
+                            errorNotify("Bạn cần hoàn trả tiền thế chấp và tiền đặt cọc")
+                            return
+                        }
+                    }
+                    console.log('refund payment: ', refundPayment)
+                    const response = await axiosAuth.put("/admin/contract", {
+                        customer_contract_id: id,
+                        action: "reject"
+                    })
+                    if (response.status === 200) {
+                        sucessNotify("Đã từ chối hợp đồng thành công")
+                        setRefresh(prev => !prev)
+                    }
                 } catch (error) {
                     errorNotify("Đã có lỗi, vui lòng thử lại")
                 }
