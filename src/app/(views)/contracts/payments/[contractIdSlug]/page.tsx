@@ -5,7 +5,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { useEffect, useState } from 'react'
 import PaymentTable from './components/PaymentTable';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { Button, ConfigProvider, Modal, Skeleton, Spin, Switch, Tag } from 'antd';
+import { Breadcrumb, Button, ConfigProvider, Modal, Skeleton, Spin, Switch, Tag } from 'antd';
 import Dialog from '@/app/components/Modal';
 import AddPaymentDialog from './components/AddPaymentDialog';
 import { ICustomerContract } from '@/app/models/CustomerContract';
@@ -14,6 +14,7 @@ import QRPaymentDialog from './components/QRPaymentDialog';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import Link from 'next/link';
 
 
 export default function PaymentDetail({
@@ -204,129 +205,164 @@ export default function PaymentDetail({
         <>
             {error && <div className='flex justify-center'><img style={{ textAlign: 'center' }} src='/notFound.jpg' /></div>}
             {loadingDetail && <div className='flex justify-center' style={{ marginTop: '100px' }}><Spin size='large' /></div>}
-            {!loadingDetail && !error && <div className='mt-10'>
-                <div className='flex justify-between items-start mb-5'>
-                    <div>
-                        <p className='font-bold'>
-                            {
-                                'Các khoản thanh toán của chuyến đi xe '
-                                + detail?.car.car_model.brand
-                                + ' '
-                                + detail?.car.car_model.model
-                                + ' '
-                                + detail?.car.car_model.year
-                            }
-
-                        </p>
-                        <div className='flex flex-col'>
-                            <div className='mt-5'>
-                                <Tag
-                                    style={{ width: 100, textAlign: 'center', fontSize: 14 }}
-                                    color='cyan'
-                                >
-                                    Khách hàng
-                                </Tag>
+            {!loadingDetail && !error && <div className='mt-2'>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <Link
+                                style={{ color: "blue" }}
+                                href={`/contracts`}>Hợp đồng khách hàng</Link>,
+                        },
+                        {
+                            title: <Link
+                                style={{ color: "blue" }}
+                                href={`/contracts/${detail?.id}`}>{
+                                    detail?.car.car_model.brand
+                                    + ' '
+                                    + detail?.car.car_model.model
+                                    + ' '
+                                    + detail?.car.car_model.year}
+                            </Link>,
+                        },
+                        {
+                            title: <p style={{
+                                color: "#767da9",
+                                fontWeight: "500",
+                                textDecoration: "underline"
+                            }}>Quản lý các khoản thanh toán</p>,
+                        },
+                    ]}
+                />
+                <div
+                    className='shadow-sm mt-5'
+                    style={{
+                        background: "#fff",
+                        padding: 10,
+                        borderRadius: '8px'
+                    }}>
+                    <div
+                        className='flex justify-between items-start mb-5 mt-5'>
+                        <div>
+                            <p className='font-bold'>
                                 {
-                                    loadingDetail
-                                        ?
-                                        <Skeleton.Button
-                                            active={true}
-                                            size='default'
-                                            shape='round'
-                                            block={false}
-                                        />
-                                        :
-                                        <span
-                                            style={{
-                                                color: '#797979',
-                                                fontWeight: 600,
-                                                fontSize: 14
-                                            }}
-                                        >
-                                            {
-                                                detail?.customer.last_name
-                                                + ' '
-                                                + detail?.customer.first_name}
-                                        </span>
+                                    'Các khoản thanh toán cho hợp đồng xe '
+                                    + detail?.car.car_model.brand
+                                    + ' '
+                                    + detail?.car.car_model.model
+                                    + ' '
+                                    + detail?.car.car_model.year
                                 }
-                            </div>
-                            <div className='mt-5 mb-4'>
-                                <Tag
-                                    style={{ width: 100, textAlign: 'center', fontSize: 14 }}
-                                    color='purple'
-                                >
-                                    Phí thuê xe
-                                </Tag>
-                                {
-                                    loadingDetail ?
-                                        <Skeleton.Button active={true} size='small' shape='round' block={false} />
-                                        :
 
-                                        <span
-                                            style={{
-                                                color: '#797979',
-                                                fontWeight: 600,
-                                            }}
-                                        >
-                                            {formatCurrency(detail?.rent_price)}
-                                        </span>
-                                }
-                            </div>
-                            {
-                                detail?.collateral_type === 'motorbike'
-                                &&
-                                <div>
+                            </p>
+                            <div className='flex flex-col'>
+                                <div className='mt-5'>
                                     <Tag
-                                        style={{ textAlign: 'center', fontSize: 14, marginBottom: 20 }}
-                                        color='green'>
-                                        Hoàn trả thế chấp
-                                    </Tag>
-                                    <ConfigProvider
-                                        theme={{
-                                            token: {
-                                                colorPrimary: "#4cb863"
-                                            },
-                                        }}
+                                        style={{ width: 100, textAlign: 'center', fontSize: 14 }}
+                                        color='cyan'
                                     >
-                                        <Switch
-                                            disabled={detail.status === 'completed' ? true : false}
-                                            checked={checked}
-                                            onChange={() => handleUpdateReturnCollateralAsset(detail?.id)}
-                                            loading={loadingUpdate}
-                                        />
-
-                                    </ConfigProvider>
+                                        Khách hàng
+                                    </Tag>
+                                    {
+                                        loadingDetail
+                                            ?
+                                            <Skeleton.Button
+                                                active={true}
+                                                size='default'
+                                                shape='round'
+                                                block={false}
+                                            />
+                                            :
+                                            <span
+                                                style={{
+                                                    color: '#797979',
+                                                    fontWeight: 600,
+                                                    fontSize: 14
+                                                }}
+                                            >
+                                                {
+                                                    detail?.customer.last_name
+                                                    + ' '
+                                                    + detail?.customer.first_name}
+                                            </span>
+                                    }
                                 </div>
-                            }
-                            {
-                                detail?.status === 'renting'
-                                &&
-                                <Button
-                                    onClick={() => handleModal(detail.id)}
-                                    type='default'
-                                    style={{ width: "fit-content" }}
-                                >
-                                    <AddCircleOutlineOutlinedIcon />
-                                    <p>Thêm khoản thanh toán</p>
-                                </Button>
-                            }
+                                <div className='mt-5 mb-4'>
+                                    <Tag
+                                        style={{ width: 100, textAlign: 'center', fontSize: 14 }}
+                                        color='purple'
+                                    >
+                                        Phí thuê xe
+                                    </Tag>
+                                    {
+                                        loadingDetail ?
+                                            <Skeleton.Button active={true} size='small' shape='round' block={false} />
+                                            :
+
+                                            <span
+                                                style={{
+                                                    color: '#797979',
+                                                    fontWeight: 600,
+                                                }}
+                                            >
+                                                {formatCurrency(detail?.rent_price)}
+                                            </span>
+                                    }
+                                </div>
+                                {
+                                    detail?.collateral_type === 'motorbike'
+                                    &&
+                                    <div>
+                                        <Tag
+                                            style={{ textAlign: 'center', fontSize: 14, marginBottom: 20 }}
+                                            color='green'>
+                                            Hoàn trả thế chấp
+                                        </Tag>
+                                        <ConfigProvider
+                                            theme={{
+                                                token: {
+                                                    colorPrimary: "#4cb863"
+                                                },
+                                            }}
+                                        >
+                                            <Switch
+                                                disabled={detail.status === 'completed' ? true : false}
+                                                checked={checked}
+                                                onChange={() => handleUpdateReturnCollateralAsset(detail?.id)}
+                                                loading={loadingUpdate}
+                                            />
+
+                                        </ConfigProvider>
+                                    </div>
+                                }
+                                {
+                                    detail?.status === 'renting'
+                                    &&
+                                    <Button
+                                        onClick={() => handleModal(detail.id)}
+                                        type='default'
+                                        style={{ width: "fit-content" }}
+                                    >
+                                        <AddCircleOutlineOutlinedIcon />
+                                        <p>Thêm khoản thanh toán</p>
+                                    </Button>
+                                }
+
+                            </div>
 
                         </div>
-
-                    </div>
-                    <div className='w-1/2 text-end flex flex-col items-end'>
-                        {
-                            detail?.status === 'completed'
-                            &&
-                            <button
-                                style={{
-                                    color: '#fff',
-                                    padding: '7px 20px',
-                                    outline: 'none',
-                                    border: 'none',
-                                    cursor: 'auto'
-                                }}
-                                className="inline-flex 
+                        <div className='w-1/2 text-end flex flex-col items-end'>
+                            {
+                                detail?.status === 'completed'
+                                &&
+                                <button
+                                    style={{
+                                        color: '#fff',
+                                        padding: '7px 20px',
+                                        outline: 'none',
+                                        border: 'none',
+                                        cursor: 'auto'
+                                    }}
+                                    className="inline-flex 
                     animate-shimmer 
                     items-center 
                     justify-center 
@@ -338,17 +374,17 @@ export default function PaymentDetail({
                      transition-colors 
                      focus:outline-none 
                      focus:ring-offset-2 focus:ring-offset-slate-50"
-                            >
-                                Đã hoàn thành
-                                <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                            </button>
-                        }
-                        {
-                            detail?.status === 'renting'
-                            &&
-                            <button
-                                style={{ color: '#fff', padding: '7px 20px', outline: 'none', border: 'none' }}
-                                className="inline-flex 
+                                >
+                                    Đã hoàn thành
+                                    <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                </button>
+                            }
+                            {
+                                detail?.status === 'renting'
+                                &&
+                                <button
+                                    style={{ color: '#fff', padding: '7px 20px', outline: 'none', border: 'none' }}
+                                    className="inline-flex 
                      
                     animate-shimmer 
                     items-center 
@@ -361,23 +397,25 @@ export default function PaymentDetail({
                      transition-colors 
                      focus:outline-none 
                      focus:ring-offset-2 focus:ring-offset-slate-50"
-                                onClick={() => handleCompletedContract(contractIdSlug)}
-                            >
-                                Hoàn thành hợp đồng
-                                <ArrowForwardIosIcon
-                                    sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }}
-                                />
-                            </button>
-                        }
+                                    onClick={() => handleCompletedContract(contractIdSlug)}
+                                >
+                                    Hoàn thành hợp đồng
+                                    <ArrowForwardIosIcon
+                                        sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }}
+                                    />
+                                </button>
+                            }
+                        </div>
                     </div>
+                    <PaymentTable
+                        contractId={contractIdSlug}
+                        loading={loadingPayment}
+                        getPaymentUrl={getPaymentUrl}
+                        listPayment={listPayment}
+                        contractStatus={detail?.status}
+                        setRefresh={setRefresh}
+                    />
                 </div>
-                <PaymentTable
-                    contractId={contractIdSlug}
-                    loading={loadingPayment}
-                    getPaymentUrl={getPaymentUrl}
-                    listPayment={listPayment}
-                    setRefresh={setRefresh}
-                />
                 <Dialog
                     loading={loadingAddPaymentDialog}
                     open={open}

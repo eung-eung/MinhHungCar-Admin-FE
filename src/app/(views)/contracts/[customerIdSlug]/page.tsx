@@ -6,7 +6,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
-import { Button, Modal, Result, Select, Spin, Table, Tag, UploadFile } from 'antd';
+import { Breadcrumb, Button, Modal, Result, Select, Spin, Table, Tag, UploadFile } from 'antd';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import { ICustomerContract } from '@/app/models/CustomerContract';
 import ExpandRowCollateral from '../components/ExpandRowCollateral';
@@ -28,6 +28,7 @@ import AccountDialog from '../../accounts/components/AccountDialog';
 import { IAccount } from '@/app/models/Account.model';
 import './style.css'
 import Ribbon from './components/Ribbon';
+import Link from 'next/link';
 type Option = {
     label: string,
     valeu: string
@@ -149,6 +150,8 @@ export default function ContractPage({
                         new_car_id: parseInt(carId)
                     })
                     console.log('response change: ', response.data.data);
+                    setReplaceCarList([])
+                    setOpenReplaceCarList(false)
                     setRefresh(prev => !prev)
                 } catch (error) {
 
@@ -280,18 +283,21 @@ export default function ContractPage({
     const rejectCustomerContract = (id: any) => {
         const { confirm } = Modal
         confirm({
-            title: "Bạn có muốn từ chối hợp đồng này?",
+            title: "Bạn có muốn từ chối hợp đồngss này?",
             cancelText: "Hủy",
             onOk: async () => {
                 try {
-                    const response = await axiosAuth.put("/admin/contract", {
-                        customer_contract_id: id,
-                        action: "reject"
-                    })
-                    if (response.status === 200) {
-                        sucessNotify("Đã từ chối hợp đồng thành công")
-                        setRefresh(prev => !prev)
-                    }
+                    console.log('detail: ', customerContractDetail?.collateral_type);
+                    console.log('detail: ', customerContractDetail);
+
+                    // const response = await axiosAuth.put("/admin/contract", {
+                    //     customer_contract_id: id,
+                    //     action: "reject"
+                    // })
+                    // if (response.status === 200) {
+                    //     sucessNotify("Đã từ chối hợp đồng thành công")
+                    //     setRefresh(prev => !prev)
+                    // }
                 } catch (error) {
                     errorNotify("Đã có lỗi, vui lòng thử lại")
                 }
@@ -423,67 +429,96 @@ export default function ContractPage({
                         />
                     </Dialog>
                     {
-                        !error && <div className='shadow-sm relative' style={{
-                            background: '#fff',
-                            padding: 10,
-                            margin: 10,
-                            borderRadius: 15
-                        }}>
-                            <div className='flex justify-between cardRibbon'>
-                                <div className='mt-10'>
-                                    <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
-                                        <span>{
-                                            ' '
-                                            + customerContractDetail?.customer.last_name
-                                            + ' '
-                                            + customerContractDetail?.customer.first_name
-                                        }
-                                        </span>
-                                        <Ribbon status={customerContractDetail?.status} content={t(`common:${customerContractDetail?.status}`)} />
-                                    </p>
-                                    <p className='font-medium mt-4'>Loại xe:   {
-                                        ' '
-                                        + customerContractDetail?.car.car_model.brand
-                                        + ' '
-                                        + customerContractDetail?.car.car_model.model
-                                        + ' '
-                                        + customerContractDetail?.car.car_model.year
-                                    }</p>
-                                    <p className='font-medium mt-3'>Loại thế chấp:   {
-                                        ' '
-                                        + t(`common:${customerContractDetail?.collateral_type}`)
-                                    }</p>
-                                    <p className='font-medium mt-3'>Ngày nhận xe:   {
-                                        customerContractDetail?.start_date && new Date(customerContractDetail.start_date).toLocaleString()
-                                    }
-                                    </p>
-                                    <p className='font-medium mt-3'>Ngày trả xe:   {
-                                        customerContractDetail?.end_date && new Date(customerContractDetail.end_date).toLocaleString()
-                                    }
-                                    </p>
+                        !error &&
+                        <>
+                            <Breadcrumb
+                                style={{
+                                    marginTop: 10
+                                }}
+                                items={[
                                     {
-                                        customerContractDetail?.collateral_type === 'cash' &&
-                                        <p className='font-medium mt-3'>Số tiền đã thế chấp:   {
+                                        title: <Link
+                                            style={{ color: "blue" }}
+                                            href={`/contracts`}>Hợp đồng khách hàng</Link>,
+                                    },
+                                    {
+                                        title: <p style={{
+                                            color: "#767da9",
+                                            fontWeight: "500",
+                                            textDecoration: "underline"
+                                        }}>
+                                            {
+                                                customerContractDetail?.car.car_model.brand
+                                                + ' '
+                                                + customerContractDetail?.car.car_model.model
+                                                + ' '
+                                                + customerContractDetail?.car.car_model.year
+                                            }
+                                        </p>,
+                                    },
+                                ]}
+                            />
+                            <div className='shadow-sm relative' style={{
+                                background: '#fff',
+                                padding: 10,
+                                margin: 10,
+                                borderRadius: 15
+                            }}>
+                                <div className='flex justify-between cardRibbon'>
+                                    <div className='mt-10'>
+                                        <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
+                                            <span>{
+                                                ' '
+                                                + customerContractDetail?.customer.last_name
+                                                + ' '
+                                                + customerContractDetail?.customer.first_name
+                                            }
+                                            </span>
+                                            <Ribbon status={customerContractDetail?.status} content={t(`common:${customerContractDetail?.status}`)} />
+                                        </p>
+                                        <p className='font-medium mt-4'>Loại xe:   {
                                             ' '
-                                            + formatCurrency(customerContractDetail.collateral_cash_amount)
+                                            + customerContractDetail?.car.car_model.brand
+                                            + ' '
+                                            + customerContractDetail?.car.car_model.model
+                                            + ' '
+                                            + customerContractDetail?.car.car_model.year
                                         }</p>
-                                    }
-                                </div>
-                                <div className='flex flex-col items-baseline'>
-                                    {customerContractDetail?.status === 'ordered' &&
-                                        <div className='flex justify-between w-full'>
-                                            <button
-                                                style={{
-                                                    color: '#fff',
-                                                    padding: '7px 20px',
-                                                    outline: 'none',
-                                                    border: 'none',
-                                                    cursor: 'pointer',
-                                                    background: 'red',
-                                                    marginRight: '20px'
-                                                }}
-                                                onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
-                                                className="inline-flex 
+                                        <p className='font-medium mt-3'>Loại thế chấp:   {
+                                            ' '
+                                            + t(`common:${customerContractDetail?.collateral_type}`)
+                                        }</p>
+                                        <p className='font-medium mt-3'>Ngày nhận xe:   {
+                                            customerContractDetail?.start_date && new Date(customerContractDetail.start_date).toLocaleString()
+                                        }
+                                        </p>
+                                        <p className='font-medium mt-3'>Ngày trả xe:   {
+                                            customerContractDetail?.end_date && new Date(customerContractDetail.end_date).toLocaleString()
+                                        }
+                                        </p>
+                                        {
+                                            customerContractDetail?.collateral_type === 'cash' &&
+                                            <p className='font-medium mt-3'>Số tiền đã thế chấp:   {
+                                                ' '
+                                                + formatCurrency(customerContractDetail.collateral_cash_amount)
+                                            }</p>
+                                        }
+                                    </div>
+                                    <div className='flex flex-col items-baseline'>
+                                        {customerContractDetail?.status === 'ordered' &&
+                                            <div className='flex justify-between w-full'>
+                                                <button
+                                                    style={{
+                                                        color: '#fff',
+                                                        padding: '7px 20px',
+                                                        outline: 'none',
+                                                        border: 'none',
+                                                        cursor: 'pointer',
+                                                        background: 'red',
+                                                        marginRight: '20px'
+                                                    }}
+                                                    onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
+                                                    className="inline-flex 
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -494,21 +529,21 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                            >
-                                                Từ chối hợp đồng
-                                                <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                                            </button>
+                                                >
+                                                    Từ chối hợp đồng
+                                                    <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                </button>
 
-                                            <button
-                                                style={{
-                                                    color: '#fff',
-                                                    padding: '7px 20px',
-                                                    outline: 'none',
-                                                    border: 'none',
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={() => approveCustomerContract(parseInt(customerIdSlug))}
-                                                className="inline-flex 
+                                                <button
+                                                    style={{
+                                                        color: '#fff',
+                                                        padding: '7px 20px',
+                                                        outline: 'none',
+                                                        border: 'none',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={() => approveCustomerContract(parseInt(customerIdSlug))}
+                                                    className="inline-flex 
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -520,26 +555,26 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                            >
-                                                Duyệt hợp đồng
-                                                <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                                            </button>
-                                        </div>
-                                    }
-                                    <button
-                                        style={{
-                                            color: '#fff',
-                                            padding: '7px 20px',
-                                            outline: 'none',
-                                            border: 'none',
-                                            cursor: 'pointer',
-                                            background: 'orange',
-                                            width: '100%'
-                                        }}
-                                        onClick={
-                                            () => router.push('/contracts/payments/' + customerIdSlug)
+                                                >
+                                                    Duyệt hợp đồng
+                                                    <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                </button>
+                                            </div>
                                         }
-                                        className="inline-flex
+                                        <button
+                                            style={{
+                                                color: '#fff',
+                                                padding: '7px 20px',
+                                                outline: 'none',
+                                                border: 'none',
+                                                cursor: 'pointer',
+                                                background: 'orange',
+                                                width: '100%'
+                                            }}
+                                            onClick={
+                                                () => router.push('/contracts/payments/' + customerIdSlug)
+                                            }
+                                            className="inline-flex
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -550,134 +585,135 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                    >
-                                        Quản lý các khoản thanh toán của hợp đồng
-                                        <PriceCheckOutlinedIcon sx={{ color: '#fff', fontSize: 20, marginLeft: 2 }} />
-                                    </button>
-                                </div>
-                            </div>
-                            {
-                                customerContractDetail?.collateral_type !== 'cash'
-                                &&
-                                <div className='mt-4'> <ExpandRowCollateral
-                                    getDataForExpand={getContractDetailById}
-                                    id={customerIdSlug}
-                                    expandLoading={loading}
-                                    fileList={fileList}
-                                    status={customerContractDetail?.status}
-                                    setFileList={setFileList}
-                                /></div>
-                            }
-                            {
-                                <div className='mt-4 mb-7'>
-                                    <ExpandRowRecievingCar
-                                        id={customerIdSlug}
-                                        fileList={fileCarCondition}
-                                        status={customerContractDetail?.status}
-                                        expandLoading={loading}
-                                        setFileCarCondition={setFileCarCondition}
-                                        getDataForExpand={getContractDetailById}
-                                    />
-                                </div>
-                            }
-
-                            {
-                                customerContractDetail?.status === 'ordered' &&
-                                <><h1
-                                    style={{
-                                        fontWeight: 600,
-                                        marginBottom: 10,
-                                        color: "#9250fa"
-                                    }}
-                                >
-                                    Tìm xe mới để thay thế
-                                </h1>
-                                    <div style={{
-                                        background: '#fff',
-                                        padding: 10,
-                                        border: '1px solid #efefef'
-                                    }}>
-
-                                        <div className='grid grid-cols-2 gap-5'>
-                                            <MultipleSelect
-                                                handleChange={handleChangeFuels}
-                                                placeholder={'Chọn nhiêu liệu'}
-                                                options={fuelOptions}
-                                            />
-                                            <MultipleSelect
-                                                handleChange={handleChangeMotions}
-                                                placeholder={'Chọn động cơ'}
-                                                options={motionOptions}
-                                            />
-                                            <MultipleSelect
-                                                handleChange={handleChangeSeats}
-                                                placeholder={'Chọn số chỗ ngồi'}
-                                                options={[
-                                                    {
-                                                        label: "4 chỗ",
-                                                        value: 4
-                                                    },
-                                                    {
-                                                        label: '7 chỗ',
-                                                        value: 7
-                                                    },
-                                                    {
-                                                        label: '15 chỗ',
-                                                        value: 15
-                                                    }
-                                                ]}
-                                            />
-                                            <MultipleSelect
-                                                handleChange={handleChangeParkingLots}
-                                                placeholder={'Chọn chỗ để xe'}
-                                                options={parkingLotOptions}
-                                            />
-                                        </div>
-                                        {
-                                            customerContractDetail?.status === 'ordered' &&
-                                            <>
-                                                <Button
-                                                    style={{ width: '200px' }}
-                                                    className='mb-5 mt-5'
-                                                    onClick={handleOpenReplaceCarList}>
-                                                    Tìm xe
-                                                </Button>
-                                            </>
-
-                                        }
-                                        {
-                                            !error && openReplaceCarList &&
-                                            <Table
-                                                dataSource={replaceCarList}
-                                                loading={loadingReplaceCarList}
-                                                columns={column}
-                                            />
-                                        }
+                                        >
+                                            Quản lý các khoản thanh toán của hợp đồng
+                                            <PriceCheckOutlinedIcon sx={{ color: '#fff', fontSize: 20, marginLeft: 2 }} />
+                                        </button>
                                     </div>
-                                </>
-                            }
-                            <Button
-                                type='primary'
-                                style={{ width: '200px' }}
-                                className='mb-5 mt-10'
-                                onClick={() => handleViewContract(customerIdSlug)}>
-                                {!openContractPdf ? 'Xem hợp đồng' : 'Đóng'}
-                            </Button>
-                            {
-                                openContractPdf &&
-                                <div style={{
-                                    minHeight: '500px'
-                                }}>
-                                    <Worker
-                                        workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                                        <Viewer
-                                            fileUrl={pdfUrl}
-                                            plugins={[defaultLayoutPluginInstance]}
-                                        />
-                                    </Worker>
                                 </div>
-                            }
-                        </div>
+                                {
+                                    customerContractDetail?.collateral_type !== 'cash'
+                                    &&
+                                    <div className='mt-4'> <ExpandRowCollateral
+                                        getDataForExpand={getContractDetailById}
+                                        id={customerIdSlug}
+                                        expandLoading={loading}
+                                        fileList={fileList}
+                                        status={customerContractDetail?.status}
+                                        setFileList={setFileList}
+                                    /></div>
+                                }
+                                {
+                                    <div className='mt-4 mb-7'>
+                                        <ExpandRowRecievingCar
+                                            id={customerIdSlug}
+                                            fileList={fileCarCondition}
+                                            status={customerContractDetail?.status}
+                                            expandLoading={loading}
+                                            setFileCarCondition={setFileCarCondition}
+                                            getDataForExpand={getContractDetailById}
+                                        />
+                                    </div>
+                                }
+
+                                {
+                                    customerContractDetail?.status === 'ordered' &&
+                                    <><h1
+                                        style={{
+                                            fontWeight: 600,
+                                            marginBottom: 10,
+                                            color: "#9250fa"
+                                        }}
+                                    >
+                                        Tìm xe mới để thay thế
+                                    </h1>
+                                        <div style={{
+                                            background: '#fff',
+                                            padding: 10,
+                                            border: '1px solid #efefef'
+                                        }}>
+
+                                            <div className='grid grid-cols-2 gap-5'>
+                                                <MultipleSelect
+                                                    handleChange={handleChangeFuels}
+                                                    placeholder={'Chọn nhiêu liệu'}
+                                                    options={fuelOptions}
+                                                />
+                                                <MultipleSelect
+                                                    handleChange={handleChangeMotions}
+                                                    placeholder={'Chọn động cơ'}
+                                                    options={motionOptions}
+                                                />
+                                                <MultipleSelect
+                                                    handleChange={handleChangeSeats}
+                                                    placeholder={'Chọn số chỗ ngồi'}
+                                                    options={[
+                                                        {
+                                                            label: "4 chỗ",
+                                                            value: 4
+                                                        },
+                                                        {
+                                                            label: '7 chỗ',
+                                                            value: 7
+                                                        },
+                                                        {
+                                                            label: '15 chỗ',
+                                                            value: 15
+                                                        }
+                                                    ]}
+                                                />
+                                                <MultipleSelect
+                                                    handleChange={handleChangeParkingLots}
+                                                    placeholder={'Chọn chỗ để xe'}
+                                                    options={parkingLotOptions}
+                                                />
+                                            </div>
+                                            {
+                                                customerContractDetail?.status === 'ordered' &&
+                                                <>
+                                                    <Button
+                                                        style={{ width: '200px' }}
+                                                        className='mb-5 mt-5'
+                                                        onClick={handleOpenReplaceCarList}>
+                                                        Tìm xe
+                                                    </Button>
+                                                </>
+
+                                            }
+                                            {
+                                                !error && openReplaceCarList &&
+                                                <Table
+                                                    dataSource={replaceCarList}
+                                                    loading={loadingReplaceCarList}
+                                                    columns={column}
+                                                />
+                                            }
+                                        </div>
+                                    </>
+                                }
+                                <Button
+                                    type='primary'
+                                    style={{ width: '200px' }}
+                                    className='mb-5 mt-10'
+                                    onClick={() => handleViewContract(customerIdSlug)}>
+                                    {!openContractPdf ? 'Xem hợp đồng' : 'Đóng'}
+                                </Button>
+                                {
+                                    openContractPdf &&
+                                    <div style={{
+                                        minHeight: '500px'
+                                    }}>
+                                        <Worker
+                                            workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                                            <Viewer
+                                                fileUrl={pdfUrl}
+                                                plugins={[defaultLayoutPluginInstance]}
+                                            />
+                                        </Worker>
+                                    </div>
+                                }
+                            </div>
+                        </>
                     }
                     {
                         error &&
