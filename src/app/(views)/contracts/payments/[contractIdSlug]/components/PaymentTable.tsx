@@ -105,7 +105,9 @@ export default function PaymentTable(
                             Thanh toán
                         </Button>
                         {
-                            contractStatus === 'renting' &&
+                            (contractStatus === 'renting' ||
+                                (contractStatus === 'ordered'
+                                    && record.payment_type === 'refund_pre_pay')) &&
                             <Button
                                 style={{
                                     background: "#fff",
