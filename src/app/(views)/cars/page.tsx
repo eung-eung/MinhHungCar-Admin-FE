@@ -8,7 +8,7 @@ import { TableParams } from '@/app/models/TableParams.model'
 import CarTable from './components/CarTable'
 import { removeKeys } from '@/app/utils/removeKeysFromObject'
 import { Flex, Skeleton, Tag } from 'antd'
-import { IContractRule } from '@/app/models/ContractRule'
+import { IPartnerContractRule } from '@/app/models/ContractRule'
 import { usePathname } from 'next/navigation'
 
 export default function Cars() {
@@ -20,7 +20,7 @@ export default function Cars() {
     const [loadingCurrentSeats, setLoadingCurrentSeats] = useState<boolean>(true)
     const [searchValue, setSearchValue] = useState<string>()
     const [currentSeats, setCurrentSeats] = useState<any>()
-    const [contractRules, setContractRules] = useState<IContractRule>()
+    const [contractRules, setContractRules] = useState<IPartnerContractRule>()
     const keyToRemove = ["max_4_seats", "max_7_seats", "max_15_seats", "total"]
     const path = usePathname()
     const [tableParams, setTableParams] = useState<TableParams>({
@@ -37,7 +37,7 @@ export default function Cars() {
             const carList = await axiosAuth.get(
                 `/admin/cars?car_status=${filter}`
             )
-            const ruleResponse = await axiosAuth.get('/admin/contract_rule')
+            const ruleResponse = await axiosAuth.get('/admin/partner_contract_rule')
             setContractRules(ruleResponse.data.data)
             setCarData(carList.data.data.cars)
             setLoading(false)
