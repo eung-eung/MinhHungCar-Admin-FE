@@ -542,13 +542,15 @@ export default function ContractPage({
                                             customerContractDetail?.end_date && new Date(customerContractDetail.end_date).toLocaleString()
                                         }
                                         </p>
-                                        {
+                                        {/* {
                                             customerContractDetail?.collateral_type === 'cash' &&
+                                            (customerContractDetail.status === 'completed' || customerContractDetail?.status === 'renting')
+                                            &&
                                             <p className='font-medium mt-3'>Số tiền đã thế chấp:   {
                                                 ' '
                                                 + formatCurrency(customerContractDetail.collateral_cash_amount)
                                             }</p>
-                                        }
+                                        } */}
                                     </div>
                                     <div className='flex flex-col items-baseline'>
                                         {customerContractDetail?.status === 'ordered' &&
