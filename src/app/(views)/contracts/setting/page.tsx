@@ -5,7 +5,7 @@ import ContractTable from '../components/ContractTable'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { ICustomerContract } from '@/app/models/CustomerContract'
 import TopFilterTable from '@/app/components/TopFilterTable'
-import { IContractRule } from '@/app/models/ContractRule'
+import { ICustomerContractRule, IPartnerContractRule } from '@/app/models/ContractRule'
 import { Button, InputNumber } from 'antd'
 import Item from './components/Item'
 import { sucessNotify } from '@/app/utils/toast'
@@ -18,10 +18,13 @@ type Error = {
 }
 export default function Setting() {
     const axiosAuth = useAxiosAuth()
-    const [contractRules, setContractRules] = useState<IContractRule>()
-    const [loading, setLoading] = useState<boolean>(true)
+    const [customerContractRules, setCustomerContractRules] = useState<ICustomerContractRule>()
+    const [partnerContractRules, setPartnerContractRules] = useState<IPartnerContractRule>()
+    const [customerContractRulesloading, setCustomerContractRulesloading] = useState<boolean>(true)
+    const [partnerContractRulesloading, setPartnerContractRulesloading] = useState<boolean>(true)
     const [rulesBody, setRulesBody] = useState<any>()
-    const [updateLoading, setUpdateLoading] = useState<boolean>(false)
+    const [customerUpdateLoading, setCustomerUpdateLoading] = useState<boolean>(false)
+    const [partnerUpdateLoading, setPartnerUpdateLoading] = useState<boolean>(false)
     const [errors, setErrors] = useState<Error | any>({
         revenueSharing: false,
         maxWarningCount: false,
@@ -29,24 +32,61 @@ export default function Setting() {
         prepayPercent: false,
         collateralCashAmount: false
     })
-    const getContractRules = async () => {
+    const getCustomerContractRules = async () => {
         try {
-            setLoading(true)
-            const response = await axiosAuth.get('/admin/contract_rule')
-            setContractRules(response.data.data)
-            setLoading(false)
+            setCustomerContractRulesloading(true)
+            const response = await axiosAuth.get('/admin/customer_contract_rule')
+            setCustomerContractRules(response.data.data)
+            setCustomerContractRulesloading(false)
         } catch (error) {
-            setLoading(false)
+            setCustomerContractRulesloading(false)
+        }
+    }
+    const getPartnerContractRules = async () => {
+        try {
+            console.log('3');
+
+            setPartnerContractRulesloading(true)
+            const response = await axiosAuth.get('/admin/partner_contract_rule')
+            setPartnerContractRules(response.data.data)
+            setPartnerContractRulesloading(false)
+        } catch (error) {
+            setPartnerContractRulesloading(false)
         }
     }
     useEffect(() => {
-        getContractRules()
+        getCustomerContractRules()
+        getPartnerContractRules()
     }, [])
-    const handleUpdateContractRules = async () => {
 
-        if (errors.revenueSharing
+    const handleUpdatePartnerContractRules = async () => {
+        if (
+            errors.revenueSharing
             || errors.maxWarningCount
-            || errors.collateralCashAmount
+        ) {
+            console.log('invalid');
+            return
+        }
+        if (rulesBody) {
+            try {
+                setPartnerUpdateLoading(true)
+                const response = await axiosAuth.post('/admin/partner_contract_rule', {
+                    revenue_sharing_percent: rulesBody.revenueSharing || partnerContractRules?.revenue_sharing_percent,
+                    max_warning_count: rulesBody.maxWarningCount || partnerContractRules?.max_warning_count,
+                })
+                setPartnerUpdateLoading(false)
+                sucessNotify('Cập nhật hợp đồng đối tác thành công')
+            } catch (error) {
+                console.log(error);
+                setPartnerUpdateLoading(false)
+            }
+        }
+    }
+
+    const handleUpdateCustomerContractRules = async () => {
+
+        if (
+            errors.collateralCashAmount
             || errors.prepayPercent
             || errors.insurancePercent
         ) {
@@ -57,24 +97,18 @@ export default function Setting() {
             console.log('rulesBody: ', rulesBody);
             console.log('call api');
             try {
-                setUpdateLoading(true)
-                const response = await axiosAuth.put('/admin/contract_rule', {
-                    rule_id: 1,
-                    insurance_percent: rulesBody.insurancePercent,
-                    prepay_percent: rulesBody.prepayPercent,
-                    revenue_sharing_percent: rulesBody.revenueSharing,
-                    collateral_cash_amount: rulesBody.collateralCashAmount,
-                    max_warning_count: rulesBody.maxWarningCount
+                setCustomerUpdateLoading(true)
+                const response = await axiosAuth.post('/admin/customer_contract_rule', {
+                    insurance_percent: rulesBody.insurancePercent || customerContractRules?.insurance_percent,
+                    prepay_percent: rulesBody.prepayPercent || customerContractRules?.prepay_percent,
+                    collateral_cash_amount: rulesBody.collateralCashAmount || customerContractRules?.collateral_cash_amount,
                 })
-                setUpdateLoading(false)
-                sucessNotify('Cập nhật thành công')
+                setCustomerUpdateLoading(false)
+                sucessNotify('Cập nhật hợp đồng khách hàng thành công')
             } catch (error) {
                 console.log(error);
-                setUpdateLoading(false)
+                setCustomerUpdateLoading(false)
             }
-
-
-
         }
     }
     const handleChangeRevenueSharingPercent = (e: any) => {
@@ -196,12 +230,12 @@ export default function Setting() {
                     >Đối tác
                     </h1>
                     <Item
-                        loading={loading}
+                        loading={partnerContractRulesloading}
                         title='Phần trăm chia sẻ doanh thu'
                         data={
                             <InputNumber<number>
                                 status={errors.revenueSharing && 'error'}
-                                defaultValue={contractRules?.revenue_sharing_percent}
+                                defaultValue={partnerContractRules?.revenue_sharing_percent}
                                 min={0}
                                 max={100}
                                 formatter={(value) => `${value}%`}
@@ -211,17 +245,24 @@ export default function Setting() {
                         }
                     />
                     <Item
-                        loading={loading}
+                        loading={partnerContractRulesloading}
                         title='Số lần tối đa giao xe trễ'
                         data={
                             <InputNumber
                                 status={errors.maxWarningCount && 'error'}
                                 min={0}
-                                defaultValue={contractRules?.max_warning_count}
+                                defaultValue={partnerContractRules?.max_warning_count}
                                 onChange={handleChangeMaxWarningCount}
                             />}
 
                     />
+                    <Button
+                        className='mb-5'
+                        loading={partnerUpdateLoading}
+                        onClick={handleUpdatePartnerContractRules}>
+                        Lưu
+                    </Button>
+
                 </div>
                 <div>
                     <h1
@@ -234,12 +275,12 @@ export default function Setting() {
                         Khách hàng
                     </h1>
                     <Item
-                        loading={loading}
+                        loading={customerContractRulesloading}
                         title='Phần trăm phí bảo hiểm'
                         data={
                             <InputNumber<number>
                                 status={errors.insurancePercent && 'error'}
-                                defaultValue={contractRules?.insurance_percent}
+                                defaultValue={customerContractRules?.insurance_percent}
                                 min={0}
                                 max={100}
                                 formatter={(value) => `${value}%`}
@@ -249,12 +290,12 @@ export default function Setting() {
                         }
                     />
                     <Item
-                        loading={loading}
+                        loading={customerContractRulesloading}
                         title='Phần trăm đặt cọc'
                         data={
                             <InputNumber<number>
                                 status={errors.prepayPercent && 'error'}
-                                defaultValue={contractRules?.prepay_percent}
+                                defaultValue={customerContractRules?.prepay_percent}
                                 min={0}
                                 max={100}
                                 formatter={(value) => `${value}%`}
@@ -264,7 +305,7 @@ export default function Setting() {
                         }
                     />
                     <Item
-                        loading={loading}
+                        loading={customerContractRulesloading}
                         title='Số tiền thế chấp'
                         data={
                             <InputNumber<number>
@@ -272,7 +313,7 @@ export default function Setting() {
                                 style={{
                                     width: "200px"
                                 }}
-                                defaultValue={contractRules?.collateral_cash_amount}
+                                defaultValue={customerContractRules?.collateral_cash_amount}
                                 formatter={(value) => `${value}đ`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                 parser={(value) => value?.replace(/\đ\s?|(,*)/g, '') as unknown as number}
                                 onChange={handleChangeCollateralCashAmount}
@@ -281,7 +322,11 @@ export default function Setting() {
                     />
                 </div>
             </div>
-            <Button loading={updateLoading} onClick={handleUpdateContractRules}>Lưu</Button>
+            <Button
+                loading={customerUpdateLoading}
+                onClick={handleUpdateCustomerContractRules}
+            >Lưu
+            </Button>
         </div>
     )
 }
