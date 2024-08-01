@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import CarouselImages from './Carousel';
 import CarInformation from './CarInformation';
 import { SetStateAction } from 'react';
-import { IContractRule } from '@/app/models/ContractRule';
+import { IPartnerContractRule } from '@/app/models/ContractRule';
 
 
 export default function CarDialog(
@@ -16,7 +16,7 @@ export default function CarDialog(
         contractRules
     }: {
         detail?: ICar,
-        contractRules?: IContractRule,
+        contractRules?: IPartnerContractRule,
         setRefresh?: React.Dispatch<SetStateAction<boolean>>
     }) {
     return (

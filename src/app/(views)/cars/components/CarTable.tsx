@@ -17,8 +17,7 @@ import DeliveryCarDropdown from './DeliveryCarDropdown'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
-import { log } from 'console'
-import { IContractRule } from '@/app/models/ContractRule'
+import { IPartnerContractRule } from '@/app/models/ContractRule'
 export default function CarTable(
     {
         carData,
@@ -30,7 +29,7 @@ export default function CarTable(
         carData: ICar[],
         loading: boolean,
         filter: any,
-        contractRules?: IContractRule,
+        contractRules?: IPartnerContractRule,
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()

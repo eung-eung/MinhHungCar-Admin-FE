@@ -7,7 +7,7 @@ import { Button, InputNumber, Modal, Tag } from 'antd'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { errorNotify } from '@/app/utils/toast'
-import { IContractRule } from '@/app/models/ContractRule'
+import { IPartnerContractRule } from '@/app/models/ContractRule'
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -22,7 +22,7 @@ export default function CarInformation(
         detail?: ICar,
         setRefresh?: React.Dispatch<SetStateAction<boolean>>
         showAction: boolean,
-        contractRules?: IContractRule
+        contractRules?: IPartnerContractRule
     }) {
     const { t } = useTranslation()
     const axiosAuth = useAxiosAuth()
