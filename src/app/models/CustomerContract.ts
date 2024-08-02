@@ -1,5 +1,6 @@
 import { IAccount } from "./Account.model"
 import { ICar } from "./Car.model"
+import { ICustomerContractRule } from "./ContractRule"
 
 export interface ICustomerContract {
     id: number
@@ -16,12 +17,9 @@ export interface ICustomerContract {
     collateral_type: string
     is_return_collateral_asset: boolean
     url: string
+    customer_contract_rule: ICustomerContractRule
     created_at: Date
     updated_at: Date
-    prepay_percent: any
-    revenue_sharing_percent: any
-    insurance_percent: any
     receiving_car_images: any[]
     collateral_asset_images: any[],
-    collateral_cash_amount: any
 }
