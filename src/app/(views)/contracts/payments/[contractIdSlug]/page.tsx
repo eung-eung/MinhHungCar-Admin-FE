@@ -15,6 +15,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import Link from 'next/link';
+import DetailItem from './components/DetailItem';
 
 
 export default function PaymentDetail({
@@ -240,7 +241,7 @@ export default function PaymentDetail({
                                 color: "#767da9",
                                 fontWeight: "500",
                                 textDecoration: "underline"
-                            }}>Quản lý các khoản thanh toán</p>,
+                            }}>Các khoản thanh toán</p>,
                         },
                     ]}
                 />
@@ -254,7 +255,7 @@ export default function PaymentDetail({
                     <div
                         className='flex justify-between items-start mb-5 mt-5'>
                         <div>
-                            <p className='font-bold'>
+                            <p className='font-bold mb-3'>
                                 {
                                     'Các khoản thanh toán cho hợp đồng xe '
                                     + detail?.car.car_model.brand
@@ -266,68 +267,26 @@ export default function PaymentDetail({
 
                             </p>
                             <div className='flex flex-col'>
-                                <div className='mt-5'>
-                                    {/* <Tag
-                                        style={{ width: 100, textAlign: 'center', fontSize: 14 }}
-                                        color='cyan'
-                                    >
-                                        Khách hàng
-                                    </Tag>
-                                    {
-                                        loadingDetail
-                                            ?
-                                            <Skeleton.Button
-                                                active={true}
-                                                size='default'
-                                                shape='round'
-                                                block={false}
-                                            />
-                                            :
-                                            <span
-                                                style={{
-                                                    color: '#797979',
-                                                    fontWeight: 600,
-                                                    fontSize: 14
-                                                }}
-                                            >
-                                                {
-                                                    detail?.customer.last_name
-                                                    + ' '
-                                                    + detail?.customer.first_name}
-                                            </span>
-                                    } */}
-                                </div>
-                                <div className='mt-5 mb-4'>
-                                    {/* <Tag
-                                        style={{ width: 100, textAlign: 'center', fontSize: 14 }}
-                                        color='purple'
-                                    >
-                                        Phí thuê xe
-                                    </Tag>
-                                    {
-                                        loadingDetail ?
-                                            <Skeleton.Button active={true} size='small' shape='round' block={false} />
-                                            :
-
-                                            <span
-                                                style={{
-                                                    color: '#797979',
-                                                    fontWeight: 600,
-                                                }}
-                                            >
-                                                {formatCurrency(detail?.rent_price)}
-                                            </span>
-                                    } */}
-                                </div>
+                                <DetailItem
+                                    detailTitle="Phần trăm bảo hiểm"
+                                    loadingDetail={loadingDetail}
+                                    detail={detail?.customer_contract_rule.insurance_percent + '%'}
+                                />
+                                <DetailItem
+                                    detailTitle="Phần trăm đặt cọc"
+                                    loadingDetail={loadingDetail}
+                                    detail={detail?.customer_contract_rule.prepay_percent + '%'}
+                                />
                                 {
                                     detail?.collateral_type === 'motorbike'
                                     &&
-                                    <div>
-                                        <Tag
-                                            style={{ textAlign: 'center', fontSize: 14, marginBottom: 20 }}
-                                            color='green'>
-                                            Hoàn trả thế chấp
-                                        </Tag>
+                                    <div className='flex items-center mb-4'>
+                                        <p style={{
+                                            color: "#696969",
+                                            marginRight: 4
+                                        }}>
+                                            Ghi nhận đã hoàn trả giấy tờ xe thế chấp:
+                                        </p>
                                         <ConfigProvider
                                             theme={{
                                                 token: {
