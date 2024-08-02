@@ -250,9 +250,11 @@ export default function ContractPage({
                 errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền thế chấp cho khách hàng")
                 return
             }
-            if ((collateralCash && collateralCash.status === 'pending') || !collateralCash) {
-                errorNotify("Khoản tiền thế chấp chưa được khách hàng thanh toán")
-                return
+            if (contractDetail.collateral_type === 'cash') {
+                if ((collateralCash && collateralCash.status === 'pending') || !collateralCash) {
+                    errorNotify("Khoản tiền thế chấp chưa được khách hàng thanh toán")
+                    return
+                }
             }
             if (refundPayment && refundPayment.status === 'pending') {
                 errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
@@ -324,8 +326,8 @@ export default function ContractPage({
                             && payment.status === "paid"
                     )
                     if (customerContractDetail?.collateral_type === 'motorbike') {
-                        if (!refundPayment) {
-                            errorNotify("Vui lòng hoàn trả tiền cọc trước khi từ chối")
+                        if (!customerContractDetail.is_return_collateral_asset) {
+                            errorNotify("Vui lòng hoàn trả giấy tờ xe đồng thời ghi nhận lại ở quản lý các khoản thanh toán")
                             return
                         }
                     }
@@ -335,8 +337,22 @@ export default function ContractPage({
                                 payment.payment_type === "return_collateral_cash")
                                 && payment.status === 'paid'
                         )
-                        if (!isReturnCollateralPayment || !refundPayment) {
-                            errorNotify("Bạn cần hoàn trả tiền thế chấp và tiền đặt cọc")
+                        const isPaidCollateralPayment = paymentList.find(
+                            (payment: IPayment) => (
+                                payment.payment_type === 'collateral_cash'
+                                && payment.status === 'paid'
+                            )
+                        )
+                        console.log('isPaidCollateralPayment: ', isPaidCollateralPayment);
+
+                        console.log('isReturnCollateralPayment: ', isReturnCollateralPayment);
+
+                        if ((!isReturnCollateralPayment && isPaidCollateralPayment)) {
+                            errorNotify("Bạn cần hoàn trả tiền thế chấp")
+                            return
+                        }
+                        if (!refundPayment) {
+                            errorNotify("Bạn cần hoàn trả tiền cọc")
                             return
                         }
                     }
