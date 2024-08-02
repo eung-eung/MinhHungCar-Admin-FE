@@ -244,9 +244,14 @@ export default function ContractPage({
             )
             const returnCollateralCash = paymentList.find(
                 (payment: IPayment) => payment.payment_type === 'return_collateral_cash')
-
+            const collateralCash = paymentList.find(
+                (payment: IPayment) => payment.payment_type === 'collateral_cash')
             if (returnCollateralCash && returnCollateralCash.status === 'paid') {
                 errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền thế chấp cho khách hàng")
+                return
+            }
+            if ((collateralCash && collateralCash.status === 'pending') || !collateralCash) {
+                errorNotify("Khoản tiền thế chấp chưa được khách hàng thanh toán")
                 return
             }
             if (refundPayment && refundPayment.status === 'pending') {
