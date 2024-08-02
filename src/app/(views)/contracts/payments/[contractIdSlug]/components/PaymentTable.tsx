@@ -99,11 +99,15 @@ export default function PaymentTable(
                 return record.status === 'paid' ?
                     <Tag color='green'>Đã thanh toán</Tag>
                     : <div className='flex items-center justify-between'>
-                        <Button
-                            className='cursor-pointer'
-                            onClick={() => getPaymentUrl(record.payment_url)}>
-                            Thanh toán
-                        </Button>
+                        {
+                            contractStatus !== 'canceled'
+                            &&
+                            <Button
+                                className='cursor-pointer'
+                                onClick={() => getPaymentUrl(record.payment_url)}>
+                                Thanh toán
+                            </Button>
+                        }
                         {
                             (contractStatus === 'renting' ||
                                 (contractStatus === 'ordered'
@@ -135,22 +139,28 @@ export default function PaymentTable(
 
         },
         getCheckboxProps: (record: IPayment) => {
-            if (selectedRowsState && selectedRowsState.length > 0) {
-                const isSelectAdmin = selectedRowsState?.some(row => row.payer === 'admin')
-                if (isSelectAdmin) {
-                    return ({
-                        disabled: record.payer !== 'admin' || record.status === 'paid'
-                    })
+            if (contractStatus === 'canceled') {
+                return ({
+                    disabled: true
+                })
+            } else {
+                if (selectedRowsState && selectedRowsState.length > 0) {
+                    const isSelectAdmin = selectedRowsState?.some(row => row.payer === 'admin')
+                    if (isSelectAdmin) {
+                        return ({
+                            disabled: record.payer !== 'admin' || record.status === 'paid'
+                        })
+                    } else {
+                        return ({
+                            disabled: record.status === 'paid' || record.payer === 'admin'
+
+                        })
+                    }
                 } else {
                     return ({
-                        disabled: record.status === 'paid' || record.payer === 'admin'
-
+                        disabled: record.status === 'paid'
                     })
                 }
-            } else {
-                return ({
-                    disabled: record.status === 'paid'
-                })
             }
         },
         selectedRowKeys: selectedKey,
