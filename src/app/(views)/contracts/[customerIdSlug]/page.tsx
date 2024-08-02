@@ -327,7 +327,7 @@ export default function ContractPage({
                     )
                     if (customerContractDetail?.collateral_type === 'motorbike') {
                         if (!customerContractDetail.is_return_collateral_asset) {
-                            errorNotify("Vui lòng hoàn trả giấy tờ xe đồng thời ghi nhận lại ở quản lý các khoản thanh toán")
+                            errorNotify("Vui lòng ghi nhận đã hoàn trả giấy tờ xe ở quản lý các khoản thanh toán")
                             return
                         }
                     }
