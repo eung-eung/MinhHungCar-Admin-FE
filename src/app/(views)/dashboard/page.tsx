@@ -39,7 +39,7 @@ export default function Dashboard() {
         setLoadingItems(true)
         try {
             const response = await axiosAuth.get(
-                '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=60&rented_cars_back_off_day=60'
+                '/admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=6&rented_cars_back_off_day=60'
             )
             setItems({
                 totalActiveCustomers: {
@@ -117,7 +117,10 @@ export default function Dashboard() {
             </div>
             <div className={classes.areaChart}>
                 <StatisticItem
-                    // style={}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center'
+                    }}
                     header={<DynamicAreaChart />}
                     title={<p>Doanh thu 6 ngày gần nhất</p>}
                 />
