@@ -1,72 +1,104 @@
 'use client'
 
-import React from 'react'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
-];
+import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import React, { useEffect, useState } from 'react'
+import { Pie, PieChart, Sector } from 'recharts'
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = (
-    {
-        cx,
-        cy,
-        midAngle,
-        innerRadius,
-        outerRadius,
-        percent,
-        index
-    }: {
-        cx: any,
-        cy: any,
-        midAngle: any,
-        innerRadius: any,
-        outerRadius: any,
-        percent: any,
-        index: any
-    }
-) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+const renderActiveShape = (props: any) => {
 
+    const { cx, cy, startAngle, endAngle, payload, innerRadius, outerRadius, z, cornerRadius } = props;
     return (
-        <text x={x} y={y} fill="white"
-            textAnchor={x > cx ? 'start' : 'end'}
-            dominantBaseline="central">
-            {`${(percent * 100).toFixed(0)}%`}
-        </text>
+        <g>
+            <text x={cx} y={cy - 20} dy={8} fontSize={z ? '16px' : "24px"} textAnchor="middle" fill="#001233" fontWeight="bold">
+                {payload.value}
+            </text>
+            <text x={cx} y={cy + 5} dy={8} fontSize="12px" textAnchor="middle" fill="#5C677D">
+                {payload.name}
+            </text>
+            <Sector
+                cx={cx}
+                cy={cy}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius + 20}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                fill={"#83dfa3"}
+                cornerRadius={payload.name === 'Deposit' ? cornerRadius : 0}
+            />
+            <Sector
+                cx={cx}
+                cy={cy}
+                innerRadius={innerRadius - 18}
+                outerRadius={innerRadius - 10}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                fill={"#7674740f"}
+            />
+        </g>
     );
 };
+
 export default function PieReChart() {
+    const axiosAuth = useAxiosAuth()
+    const [numberParkingLot, setNumberParkingLot] = useState<any>([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [activeIndex, setActiveIndex] = useState<any>(0)
+
+    const onPieEnter = (_: any, index: any) => {
+        setActiveIndex(index)
+    };
+
+    const getDatePieChart = async () => {
+        try {
+            setLoading(true)
+            const response = await axiosAuth.get('admin/statistic?total_customer_contracts_back_off_day=60&total_active_partners_back_off_day=60&total_active_customers_back_off_day=60&revenue_back_off_day=8&rented_cars_back_off_day=60')
+            console.log(response.data.data);
+            setNumberParkingLot([{
+                name: 'MinhHung garage',
+                value: response.data.data.parking_lot.garage
+            },
+            {
+                name: 'Nhà',
+                value: response.data.data.parking_lot.home
+            }
+            ])
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+        }
+
+    }
+
+    useEffect(() => {
+        getDatePieChart()
+        if (!loading) {
+            console.log(numberParkingLot);
+        }
+
+    }, [])
     return (
         <>
+            <p className='font-sans font-bold text-neutral-600 dark:text-neutral-200 mb-3 mt-2'>
+                Tỉ lệ chọn nơi để xe của các đối tác
+            </p>
             <PieChart width={400} height={400}>
                 <Pie
-
+                    activeIndex={activeIndex}
+                    activeShape={renderActiveShape}
                     style={{ outline: 'none' }}
-                    data={data}
+                    data={numberParkingLot}
                     cx="50%"
-                    cy="50%"
+                    cy="40%"
                     labelLine={false}
-                    label={renderCustomizedLabel}
-                    outerRadius={150}
-                    fill="#8884d8"
+                    innerRadius={80}
+                    outerRadius={120}
                     dataKey="value"
+                    fill='#62c3b6'
+                    onMouseEnter={onPieEnter}
                 >
-                    {data.map((entry, index) => (
-                        <Cell
-                            style={{ outline: 'none' }}
-                            key={`cell-${index}`}
-                            fill={COLORS[index % COLORS.length]} />
-                    ))}
                 </Pie>
-            </PieChart>
+            </PieChart >
         </>
     )
 }
