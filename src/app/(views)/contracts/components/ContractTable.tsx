@@ -15,6 +15,7 @@ import ExpandRowCollateral from './ExpandRowCollateral'
 import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
 import CompletedContractDropdown from './CompletedContractDropdown'
+import CanceledContractDropdown from './CanceledContractDropdown'
 
 
 export default function ContractTable(
@@ -99,7 +100,12 @@ export default function ContractTable(
                             id={record.id}
                         />
                     }
-
+                    {
+                        filter === 'canceled' &&
+                        <CanceledContractDropdown
+                            id={record.id}
+                        />
+                    }
                 </div>
 
             }
