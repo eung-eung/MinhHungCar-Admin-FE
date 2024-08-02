@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import { IPartnerContractRule } from '@/app/models/ContractRule'
+import InActiveCarDropDown from './InActiveCarDropDown'
 export default function CarTable(
     {
         carData,
@@ -139,6 +140,8 @@ export default function CarTable(
             dataIndex: 'action',
             key: 'id',
             render: (_, record) => {
+
+
                 return <div className={classes.actionBox}>
                     {
                         filter === 'pending_approval' &&
@@ -171,6 +174,12 @@ export default function CarTable(
                             loadingDialog={loadingDialog}
                             setOpen={setOpen}
                             setRefresh={setRefresh}
+                        />
+                    }
+                    {
+                        filter === 'inactive' &&
+                        <InActiveCarDropDown
+                            id={record.id}
                         />
                     }
                 </div>
