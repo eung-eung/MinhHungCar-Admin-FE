@@ -10,8 +10,13 @@ export default function TopRentCarTable() {
     const [data, setData] = useState<ICarItem[]>()
     const axiosAuth = useAxiosAuth()
     const getData = async () => {
-        const response = await axiosAuth.get('/admin/statistic?total_customer_contracts_back_off_day=1&total_active_partners_back_off_day=1&total_active_customers_back_off_day=1&revenue_back_off_day=5&rented_cars_back_off_day=6')
-        setData(response.data.data.rented_cars)
+        try {
+            const response = await axiosAuth.get('/admin/statistic?total_customer_contracts_back_off_day=1&total_active_partners_back_off_day=1&total_active_customers_back_off_day=1&revenue_back_off_day=5&rented_cars_back_off_day=6')
+            setData(response.data.data.rented_cars)
+        } catch (error) {
+
+        }
+
     }
     useEffect(() => {
         getData()
