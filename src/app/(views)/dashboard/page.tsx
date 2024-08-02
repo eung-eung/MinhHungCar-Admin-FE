@@ -131,15 +131,15 @@ export default function Dashboard() {
                 }}>
                     <StatisticItem
                         style={{
-                            height: 400
+                            flex: 1,
+                            height: '100%'
                         }}
-                        header={<DynamicLineChart />}
+                        header={<DynamicPieChart />}
                     />
-
                 </div>
                 <div
                     style={{
-                        flex: 2,
+                        flex: 3,
                         height: '100%'
                     }}
                 >
@@ -153,15 +153,13 @@ export default function Dashboard() {
                 </div>
             </Flex>
             <div>
-                <StatisticItem
+                {/* <StatisticItem
                     style={{
-                        // height: '500px',
-                        flex: 1,
-                        height: '100%'
+                        height: 400
                     }}
-                    header={<DynamicPieChart />}
-                    title={<p>Từng loại xe</p>}
-                />
+                    header={<DynamicLineChart />}
+
+                /> */}
             </div>
             <div>
 
