@@ -21,7 +21,7 @@
     "motorbike": "Xe",
     "paid": "Đã thanh toán",
     "pre_pay": "Tiền cọc",
-    "pending": "Chờ thanh toán",
+    "pending": "Chưa thanh toán",
     "refund_pre_pay": "Hoàn trả tiền cọc",
     "other": "Khác",
     "return_collateral_cash": "Hoàn trả tiền thế chấp",
