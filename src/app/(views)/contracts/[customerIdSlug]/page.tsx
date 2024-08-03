@@ -334,8 +334,9 @@ export default function ContractPage({
                     if (customerContractDetail?.collateral_type === 'cash') {
                         const isReturnCollateralPayment = paymentList.find(
                             (payment: IPayment) => (
-                                payment.payment_type === "return_collateral_cash")
+                                payment.payment_type === "return_collateral_cash"
                                 && payment.status === 'paid'
+                            )
                         )
                         const isPaidCollateralPayment = paymentList.find(
                             (payment: IPayment) => (
