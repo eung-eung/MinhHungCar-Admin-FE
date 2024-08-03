@@ -330,6 +330,10 @@ export default function ContractPage({
                             errorNotify("Vui lòng ghi nhận đã hoàn trả giấy tờ xe ở quản lý các khoản thanh toán")
                             return
                         }
+                        if (!refundPayment) {
+                            errorNotify("Bạn cần hoàn trả tiền cọc")
+                            return
+                        }
                     }
                     if (customerContractDetail?.collateral_type === 'cash') {
                         const isReturnCollateralPayment = paymentList.find(
