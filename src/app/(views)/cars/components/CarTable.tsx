@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import { IPartnerContractRule } from '@/app/models/ContractRule'
 import InActiveCarDropDown from './InActiveCarDropDown'
+import CountQuantityInput from './CountQuantityInput'
 export default function CarTable(
     {
         carData,
@@ -38,39 +39,7 @@ export default function CarTable(
     const [loadingDialog, setLoadingDialog] = useState<boolean>(true);
     const [carDetail, setCarDetail] = useState<ICar>()
     const router = useRouter()
-    const input = useRef(null)
     const { t } = useTranslation()
-    console.log('render lại');
-
-    const handleStepWarningCount: InputNumberProps['onStep'] = async (carId, value) => {
-        try {
-            const response = await axiosAuth.put('/admin/warning_count', {
-                car_id: carId,
-                new_warning_count: value
-            })
-            console.log(response);
-
-        } catch (error) {
-
-        }
-    }
-
-    const handleChangeWarningCount = async (carId: any, value: any) => {
-        console.log(value);
-        if (value) {
-            try {
-                const response = await axiosAuth.put('/admin/warning_count', {
-                    car_id: carId,
-                    new_warning_count: value
-                })
-                console.log(response);
-
-            } catch (error) {
-
-            }
-
-        }
-    }
 
     const columns: TableProps<ICar>['columns'] = [
         {
@@ -121,17 +90,13 @@ export default function CarTable(
             key: 'id',
             render: (_, record) => record.status === 'active'
                 ? <>
-                    <InputNumber
-                        ref={input}
-                        size='small'
-                        changeOnBlur
-                        min={0}
-                        max={contractRules?.max_warning_count}
-                        onChange={(value: any) => handleChangeWarningCount(record.id, value)}
-                        onStep={(value: any) => handleStepWarningCount(record.id, value)}
-                        defaultValue={record.warning_count}
+                    <CountQuantityInput
+                        setRefresh={setRefresh}
+                        maxWarningCount={record.partner_contract_rule.max_warning_count}
+                        car={record}
+                        warningCount={record.warning_count}
                     />
-                    <span> / {contractRules?.max_warning_count}</span>
+                    <span> / {record.partner_contract_rule.max_warning_count}</span>
                 </>
                 : <BlockRoundedIcon color='disabled' />
         },
