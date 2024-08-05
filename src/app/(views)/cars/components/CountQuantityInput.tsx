@@ -14,7 +14,7 @@ export default function CountQuantityInput(
         warningCount: any,
         car: ICar,
         maxWarningCount: any,
-        setRefresh: React.Dispatch<SetStateAction<boolean>>
+        setRefresh?: React.Dispatch<SetStateAction<boolean>>
     }) {
     const axiosAuth = useAxiosAuth()
     const [value, setValue] = useState<any>(warningCount)
@@ -77,7 +77,7 @@ export default function CountQuantityInput(
                             car_id: car.id,
                             new_warning_count: value + 1
                         })
-                        setRefresh(prev => !prev)
+                        setRefresh && setRefresh(prev => !prev)
                     } catch (error) {
 
                     }

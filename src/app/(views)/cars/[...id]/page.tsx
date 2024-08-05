@@ -7,6 +7,7 @@ import CarouselImages from '../components/Carousel';
 import classes from './index.module.css'
 import CarInformation from '../components/CarInformation';
 import { Spin } from 'antd';
+import CountQuantityInput from '../components/CountQuantityInput';
 export default function CarDetail({
     params: { id }
 }: {
@@ -54,9 +55,11 @@ export default function CarDetail({
                         <CarouselImages images={detail?.images} />
                     </div>
                     <div className={classes.rightDetail}>
+
                         <CarInformation
                             showAction={true}
                             detail={detail} setRefresh={setRefresh} />
+
                     </div>
                 </div>
             }
