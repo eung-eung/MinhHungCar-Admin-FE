@@ -163,10 +163,13 @@ export default function NotificationList() {
 
                     )}
                     {
-                        !notifications && <>
+                        !notifications && <div className='flex items-center justify-center flex-col' style={{
+                            height: 400,
+                            overflow: 'none'
+                        }}>
                             <NotificationsNoneRoundedIcon />
                             <p>Không có thông báo</p>
-                        </>
+                        </div>
                     }
                 </ul>
             </div>
