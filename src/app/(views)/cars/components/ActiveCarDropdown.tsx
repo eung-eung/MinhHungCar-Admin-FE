@@ -1,6 +1,7 @@
 import { Button, Dropdown, Menu } from 'antd'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useRouter } from 'next/navigation';
+import nProgress from 'nprogress';
 
 export default function ActiveCarDropdown(
     {
@@ -24,8 +25,10 @@ export default function ActiveCarDropdown(
                         {
                             key: '1',
                             label: 'Chi tiết',
-                            onClick: () =>
+                            onClick: () => {
+                                nProgress.start()
                                 router.push('/cars/' + id)
+                            }
                         },
                         {
                             key: '2',

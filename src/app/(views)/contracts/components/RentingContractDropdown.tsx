@@ -28,7 +28,10 @@ export default function RentingContractDropdown(
                             {
                                 key: '1',
                                 label: 'Chi tiết',
-                                onClick: () => showCustomerContract(id)
+                                onClick: () => {
+                                    nProgress.start()
+                                    showCustomerContract(id)
+                                }
                             },
                             {
                                 key: '2',

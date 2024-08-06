@@ -5,6 +5,7 @@ import { ICar } from '@/app/models/Car.model';
 import { errorNotify } from '@/app/utils/toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import nProgress from 'nprogress';
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -86,8 +87,10 @@ export default function PendingApprovalDropdown(
                             {
                                 key: '1',
                                 label: 'Chi tiết',
-                                onClick: () =>
+                                onClick: () => {
+                                    nProgress.start()
                                     router.push('/cars/' + id)
+                                }
                             },
                             {
                                 key: '2',

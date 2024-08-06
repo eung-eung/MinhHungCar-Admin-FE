@@ -2,6 +2,7 @@ import { Button, Dropdown, Menu } from 'antd'
 import React from 'react'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useRouter } from 'next/navigation';
+import nProgress from 'nprogress';
 export default function OrderedContractDropdown(
     {
         id,
@@ -26,8 +27,10 @@ export default function OrderedContractDropdown(
                             {
                                 key: '1',
                                 label: 'Chi tiết',
-                                onClick: () =>
+                                onClick: () => {
+                                    nProgress.start()
                                     showCustomerContract(id)
+                                }
                             },
                             {
                                 key: '2',
