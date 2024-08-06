@@ -105,7 +105,7 @@ export default function RatingTable() {
             title: 'Ngày đánh giá',
             dataIndex: 'created_at',
             key: 'id',
-            render: (createDay) => <p>{createDay}</p>
+            render: (createDay) => <p>{new Date(createDay).toLocaleString()}</p>
         },
         {
             title: 'Nội dung',
