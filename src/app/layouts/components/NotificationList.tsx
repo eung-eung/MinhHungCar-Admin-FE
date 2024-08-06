@@ -34,12 +34,24 @@ export default function NotificationList() {
                     signOut()
                 } else {
                     if (data.sender !== 'admin') {
-                        setNotifications((prev: INotifcation[]) => [
-                            {
-                                url: `/chat/${data.conversation_id}`,
-                                title: 'Bạn có tin nhắn mới',
-                            },
-                            ...prev])
+                        setNotifications((prev: INotifcation[]) => {
+                            if (prev) {
+                                return [
+                                    {
+                                        url: `/chat/${data.conversation_id}`,
+                                        title: 'Bạn có tin nhắn mới',
+                                    },
+                                    ...prev]
+                            } else {
+                                [
+                                    {
+                                        url: `/chat/${data.conversation_id}`,
+                                        title: 'Bạn có tin nhắn mới',
+                                    }
+                                ]
+                            }
+
+                        })
 
                         toast.custom((t) => (
                             <div
@@ -87,13 +99,25 @@ export default function NotificationList() {
                     console.log('vao error');
                     signOut()
                 } else {
-                    setNotifications((prev: INotifcation[]) => [
-                        {
-                            url: data.data.redirect_url,
-                            title: data.title,
-                            content: data.body
-                        },
-                        ...prev])
+                    setNotifications((prev: INotifcation[]) => {
+                        if (prev) {
+                            return [
+                                {
+                                    url: data.data.redirect_url,
+                                    title: data.title,
+                                    content: data.body
+                                },
+                                ...prev]
+                        } else {
+                            [
+                                {
+                                    url: data.data.redirect_url,
+                                    title: data.title,
+                                    content: data.body
+                                }
+                            ]
+                        }
+                    })
                     toast.custom((t) => (
                         <div
                             style={{ width: '350px' }}
