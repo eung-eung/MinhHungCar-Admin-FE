@@ -16,7 +16,7 @@ import { formatCurrency } from '@/app/utils/formatCurrency';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import PriceCheckOutlinedIcon from '@mui/icons-material/PriceCheckOutlined';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ICar } from '@/app/models/Car.model';
 import { TableProps } from 'antd/lib';
 import { ICarModel } from '@/app/models/CarModel.model';
@@ -39,6 +39,8 @@ export default function ContractPage({
 }: {
     params: { customerIdSlug: any }
 }) {
+    const searchParams = useSearchParams()?.get('fromNoti')
+
     const [pdfUrl, setPdfUrl] = useState<any>()
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<any>(false)
@@ -91,6 +93,8 @@ export default function ContractPage({
         renderToolbar,
     });
     const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
+    console.log('from noti: ', searchParams);
+
     const column: TableProps<ICar>['columns'] = [
         {
             title: 'Hãng xe',
@@ -578,21 +582,23 @@ export default function ContractPage({
                                             }</p>
                                         } */}
                                     </div>
-                                    <div className='flex flex-col items-baseline'>
-                                        {customerContractDetail?.status === 'ordered' &&
-                                            <div className='flex justify-between w-full'>
-                                                <button
-                                                    style={{
-                                                        color: '#fff',
-                                                        padding: '7px 20px',
-                                                        outline: 'none',
-                                                        border: 'none',
-                                                        cursor: 'pointer',
-                                                        background: 'red',
-                                                        marginRight: '20px'
-                                                    }}
-                                                    onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
-                                                    className="inline-flex 
+                                    {
+                                        !searchParams &&
+                                        <div className='flex flex-col items-baseline'>
+                                            {customerContractDetail?.status === 'ordered' &&
+                                                <div className='flex justify-between w-full'>
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                            background: 'red',
+                                                            marginRight: '20px'
+                                                        }}
+                                                        onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
+                                                        className="inline-flex 
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -603,21 +609,21 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                                >
-                                                    Từ chối hợp đồng
-                                                    <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                                                </button>
+                                                    >
+                                                        Từ chối hợp đồng
+                                                        <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
 
-                                                <button
-                                                    style={{
-                                                        color: '#fff',
-                                                        padding: '7px 20px',
-                                                        outline: 'none',
-                                                        border: 'none',
-                                                        cursor: 'pointer',
-                                                    }}
-                                                    onClick={() => approveCustomerContract(parseInt(customerIdSlug))}
-                                                    className="inline-flex 
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                        }}
+                                                        onClick={() => approveCustomerContract(parseInt(customerIdSlug))}
+                                                        className="inline-flex 
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -629,26 +635,26 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                                >
-                                                    Duyệt hợp đồng
-                                                    <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
-                                                </button>
-                                            </div>
-                                        }
-                                        <button
-                                            style={{
-                                                color: '#fff',
-                                                padding: '7px 20px',
-                                                outline: 'none',
-                                                border: 'none',
-                                                cursor: 'pointer',
-                                                background: 'orange',
-                                                width: '100%'
-                                            }}
-                                            onClick={
-                                                () => router.push('/contracts/payments/' + customerIdSlug)
+                                                    >
+                                                        Duyệt hợp đồng
+                                                        <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
+                                                </div>
                                             }
-                                            className="inline-flex
+                                            <button
+                                                style={{
+                                                    color: '#fff',
+                                                    padding: '7px 20px',
+                                                    outline: 'none',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    background: 'orange',
+                                                    width: '100%'
+                                                }}
+                                                onClick={
+                                                    () => router.push('/contracts/payments/' + customerIdSlug)
+                                                }
+                                                className="inline-flex
                                                 animate-shimmer 
                                                 items-center 
                                                 justify-center 
@@ -659,11 +665,13 @@ export default function ContractPage({
                                                 transition-colors 
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
-                                        >
-                                            Quản lý các khoản thanh toán của hợp đồng
-                                            <PriceCheckOutlinedIcon sx={{ color: '#fff', fontSize: 20, marginLeft: 2 }} />
-                                        </button>
-                                    </div>
+                                            >
+                                                Quản lý các khoản thanh toán của hợp đồng
+                                                <PriceCheckOutlinedIcon sx={{ color: '#fff', fontSize: 20, marginLeft: 2 }} />
+                                            </button>
+                                        </div>
+                                    }
+
                                 </div>
                                 {
                                     customerContractDetail?.collateral_type !== 'cash'
@@ -678,6 +686,7 @@ export default function ContractPage({
                                     /></div>
                                 }
                                 {
+                                    !searchParams &&
                                     <div className='mt-4 mb-7'>
                                         <ExpandRowRecievingCar
                                             id={customerIdSlug}
@@ -691,7 +700,7 @@ export default function ContractPage({
                                 }
 
                                 {
-                                    customerContractDetail?.status === 'ordered' &&
+                                    !searchParams && customerContractDetail?.status === 'ordered' &&
                                     <><h1
                                         style={{
                                             fontWeight: 600,
