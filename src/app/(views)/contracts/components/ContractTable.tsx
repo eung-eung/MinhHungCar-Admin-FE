@@ -16,6 +16,8 @@ import SwitchIsReturn from './Switch'
 import ExpandRowRecievingCar from './ExpandRowRecievingCar'
 import CompletedContractDropdown from './CompletedContractDropdown'
 import CanceledContractDropdown from './CanceledContractDropdown'
+import nProgress from 'nprogress'
+import { useRouter } from 'next/navigation'
 
 
 export default function ContractTable(
@@ -30,7 +32,7 @@ export default function ContractTable(
         loading: boolean,
         setRefresh: React.Dispatch<React.SetStateAction<boolean>>
     }) {
-
+    const router = useRouter()
     const [customerContractDetail, setCustomerContractDetail] = useState<ICustomerContract>()
     const [expandLoading, setExpandLoaing] = useState<any>({})
     const [expandedRowKeys, setExpandedRowKeys] = useState<any>([]);
@@ -75,37 +77,15 @@ export default function ContractTable(
             dataIndex: 'action',
             key: 'id',
             render: (_, record) => {
-                return <div style={{ position: 'relative' }}>
-                    {
-                        filter === 'ordered' &&
-                        <OrderedContractDropdown
-                            id={record.id}
-                            approveCustomerContract={() =>
-                                approveCustomerContract(record.id)
-                            }
-                            rejectCustomerContract={() => rejectCustomerContract(record.id)}
-                        />
-                    }
-                    {
-                        filter === 'completed' &&
-                        <>
-                            <CompletedContractDropdown
-                                id={record.id}
-                            />
-                        </>
-                    }
-                    {
-                        filter === 'renting' &&
-                        <RentingContractDropdown
-                            id={record.id}
-                        />
-                    }
-                    {
-                        filter === 'canceled' &&
-                        <CanceledContractDropdown
-                            id={record.id}
-                        />
-                    }
+                return <div style={{ position: 'relative' }} onClick={() => {
+                    nProgress.start()
+                    router.push('/contracts/' + record.id)
+                }}>
+                    <RemoveRedEyeOutlinedIcon style={{
+                        color: "#4100ff",
+                        cursor: 'pointer'
+                    }} />
+
                 </div>
 
             }
