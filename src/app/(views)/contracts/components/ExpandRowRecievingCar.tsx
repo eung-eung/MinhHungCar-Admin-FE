@@ -2,7 +2,7 @@ import { getBase64 } from '@/app/utils/getBase64';
 import { Button, ConfigProvider, GetProp, Image, Modal, Upload, UploadProps, message } from 'antd'
 import { UploadFile } from 'antd/lib';
 import React, { use, useState } from 'react'
-import UploadButton from '../../cars/components/UploadButton';
+import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -133,34 +133,28 @@ export default function ExpandRowRecievingCar(
 
 
                         }}
-                        beforeUpload={handleUpload}
-                        onRemove={handleRemove}
                         listType="picture-card"
                         fileList={fileList}
-                        onPreview={handlePreview}
-                        onChange={handleChange}
                     >
-                        {
-                            fileList.length >= 6
-                                ? null
-                                : status === 'ordered'
-                                && <UploadButton />
-                        }
+                        {fileList.length < 1 && null}
                     </Upload>
                 }
+                {fileList.length < 1 && <div className='flex flex-col items-center justify-center' style={{
+                    border: '1px solid #ccc',
+                    width: "120px",
+                    height: "120px",
+                    borderRadius: 10,
+                    padding: 10
+                }}>
+                    <HideImageOutlinedIcon />
+                    <p style={{
+                        fontSize: 12,
+                        marginTop: 10,
+                        color: "#a1a1a1",
+                        fontWeight: 500
+                    }}>Chưa có hình</p>
+                </div>}
             </ConfigProvider>
-            {status === 'ordered'
-                && <Button
-                    loading={loadingUpdate}
-                    disabled={loadingUpdate ||
-                        fileList.filter((file: any) => !file.isUpload).length < 1}
-                    onClick={
-                        () => handleUpdate(id)
-                    }
-                    className='mt-3'
-                >
-                    Lưu
-                </Button>}
             {previewImage && (
                 <Image
                     wrapperStyle={{ display: 'none' }}
