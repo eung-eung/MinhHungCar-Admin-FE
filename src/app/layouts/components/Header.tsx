@@ -1,7 +1,7 @@
 import { Avatar } from 'antd'
 import React from 'react'
 import classes from './Header.module.css'
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+
 import DigitalClock from '@/app/components/DigitalClock';
 import NotificationList from './NotificationList';
 export default function Header() {
@@ -19,8 +19,7 @@ export default function Header() {
                 <NotificationList />
             </div>
             <Avatar size='default' src='/Minhhung.png' />
-            <p className={classes.text}>Admin</p>
-            <KeyboardArrowDownOutlinedIcon sx={{ color: '#000000', fontSize: '20px' }} />
+            <p style={{ fontWeight: 500 }} className={classes.text}>Admin</p>
             {/* </div> */}
         </div>
     )
