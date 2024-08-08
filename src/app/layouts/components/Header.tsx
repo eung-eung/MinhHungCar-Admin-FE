@@ -18,9 +18,19 @@ export default function Header() {
             <div className={classes.notification}>
                 <NotificationList />
             </div>
-            <div className='flex items-center'
+            <div className="inline-flex 
+                                                animate-shimmer 
+                                                items-center 
+                                                justify-center 
+                                                rounded-md border 
+                                                 bg-[linear-gradient(45deg,#d4d3ff,45%,#ece8ff,55%,#d4d3ff)]
+                                                bg-[length:200%_100%] 
+                                                font-medium 
+                                                text-slate-400 
+                                                transition-colors 
+                                                focus:outline-none 
+                                                focus:ring-offset-2 focus:ring-offset-slate-50"
                 style={{
-                    background: '#d4d3ff',
                     padding: 5,
                     borderRadius: 10,
                     color: "blue",
