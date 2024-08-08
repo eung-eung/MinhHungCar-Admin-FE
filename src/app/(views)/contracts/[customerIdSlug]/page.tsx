@@ -566,7 +566,7 @@ export default function ContractPage({
                                             + t(`common:${customerContractDetail?.collateral_type}`)
                                         }</p>
                                         <p className='font-medium mt-3'>Ngày nhận xe:   {
-                                            customerContractDetail?.start_date && dayjs(customerContractDetail.end_date).format('DD-MM-YYYY HH:mm:ss')
+                                            customerContractDetail?.start_date && dayjs(customerContractDetail.start_date).format('DD-MM-YYYY HH:mm:ss')
                                         }
                                         </p>
                                         <p className='font-medium mt-3'>Ngày trả xe:   {
