@@ -30,6 +30,7 @@ import './style.css'
 import Ribbon from './components/Ribbon';
 import Link from 'next/link';
 import { IPayment } from '@/app/models/Payment.model';
+import dayjs from 'dayjs';
 type Option = {
     label: string,
     valeu: string
@@ -565,11 +566,11 @@ export default function ContractPage({
                                             + t(`common:${customerContractDetail?.collateral_type}`)
                                         }</p>
                                         <p className='font-medium mt-3'>Ngày nhận xe:   {
-                                            customerContractDetail?.start_date && new Date(customerContractDetail.start_date).toLocaleString()
+                                            customerContractDetail?.start_date && dayjs(customerContractDetail.end_date).format('DD-MM-YYYY HH:mm:ss')
                                         }
                                         </p>
                                         <p className='font-medium mt-3'>Ngày trả xe:   {
-                                            customerContractDetail?.end_date && new Date(customerContractDetail.end_date).toLocaleString()
+                                            customerContractDetail?.end_date && dayjs(customerContractDetail.end_date).format('DD-MM-YYYY HH:mm:ss')
                                         }
                                         </p>
                                         {/* {
