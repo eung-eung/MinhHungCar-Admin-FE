@@ -1,7 +1,7 @@
 import { Avatar } from 'antd'
 import React from 'react'
 import classes from './Header.module.css'
-
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import DigitalClock from '@/app/components/DigitalClock';
 import NotificationList from './NotificationList';
 export default function Header() {
@@ -18,9 +18,23 @@ export default function Header() {
             <div className={classes.notification}>
                 <NotificationList />
             </div>
-            <Avatar size='default' src='/Minhhung.png' />
-            <p style={{ fontWeight: 500 }} className={classes.text}>Admin</p>
-            {/* </div> */}
+            <div className='flex items-center'
+                style={{
+                    background: '#d4d3ff',
+                    padding: 5,
+                    borderRadius: 10,
+                    color: "blue",
+                    fontSize: 15
+                }}
+            >
+                <AdminPanelSettingsRoundedIcon sx={{
+                    fontSize: 17,
+                    marginRight: 1
+                }} />
+                <p style={{
+                    fontWeight: 600
+                }}>Admin</p>
+            </div>
         </div>
     )
 }
