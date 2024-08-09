@@ -83,9 +83,25 @@ export default function AccountTable(
             dataIndex: 'action',
             key: 'action',
             render: (_: any, record: any) => (
-                <RemoveRedEyeOutlinedIcon
-                    onClick={() => handleOpenDetailDialog(record.id)}
-                    className='mr-3 cursor-pointer' />
+                <div
+                    className='flex items-center justify-center'
+                    style={{
+                        cursor: "pointer",
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '12px',
+                        border: '1px solid',
+                        backgroundColor: '#e8ebed1a',
+                        borderColor: '#d9dee2',
+                        boxShadow: '#f6f7f866 0 2px 0 inset, #e8eaee80 0 -1.5px 0 inset, #dfe2e780 0 1px 2px 0'
+                    }}
+                >
+                    <RemoveRedEyeOutlinedIcon
+                        color='primary'
+                        onClick={() => handleOpenDetailDialog(record.id)}
+                    />
+                </div>
+
             )
         }
     ];
