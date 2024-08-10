@@ -80,6 +80,7 @@ export default function DeliveryCarDropdown(
     return (
         <>
             <Dropdown
+                placement="bottomRight"
                 dropdownRender={() => (
                     <Menu
                         items={[
@@ -111,8 +112,7 @@ export default function DeliveryCarDropdown(
 
                     </Menu>
                 )}
-
-                placement="bottom" arrow>
+                arrow>
                 <Button><MoreHorizOutlinedIcon /></Button>
             </Dropdown>
 
