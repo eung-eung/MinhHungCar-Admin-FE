@@ -544,23 +544,35 @@ export default function ContractPage({
                                 <div className='flex justify-between cardRibbon'>
                                     <div className='mt-10'>
                                         <p className='text-lg font-semibold mt-4 mb-4'>Thông tin hợp đồng của khách hàng
-                                            <span>{
-                                                ' '
-                                                + customerContractDetail?.customer.last_name
-                                                + ' '
-                                                + customerContractDetail?.customer.first_name
-                                            }
+                                            <span
+                                                style={{
+                                                    color: "blue",
+                                                    cursor: "pointer"
+                                                }}
+                                                onClick={() => { handleOpenAccountDetailDialog(customerContractDetail?.customer.id) }}>{
+                                                    ' '
+                                                    + customerContractDetail?.customer.last_name
+                                                    + ' '
+                                                    + customerContractDetail?.customer.first_name
+                                                }
                                             </span>
                                             <Ribbon status={customerContractDetail?.status} content={t(`common:${customerContractDetail?.status}`)} />
                                         </p>
-                                        <p className='font-medium mt-4'>Loại xe:   {
-                                            ' '
-                                            + customerContractDetail?.car.car_model.brand
-                                            + ' '
-                                            + customerContractDetail?.car.car_model.model
-                                            + ' '
-                                            + customerContractDetail?.car.car_model.year
-                                        }</p>
+                                        <p className='font-medium mt-4'>Loại xe: <span
+                                            style={{
+                                                color: "blue",
+                                                cursor: 'pointer'
+                                            }}
+                                            onClick={() => { handleOpenDetailDialog(customerContractDetail?.car.id) }}
+                                        >  {
+                                                ' '
+                                                + customerContractDetail?.car.car_model.brand
+                                                + ' '
+                                                + customerContractDetail?.car.car_model.model
+                                                + ' '
+                                                + customerContractDetail?.car.car_model.year
+                                            }</span>
+                                        </p>
                                         <p className='font-medium mt-3'>Loại thế chấp:   {
                                             ' '
                                             + t(`common:${customerContractDetail?.collateral_type}`)
