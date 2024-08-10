@@ -114,11 +114,7 @@ export default function ExpandRowRecievingCar(
                 {!expandLoading
                     && <Upload
                         showUploadList={{
-                            showRemoveIcon: (
-                                status === 'ordered'
-                                && !loadingUpdate
-                            )
-                                ? true : false
+                            showRemoveIcon: false
                         }}
                         itemRender={(originNode, file: any) => {
                             return <div
@@ -135,6 +131,7 @@ export default function ExpandRowRecievingCar(
                         }}
                         listType="picture-card"
                         fileList={fileList}
+                        onPreview={handlePreview}
                     >
                         {fileList.length < 1 && null}
                     </Upload>
