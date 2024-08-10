@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './index.module.css'
 import { useRouter } from 'next/navigation'
+import nProgress from 'nprogress'
 export default function ConversationItem({
     image,
     name,
@@ -19,6 +20,7 @@ export default function ConversationItem({
         event.target.src = '/defaultUser.png'
     }
     const handleNavigateByClick = (id: any) => {
+        nProgress.start()
         router.push('/chat/' + id)
     }
     return (
