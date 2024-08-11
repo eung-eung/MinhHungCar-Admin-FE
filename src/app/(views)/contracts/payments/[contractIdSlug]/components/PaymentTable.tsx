@@ -109,9 +109,12 @@ export default function PaymentTable(
                             </Button>
                         }
                         {
-                            (contractStatus === 'renting' ||
-                                (contractStatus === 'ordered'
-                                    && record.payment_type === 'refund_pre_pay')) &&
+                            (contractStatus === 'renting'
+                                || (contractStatus === 'ordered'
+                                    && record.payment_type === 'refund_pre_pay')
+                                || (contractStatus === 'appraising_car_approved'
+                                    && record.payment_type === 'refund_pre_pay'
+                                )) &&
                             <Button
                                 style={{
                                     background: "#fff",
