@@ -30,5 +30,7 @@
     "renting": "Đang thuê",
     "completed": "Đã hoàn thành",
     "ordered": "Đã đặt",
-    "canceled": "Đã hủy"
+    "canceled": "Đã hủy",
+    "appraising_car_approved": "Đã duyệt thẩm định xe",
+    "appraising_car_rejected": "Đã thẩm định thất bại"
 }
