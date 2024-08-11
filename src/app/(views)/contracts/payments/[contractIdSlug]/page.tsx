@@ -168,7 +168,9 @@ export default function PaymentDetail({
         const isExistReturnCollateralCashPayment = listPayment?.some((payment: IPayment) => payment.payment_type === "return_collateral_cash")
         console.log('isExistRefundPayment: ', isExistRefundPayment);
 
-        if (data.status === 'ordered') {
+        if (data.status === 'ordered'
+            || data.status === 'appraising_car_approved'
+            || data.status === 'appraising_car_rejected') {
             if (!isExistRefundPayment) {
                 setOptions([
                     { label: 'Hoàn trả tiền cọc', value: 'refund_pre_pay' },
@@ -305,7 +307,11 @@ export default function PaymentDetail({
                                     </div>
                                 }
                                 {
-                                    (detail?.status === 'renting' || detail?.status === 'ordered')
+                                    (detail?.status === 'renting'
+                                        || detail?.status === 'ordered'
+                                        || detail?.status === 'appraising_car_approved'
+                                        || detail?.status === 'appraising_car_rejected'
+                                    )
                                     &&
                                     <Button
                                         onClick={() => handleModal(detail.id)}
