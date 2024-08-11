@@ -145,3 +145,40 @@
     background: rgb(203, 0, 0);
     border-top-left-radius: 1rem;
 }
+
+/* appraising_car_approved */
+.ribbonAppraisingApproved {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, rgb(40, 194, 255), rgb(29, 150, 211));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonAppraisingApproved::before,
+.cardRibbon .ribbonAppraisingApproved::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: rgb(40, 194, 255);
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonAppraisingApproved::before {
+    background: rgb(40, 194, 255);
+}
+
+.cardRibbon .ribbonAppraisingApproved::after {
+    background: rgb(15, 162, 220);
+    border-top-left-radius: 1rem;
+}
