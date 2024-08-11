@@ -252,7 +252,7 @@ export default function ContractPage({
             const collateralCash = paymentList.find(
                 (payment: IPayment) => payment.payment_type === 'collateral_cash')
             if (returnCollateralCash && returnCollateralCash.status === 'paid') {
-                errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền thế chấp cho khách hàng")
+                errorNotify("Bạn không thể bàn giao vì đã hoàn trả tiền thế chấp cho khách hàng")
                 return
             }
             if (contractDetail.collateral_type === 'cash') {
@@ -266,7 +266,7 @@ export default function ContractPage({
                 return
             }
             if (refundPayment && refundPayment.status === 'paid') {
-                errorNotify("Bạn không thể duyệt vì đã hoàn trả tiền cọc cho khách hàng")
+                errorNotify("Bạn không thể bàn giao vì đã hoàn trả tiền cọc cho khách hàng")
                 return
             }
             if (contractDetail.collateral_type === "cash"
@@ -289,7 +289,7 @@ export default function ContractPage({
         }
 
         confirm({
-            title: 'Bạn có muốn đồng ý cho thuê?',
+            title: 'Bạn có muốn bàn giao cho khách hàng?',
             onOk: async () => {
                 try {
                     const response = await axiosAuth.put('/admin/contract', {
@@ -598,8 +598,13 @@ export default function ContractPage({
                                     {
                                         !searchParams &&
                                         <div className='flex flex-col items-baseline'>
-                                            {customerContractDetail?.status === 'ordered' &&
-                                                <div className='flex justify-between w-full'>
+                                            {
+                                                (
+                                                    customerContractDetail?.status === 'ordered'
+                                                    || customerContractDetail?.status === 'appraising_car_rejected'
+                                                )
+                                                &&
+                                                <div className='flex justify-end w-full'>
                                                     <button
                                                         style={{
                                                             color: '#fff',
@@ -608,7 +613,6 @@ export default function ContractPage({
                                                             border: 'none',
                                                             cursor: 'pointer',
                                                             background: 'red',
-                                                            marginRight: '20px'
                                                         }}
                                                         onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
                                                         className="inline-flex 
@@ -624,6 +628,37 @@ export default function ContractPage({
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
                                                     >
                                                         Từ chối hợp đồng
+                                                        <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
+                                                </div>
+                                            }
+                                            {
+                                                customerContractDetail?.status === 'appraising_car_approved' &&
+                                                <div className='flex justify-between w-full'>
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                            background: 'red',
+                                                            marginRight: '20px'
+                                                        }}
+                                                        onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
+                                                        className="inline-flex 
+                                            animate-shimmer 
+                                            items-center 
+                                            justify-center 
+                                            rounded-md border 
+                                            bg-[length:200%_100%] 
+                                            font-medium 
+                                            text-slate-400 
+                                            transition-colors 
+                                            focus:outline-none 
+                                            focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
+                                                    >
+                                                        Hủy hợp đồng
                                                         <CloseRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
                                                     </button>
 
@@ -649,7 +684,7 @@ export default function ContractPage({
                                                 focus:outline-none 
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
                                                     >
-                                                        Duyệt hợp đồng
+                                                        Bàn giao cho khách hàng
                                                         <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
                                                     </button>
                                                 </div>
