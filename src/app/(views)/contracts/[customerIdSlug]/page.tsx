@@ -722,7 +722,10 @@ export default function ContractPage({
 
                                 </div>
                                 {
-                                    customerContractDetail?.collateral_type !== 'cash'
+                                    (
+                                        customerContractDetail?.collateral_type !== 'cash'
+                                        && customerContractDetail?.status !== 'appraising_car_rejected'
+                                    )
                                     &&
                                     <div className='mt-4'>
                                         <ExpandRowCollateral

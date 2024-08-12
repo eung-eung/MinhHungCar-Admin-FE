@@ -182,3 +182,40 @@
     background: rgb(15, 162, 220);
     border-top-left-radius: 1rem;
 }
+
+/* appraising_car_rejected */
+.ribbonAppraisingRejected {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, rgb(255, 62, 40), rgb(211, 50, 29));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonAppraisingRejected::before,
+.cardRibbon .ribbonAppraisingRejected::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: rgb(255, 62, 40);
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonAppraisingRejected::before {
+    background: rgb(255, 62, 40);
+}
+
+.cardRibbon .ribbonAppraisingRejected::after {
+    background: rgb(220, 46, 15);
+    border-top-left-radius: 1rem;
+}
