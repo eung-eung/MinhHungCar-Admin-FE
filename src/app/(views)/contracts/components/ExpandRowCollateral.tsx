@@ -107,7 +107,7 @@ export default function ExpandRowCollateral(
                 <Upload
                     showUploadList={{
                         showRemoveIcon: (
-                            status === 'ordered'
+                            status === 'appraising_car_approved'
                             && !loadingUpdate
                         )
                             ? true : false
@@ -135,14 +135,14 @@ export default function ExpandRowCollateral(
                     {
                         fileList.length >= 6
                             ? null
-                            : status === 'ordered'
+                            : status === 'appraising_car_approved'
                             && <UploadButton />
                     }
 
                 </Upload>
             }
             {
-                status === 'ordered'
+                status === 'appraising_car_approved'
                 && <Button
                     loading={loadingUpdate}
                     disabled={loadingUpdate ||

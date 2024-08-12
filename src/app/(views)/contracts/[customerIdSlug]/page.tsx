@@ -724,14 +724,15 @@ export default function ContractPage({
                                 {
                                     customerContractDetail?.collateral_type !== 'cash'
                                     &&
-                                    <div className='mt-4'> <ExpandRowCollateral
-                                        getDataForExpand={getContractDetailById}
-                                        id={customerIdSlug}
-                                        expandLoading={loading}
-                                        fileList={fileList}
-                                        status={customerContractDetail?.status}
-                                        setFileList={setFileList}
-                                    /></div>
+                                    <div className='mt-4'>
+                                        <ExpandRowCollateral
+                                            getDataForExpand={getContractDetailById}
+                                            id={customerIdSlug}
+                                            expandLoading={loading}
+                                            fileList={fileList}
+                                            status={customerContractDetail?.status}
+                                            setFileList={setFileList}
+                                        /></div>
                                 }
                                 {
                                     !searchParams &&
