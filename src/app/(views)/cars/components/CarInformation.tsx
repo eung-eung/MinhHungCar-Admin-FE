@@ -296,6 +296,18 @@ export default function CarInformation(
                             {t(`common:${detail?.status}`)}
                         </Tag>
                     }
+                    {
+                        t('carStatus:rejected') === detail?.status &&
+                        <Tag
+                            style={{
+                                margin: 0,
+                                fontSize: 14,
+                                padding: 3
+                            }}
+                            color='error'>
+                            {t(`common:${detail?.status}`)}
+                        </Tag>
+                    }
                 </p>
             </div>
             {/* item */}
