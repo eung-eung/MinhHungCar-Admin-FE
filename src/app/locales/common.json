@@ -2,6 +2,7 @@
     "pending_approval": "Chờ duyệt",
     "active": "Đang hoạt động",
     "approved": "Đã duyệt",
+    "rejected": "Đã từ chối duyệt",
     "waiting_car_delivery": "Đang chờ giao",
     "inactive": "Dừng hoạt động",
     "electricity": "Điện",
