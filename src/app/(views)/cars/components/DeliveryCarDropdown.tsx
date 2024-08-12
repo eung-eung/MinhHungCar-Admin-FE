@@ -4,6 +4,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { ICar } from '@/app/models/Car.model';
 import { useRouter } from 'next/navigation';
+import nProgress from 'nprogress';
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -21,23 +22,6 @@ export default function DeliveryCarDropdown(
     }) {
     const axiosAuth = useAxiosAuth()
     const router = useRouter()
-
-    const handleApproveCar = async (id: any) => {
-        showConfirmModal("Bạn có muốn đưa xe vào hoạt động?")
-            .then(async () => {
-                try {
-                    const response = await axiosAuth.put('/admin/car_application', {
-                        car_id: id,
-                        action: "approve_delivery"
-                    } as IApproveRequest)
-                    setRefresh(prev => !prev)
-                } catch (error) {
-                    console.log(error);
-
-                }
-            })
-    }
-
     const handleRejectCar = async (id: any) => {
         showConfirmModal("Bạn có muốn từ chối xe này?")
             .then(async () => {
@@ -87,27 +71,17 @@ export default function DeliveryCarDropdown(
                             {
                                 key: '1',
                                 label: 'Chi tiết',
-                                onClick: () =>
+                                onClick: () => {
+                                    nProgress.start()
                                     router.push('/cars/' + id)
+                                }
                             },
                             {
                                 key: '2',
-                                label: 'Đưa vào hoạt động',
-                                onClick: () =>
-                                    handleApproveCar(id)
-                            },
-                            {
-                                key: '3',
                                 label: 'Hợp đồng',
                                 onClick: () =>
                                     showCarContract(id)
-                            },
-                            // {
-                            //     key: '3',
-                            //     label: 'Từ chối',
-                            //     onClick: () =>
-                            //         handleRejectCar(id)
-                            // },
+                            }
                         ]}>
 
                     </Menu>
