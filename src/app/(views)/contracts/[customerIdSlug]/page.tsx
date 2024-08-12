@@ -723,8 +723,10 @@ export default function ContractPage({
                                 </div>
                                 {
                                     (
-                                        customerContractDetail?.collateral_type !== 'cash'
-                                        && customerContractDetail?.status !== 'appraising_car_rejected'
+                                        (customerContractDetail?.collateral_type !== 'cash'
+                                            && customerContractDetail?.status !== 'appraising_car_rejected') ||
+                                        (customerContractDetail?.collateral_type !== 'cash'
+                                            && customerContractDetail?.status !== 'ordered')
                                     )
                                     &&
                                     <div className='mt-4'>
