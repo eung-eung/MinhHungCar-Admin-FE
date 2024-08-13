@@ -9,6 +9,7 @@ import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth'
 import { errorNotify } from '@/app/utils/toast'
 import { IPartnerContractRule } from '@/app/models/ContractRule'
 import CountQuantityInput from './CountQuantityInput'
+import CarouselImages from './Carousel'
 type IApproveRequest = {
     car_id: any,
     action: string
@@ -346,6 +347,13 @@ export default function CarInformation(
                     {detail?.description}
                 </p>
             </div>
+            {/* item */}
+            <div>
+                <p className={classes.label}>
+                    Giấy tờ xe
+                </p>
+                <CarouselImages images={detail?.caveats} />
+            </div >
 
         </>
     )
