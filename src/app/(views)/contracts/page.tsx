@@ -75,8 +75,8 @@ export default function Contracts() {
                 optionList={[
                     { label: 'Đã đặt', value: 'ordered' },
                     { label: 'Đủ điều kiện bàn giao', value: 'appraising_car_approved' },
-                    { label: 'Đang thuê', value: 'renting' },
                     { label: 'Hoàn thành kiểm tra', value: 'appraised_return_car' },
+                    { label: 'Đang thuê', value: 'renting' },
                     { label: 'Đã trả xe', value: 'returned_car' },
                     { label: 'Hoàn thành', value: 'completed' },
                     { label: 'Không đủ điều kiện', value: 'appraising_car_rejected' },
