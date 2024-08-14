@@ -6,7 +6,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
-import { Breadcrumb, Button, Modal, Result, Select, Spin, Table, Tag, UploadFile } from 'antd';
+import { Breadcrumb, Button, Modal, Radio, RadioChangeEvent, Result, Select, Space, Spin, Table, Tag, UploadFile } from 'antd';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import { ICustomerContract } from '@/app/models/CustomerContract';
 import ExpandRowCollateral from '../components/ExpandRowCollateral';
@@ -76,7 +76,14 @@ export default function ContractPage({
     const [carDetail, setCarDetail] = useState<ICar>()
     const [openAccountDialog, setOpenAccountDialog] = useState<boolean>(false)
     const [loadingAccountDialog, setLoadingAccountDialog] = useState<boolean>(false)
+    const [isModalCancelContractOpen, setIsModalCancelContractOpen] = useState<boolean>(false)
     const [accountDetail, setAccountDetail] = useState<IAccount>()
+    const [value, setValue] = useState(1);
+
+    const onChange = (e: RadioChangeEvent) => {
+        console.log('radio checked', e.target.value);
+        setValue(e.target.value);
+    };
     const [paramReplaceCar, setParamReplaceCar] = useState<any>(
         {
             start_date: '',
@@ -94,8 +101,17 @@ export default function ContractPage({
         renderToolbar,
     });
     const { renderDefaultToolbar } = defaultLayoutPluginInstance.toolbarPluginInstance;
-    console.log('from noti: ', searchParams);
+    const showModal = () => {
+        setIsModalCancelContractOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalCancelContractOpen(false);
+    };
 
+
+    const handleCancel = () => {
+        setIsModalCancelContractOpen(false);
+    };
     const column: TableProps<ICar>['columns'] = [
         {
             title: 'Hãng xe',
@@ -316,7 +332,26 @@ export default function ContractPage({
         })
 
     }
-
+    const handleReturnCarCustomerContract = (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn xác nhận khách hàng đã trả xe?",
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    const response = await axiosAuth.put('/admin/contract/return_car', {
+                        customer_contract_id: parseInt(id)
+                    })
+                    if (response.status === 200) {
+                        sucessNotify("Đã cập nhật trạng thái hợp đồng thành công")
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+                    errorNotify("Đã có lỗi, vui lòng thử lại")
+                }
+            }
+        })
+    }
     const rejectCustomerContract = (id: any) => {
         const { confirm } = Modal
         confirm({
@@ -335,7 +370,7 @@ export default function ContractPage({
                             errorNotify("Vui lòng ghi nhận đã hoàn trả giấy tờ xe ở quản lý các khoản thanh toán")
                             return
                         }
-                        if (!refundPayment) {
+                        if (!refundPayment && value === 1) {
                             errorNotify("Bạn cần hoàn trả tiền cọc")
                             return
                         }
@@ -361,10 +396,13 @@ export default function ContractPage({
                             errorNotify("Bạn cần hoàn trả tiền thế chấp")
                             return
                         }
-                        if (!refundPayment) {
-                            errorNotify("Bạn cần hoàn trả tiền cọc")
-                            return
+                        if (value === 1) {
+                            if (!refundPayment) {
+                                errorNotify("Bạn cần hoàn trả tiền cọc")
+                                return
+                            }
                         }
+
                     }
                     console.log('refund payment: ', refundPayment)
                     const response = await axiosAuth.put("/admin/contract", {
@@ -374,6 +412,7 @@ export default function ContractPage({
                     if (response.status === 200) {
                         sucessNotify("Đã từ chối hợp đồng thành công")
                         setRefresh(prev => !prev)
+                        setIsModalCancelContractOpen(false)
                     }
                 } catch (error) {
                     errorNotify("Đã có lỗi, vui lòng thử lại")
@@ -585,15 +624,6 @@ export default function ContractPage({
                                             customerContractDetail?.end_date && dayjs(customerContractDetail.end_date).format('DD-MM-YYYY HH:mm:ss')
                                         }
                                         </p>
-                                        {/* {
-                                            customerContractDetail?.collateral_type === 'cash' &&
-                                            (customerContractDetail.status === 'completed' || customerContractDetail?.status === 'renting')
-                                            &&
-                                            <p className='font-medium mt-3'>Số tiền đã thế chấp:   {
-                                                ' '
-                                                + formatCurrency(customerContractDetail.collateral_cash_amount)
-                                            }</p>
-                                        } */}
                                     </div>
                                     {
                                         !searchParams &&
@@ -614,7 +644,7 @@ export default function ContractPage({
                                                             cursor: 'pointer',
                                                             background: 'red',
                                                         }}
-                                                        onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
+                                                        onClick={showModal}
                                                         className="inline-flex 
                                                 animate-shimmer 
                                                 items-center 
@@ -645,7 +675,7 @@ export default function ContractPage({
                                                             background: 'red',
                                                             marginRight: '20px'
                                                         }}
-                                                        onClick={() => rejectCustomerContract(parseInt(customerIdSlug))}
+                                                        onClick={showModal}
                                                         className="inline-flex 
                                             animate-shimmer 
                                             items-center 
@@ -685,6 +715,36 @@ export default function ContractPage({
                                                 focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
                                                     >
                                                         Bàn giao cho khách hàng
+                                                        <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
+                                                </div>
+                                            }
+                                            {
+                                                customerContractDetail?.status === 'renting' &&
+                                                <div className='flex justify-end w-full'>
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                        }}
+                                                        onClick={() => handleReturnCarCustomerContract(parseInt(customerIdSlug))}
+                                                        className="inline-flex 
+                                                animate-shimmer 
+                                                items-center 
+                                                justify-center 
+                                                rounded-md border 
+                                                border-slate-800 bg-[linear-gradient(110deg,#33bf4e,45%,#60ff7e,55%,#33bf4e)]
+                                                bg-[length:200%_100%] 
+                                                font-medium 
+                                                text-slate-400 
+                                                transition-colors 
+                                                focus:outline-none 
+                                                focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
+                                                    >
+                                                        Xác nhận khách hàng trả xe
                                                         <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
                                                     </button>
                                                 </div>
@@ -850,6 +910,14 @@ export default function ContractPage({
                                     </div>
                                 }
                             </div>
+                            <Modal title="Vui lòng chọn bên hủy" open={isModalCancelContractOpen} onOk={() => rejectCustomerContract(parseInt(customerIdSlug))} onCancel={handleCancel}>
+                                <Radio.Group onChange={onChange} value={value}>
+                                    <Space direction="vertical">
+                                        <Radio value={1}>MinhHung Car</Radio>
+                                        <Radio value={2}>Khách hàng</Radio>
+                                    </Space>
+                                </Radio.Group>
+                            </Modal>
                         </>
                     }
                     {
