@@ -5,6 +5,7 @@ import { UploadFile } from 'antd/lib';
 import { getBase64 } from '@/app/utils/getBase64';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
+import HideImageOutlinedIcon from '@mui/icons-material/HideImageOutlined';
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export default function ExpandRowCollateral(
     {
@@ -141,6 +142,21 @@ export default function ExpandRowCollateral(
 
                 </Upload>
             }
+            {fileList.length < 1 && <div className='flex flex-col items-center justify-center' style={{
+                border: '1px solid #ccc',
+                width: "120px",
+                height: "120px",
+                borderRadius: 10,
+                padding: 10
+            }}>
+                <HideImageOutlinedIcon />
+                <p style={{
+                    fontSize: 12,
+                    marginTop: 10,
+                    color: "#a1a1a1",
+                    fontWeight: 500
+                }}>Chưa có hình</p>
+            </div>}
             {
                 status === 'appraising_car_approved'
                 && <Button
@@ -155,6 +171,7 @@ export default function ExpandRowCollateral(
                     Lưu
                 </Button>
             }
+
             {previewImage && (
                 <Image
                     wrapperStyle={{ display: 'none' }}
