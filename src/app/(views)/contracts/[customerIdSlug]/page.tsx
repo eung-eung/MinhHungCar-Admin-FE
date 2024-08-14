@@ -818,12 +818,17 @@ export default function ContractPage({
                                     </div>
                                 }
                                 {
-                                    customerContractDetail?.status === "appraised_return_car" && <div>
+                                    (customerContractDetail?.status === "appraised_return_car" || customerContractDetail?.status === 'completed') && <div>
                                         <h2
                                             style={{ color: "#9250fa" }}
                                             className='text-base mt-3 mb-3 font-semibold '>
-                                            Ghi chú của kĩ thuật viên            </h2>
-                                        <TextArea placeholder="Vui lòng thêm ghi chú nếu có" value={customerContractDetail.technician_appraising_note} />
+                                            Ghi chú của kĩ thuật viên
+                                        </h2>
+                                        <TextArea placeholder={customerContractDetail.technician_appraising_note
+                                            ? ''
+                                            : "Không có ghi chú của kĩ thuật viên"}
+                                            value={customerContractDetail.technician_appraising_note}
+                                        />
                                     </div>
                                 }
                                 {
