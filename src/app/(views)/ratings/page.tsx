@@ -3,7 +3,7 @@ import RatingTable from './components/RatingTable'
 
 export default function Ratings() {
     return (
-        <div>
+        <div className='mt-10'>
             <RatingTable />
         </div>
     )
