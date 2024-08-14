@@ -28,7 +28,7 @@ export const sidebarRoutes: RouteType[] = [
     },
     {
         icon: <DirectionsCarFilledOutlinedIcon />,
-        title: "Xe",
+        title: "Xe của đối tác",
         link: "/cars",
     },
     {
