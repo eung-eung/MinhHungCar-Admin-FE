@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import CarouselImages from '../components/Carousel';
 import classes from './index.module.css'
 import CarInformation from '../components/CarInformation';
-import { Spin } from 'antd';
+import { Image, Spin } from 'antd';
 import CountQuantityInput from '../components/CountQuantityInput';
 export default function CarDetail({
     params: { id }
@@ -50,18 +50,39 @@ export default function CarDetail({
             }
             {notFound && !loading && <div>404</div>}
             {
-                !notFound && <div className={classes.detail}>
+                !notFound && <> <div className={classes.detail}>
                     <div className={classes.leftDetail}>
                         <CarouselImages images={detail?.images} />
                     </div>
                     <div className={classes.rightDetail}>
-
                         <CarInformation
                             showAction={true}
                             detail={detail} setRefresh={setRefresh} />
-
+                        <div style={{ background: "#fff" }}>
+                            <p style={{
+                                fontWeight: 600,
+                                fontSize: '15px'
+                            }}>
+                                Giấy tờ xe
+                            </p>
+                            <div className='flex mt-4 justify-around'>
+                                {
+                                    detail?.caveats.map((c, index) =>
+                                        <Image
+                                            key={index}
+                                            src={c}
+                                            width={300}
+                                            height={150}
+                                            style={{ objectFit: 'contain' }} />)
+                                }
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
+
+                </>
             }
         </div>
     )

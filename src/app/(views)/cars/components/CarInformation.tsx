@@ -347,13 +347,7 @@ export default function CarInformation(
                     {detail?.description}
                 </p>
             </div>
-            {/* item */}
-            <div>
-                <p className={classes.label}>
-                    Giấy tờ xe
-                </p>
-                <CarouselImages images={detail?.caveats} />
-            </div >
+
 
         </>
     )
