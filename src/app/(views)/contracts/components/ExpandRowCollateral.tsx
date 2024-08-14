@@ -142,7 +142,7 @@ export default function ExpandRowCollateral(
 
                 </Upload>
             }
-            {fileList.length < 1 && <div className='flex flex-col items-center justify-center' style={{
+            {(fileList.length < 1 && status !== 'appraising_car_approved') && <div className='flex flex-col items-center justify-center' style={{
                 border: '1px solid #ccc',
                 width: "120px",
                 height: "120px",
