@@ -32,6 +32,7 @@ import Link from 'next/link';
 import { IPayment } from '@/app/models/Payment.model';
 import dayjs from 'dayjs';
 import TextArea from 'antd/es/input/TextArea';
+import nProgress from 'nprogress';
 type Option = {
     label: string,
     valeu: string
@@ -761,7 +762,10 @@ export default function ContractPage({
                                                     width: '100%'
                                                 }}
                                                 onClick={
-                                                    () => router.push('/contracts/payments/' + customerIdSlug)
+                                                    () => {
+                                                        nProgress.start()
+                                                        router.push('/contracts/payments/' + customerIdSlug)
+                                                    }
                                                 }
                                                 className="inline-flex
                                                 animate-shimmer 
