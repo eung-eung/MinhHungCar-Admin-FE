@@ -14,7 +14,8 @@ export interface ICustomerContract {
     status: string
     reason: string
     insurance_amount: number
-    collateral_type: string
+    collateral_type: string,
+    technician_appraising_note: any,
     is_return_collateral_asset: boolean
     url: string
     customer_contract_rule: ICustomerContractRule
