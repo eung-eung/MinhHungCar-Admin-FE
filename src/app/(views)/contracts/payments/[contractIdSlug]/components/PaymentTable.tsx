@@ -100,7 +100,7 @@ export default function PaymentTable(
                     <Tag color='green'>Đã thanh toán</Tag>
                     : <div className='flex items-center justify-between'>
                         {
-                            contractStatus !== 'canceled'
+                            ((contractStatus !== 'canceled' && contractStatus !== 'renting') || contractStatus === 'appraised_return_car')
                             &&
                             <Button
                                 className='cursor-pointer'
@@ -109,7 +109,7 @@ export default function PaymentTable(
                             </Button>
                         }
                         {
-                            (contractStatus === 'renting'
+                            (contractStatus === 'appraised_return_car'
                                 || (contractStatus === 'ordered'
                                     && record.payment_type === 'refund_pre_pay')
                                 || (contractStatus === 'appraising_car_approved'
@@ -146,7 +146,13 @@ export default function PaymentTable(
                 return ({
                     disabled: true
                 })
-            } else {
+            }
+            if (contractStatus === 'renting') {
+                return ({
+                    disabled: true
+                })
+            }
+            else {
                 if (selectedRowsState && selectedRowsState.length > 0) {
                     const isSelectAdmin = selectedRowsState?.some(row => row.payer === 'admin')
                     if (isSelectAdmin) {
