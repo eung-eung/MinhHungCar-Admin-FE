@@ -179,7 +179,7 @@ export default function PaymentDetail({
                 setOptions([]);
             }
         }
-        if (data.collateral_type === 'cash' && data.status === 'renting') {
+        if (data.collateral_type === 'cash' && data.status === 'appraised_return_car') {
             (isExistRemainingPayment && isExistReturnCollateralCashPayment) &&
                 setOptions([
                     { label: 'Khác', value: 'other' },
@@ -201,7 +201,7 @@ export default function PaymentDetail({
                     { label: 'Khác', value: 'other' },
                 ]);
         }
-        if (data.collateral_type === 'motorbike' && data.status === 'renting') {
+        if (data.collateral_type === 'motorbike' && data.status === 'appraised_return_car') {
             isExistRemainingPayment &&
                 setOptions([
                     { label: 'Khác', value: 'other' },
@@ -307,7 +307,7 @@ export default function PaymentDetail({
                                     </div>
                                 }
                                 {
-                                    (detail?.status === 'renting'
+                                    (detail?.status === 'appraised_return_car'
                                         || detail?.status === 'ordered'
                                         || detail?.status === 'appraising_car_approved'
                                         || detail?.status === 'appraising_car_rejected'
@@ -356,7 +356,7 @@ export default function PaymentDetail({
                                 </button>
                             }
                             {
-                                detail?.status === 'renting'
+                                detail?.status === 'appraised_return_car'
                                 &&
                                 <button
                                     style={{ color: '#fff', padding: '7px 20px', outline: 'none', border: 'none' }}
