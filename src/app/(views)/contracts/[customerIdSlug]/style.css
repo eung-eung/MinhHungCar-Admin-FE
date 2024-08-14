@@ -219,3 +219,77 @@
     background: rgb(220, 46, 15);
     border-top-left-radius: 1rem;
 }
+
+/* returned_car */
+.ribbonReturnedCar {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, rgb(126, 40, 255), rgb(50, 29, 211));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonReturnedCar::before,
+.cardRibbon .ribbonReturnedCar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: rgb(126, 40, 255);
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonReturnedCar::before {
+    background: rgb(126, 40, 255);
+}
+
+.cardRibbon .ribbonReturnedCar::after {
+    background: rgb(100, 15, 220);
+    border-top-left-radius: 1rem;
+}
+
+/* ribbonAppraisedReturnedCar */
+.ribbonAppraisedReturnedCar {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, rgb(194, 40, 255), rgb(174, 29, 211));
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonAppraisedReturnedCar::before,
+.cardRibbon .ribbonAppraisedReturnedCar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: rgb(194, 40, 255);
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonAppraisedReturnedCar::before {
+    background: rgb(194, 40, 255);
+}
+
+.cardRibbon .ribbonAppraisedReturnedCar::after {
+    background: rgb(179, 15, 220);
+    border-top-left-radius: 1rem;
+}
