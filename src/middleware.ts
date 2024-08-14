@@ -25,6 +25,6 @@ export const config = {
         '/accounts',
         '/ratings',
         '/payments',
-
+        '/brands'
     ]
 }

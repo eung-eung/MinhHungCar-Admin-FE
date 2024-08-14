@@ -6,6 +6,7 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import HandshakeRoundedIcon from '@mui/icons-material/HandshakeRounded';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 export interface RouteType {
@@ -28,6 +29,11 @@ export const sidebarRoutes: RouteType[] = [
     },
     {
         icon: <DirectionsCarFilledOutlinedIcon />,
+        title: "Thương hiệu xe",
+        link: "/brands",
+    },
+    {
+        icon: <HandshakeRoundedIcon />,
         title: "Xe của đối tác",
         link: "/cars",
     },
