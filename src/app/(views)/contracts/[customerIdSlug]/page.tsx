@@ -832,7 +832,10 @@ export default function ContractPage({
                                     </div>
                                 }
                                 {
-                                    !searchParams && customerContractDetail?.status === 'ordered' &&
+                                    !searchParams && (
+                                        customerContractDetail?.status === 'appraising_car_rejected'
+                                        || customerContractDetail?.status === 'ordered'
+                                    ) &&
                                     <><h1
                                         style={{
                                             fontWeight: 600,
@@ -884,7 +887,9 @@ export default function ContractPage({
                                                 />
                                             </div>
                                             {
-                                                customerContractDetail?.status === 'ordered' &&
+                                                (customerContractDetail?.status === 'ordered'
+                                                    || customerContractDetail?.status === 'appraising_car_rejected')
+                                                &&
                                                 <>
                                                     <Button
                                                         style={{ width: '200px' }}
