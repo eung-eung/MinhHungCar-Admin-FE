@@ -31,6 +31,7 @@ import Ribbon from './components/Ribbon';
 import Link from 'next/link';
 import { IPayment } from '@/app/models/Payment.model';
 import dayjs from 'dayjs';
+import TextArea from 'antd/es/input/TextArea';
 type Option = {
     label: string,
     valeu: string
@@ -812,7 +813,15 @@ export default function ContractPage({
                                         />
                                     </div>
                                 }
-
+                                {
+                                    customerContractDetail?.status === "appraised_return_car" && <div>
+                                        <h2
+                                            style={{ color: "#9250fa" }}
+                                            className='text-base mt-3 mb-3 font-semibold '>
+                                            Ghi chú của kĩ thuật viên            </h2>
+                                        <TextArea placeholder="Vui lòng thêm ghi chú nếu có" value={customerContractDetail.technician_appraising_note} />
+                                    </div>
+                                }
                                 {
                                     !searchParams && customerContractDetail?.status === 'ordered' &&
                                     <><h1
