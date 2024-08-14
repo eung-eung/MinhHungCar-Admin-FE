@@ -77,7 +77,7 @@ export default function TopFilterTable(
                     options={optionList}
                 />
             </div>
-            <div className='w-3/6 flex items-center mb-5 justify-between relative'>
+            <div className='w-3/6 flex items-center mb-5 justify-end relative'>
                 {
                     showSearch &&
                     <SearchInput value={searchValue} callback={handleSearch} placeholder={placeholder} />
