@@ -63,6 +63,7 @@ export default function Brands() {
                 setPageLimit={setPageLimit}
                 total={totalPage}
                 data={data}
+                setRefresh={setRefresh}
                 isLoading={isLoading}
             />
         </div>
