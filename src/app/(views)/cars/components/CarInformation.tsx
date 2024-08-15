@@ -238,6 +238,18 @@ export default function CarInformation(
                 </p>
                 <p className={classes.infor}>
                     {
+                        t('carStatus:temporary_resolve') === detail?.status &&
+                        <Tag
+                            style={{
+                                margin: 0,
+                                fontSize: 14,
+                                padding: 3
+                            }}
+                            color='#5B4C40'>
+                            {t(`common:${detail?.status}`)}
+                        </Tag>
+                    }
+                    {
                         t('carStatus:active') === detail?.status &&
                         <Tag
                             style={{
