@@ -293,3 +293,77 @@
     background: rgb(179, 15, 220);
     border-top-left-radius: 1rem;
 }
+
+/* pending_resolve */
+.ribbonPendingResolve {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, #987F69, #5B4C40);
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonPendingResolve::before,
+.cardRibbon .ribbonPendingResolve::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: #987F69;
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonPendingResolve::before {
+    background: #987F69;
+}
+
+.cardRibbon .ribbonPendingResolve::after {
+    background: #6d5949;
+    border-top-left-radius: 1rem;
+}
+
+/* resolved */
+.ribbonResolved {
+    position: absolute;
+    left: -1.1rem;
+    top: 0;
+    width: fit-content;
+    padding: 0 20px;
+    height: 3rem;
+    background: linear-gradient(to right, #0d5272, #063044);
+    color: #fff;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+}
+
+.cardRibbon .ribbonResolved::before,
+.cardRibbon .ribbonResolved::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3rem;
+    width: 1.1rem;
+    height: 2rem;
+    background: #0d5272;
+    border-bottom-left-radius: 20px;
+}
+
+.cardRibbon .ribbonResolved::before {
+    background: #0d5272;
+}
+
+.cardRibbon .ribbonResolved::after {
+    background: #09364C;
+    border-top-left-radius: 1rem;
+}
