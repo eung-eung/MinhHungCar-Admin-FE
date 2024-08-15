@@ -35,5 +35,7 @@
     "appraising_car_approved": "Đủ điều kiện bàn giao",
     "appraising_car_rejected": "Không đủ điều kiện bàn giao",
     "returned_car": "Đã trả xe",
-    "appraised_return_car": "Hoàn thành kiểm tra"
+    "appraised_return_car": "Hoàn thành kiểm tra",
+    "pending_resolve": "Đang xử lí sự cố",
+    "resolved": "Đã xử lí sự cố"
 }
