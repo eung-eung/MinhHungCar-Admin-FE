@@ -79,8 +79,10 @@ export default function Contracts() {
                     { label: 'Đã trả xe', value: 'returned_car' },
                     { label: 'Hoàn thành kiểm tra', value: 'appraised_return_car' },
                     { label: 'Hoàn thành', value: 'completed' },
+                    { label: 'Đang xử lí sự cố', value: 'pending_resolve' },
                     { label: 'Không đủ điều kiện', value: 'appraising_car_rejected' },
                     { label: 'Đã hủy', value: 'canceled' },
+                    { label: 'Đã xử lí sự cố', value: 'resolved' },
                 ]}
                 handleSearch={handleSearch}
                 showGarageConfig={false}
