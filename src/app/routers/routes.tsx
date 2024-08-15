@@ -29,7 +29,7 @@ export const sidebarRoutes: RouteType[] = [
     },
     {
         icon: <DirectionsCarFilledOutlinedIcon />,
-        title: "Thương hiệu xe",
+        title: "Hãng, mẫu xe",
         link: "/brands",
     },
     {
