@@ -32,6 +32,7 @@ import Link from 'next/link';
 import { IPayment } from '@/app/models/Payment.model';
 import dayjs from 'dayjs';
 import TextArea from 'antd/es/input/TextArea';
+import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import nProgress from 'nprogress';
 type Option = {
     label: string,
@@ -214,6 +215,50 @@ export default function ContractPage({
             }
         }
     }
+    const handleUpdateToResolved = async (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn xác nhận đã xử lí sự cố?",
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    const response = await axiosAuth.put("/admin/contract/resolve", {
+                        customer_contract_id: id,
+                        new_status: 'resolved'
+                    })
+                    if (response.status === 200) {
+                        sucessNotify("Đã cập nhật thành công")
+                        setRefresh((prev: boolean) => !prev)
+                    }
+                } catch (error) {
+                    console.log('error: ', error);
+                    errorNotify("Đã có lỗi xảy ra, vui lòng thử lại")
+                }
+            }
+        })
+    }
+    const handleResolve = async (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn xác nhận xe gặp sự cố?",
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    const response = await axiosAuth.put('/admin/contract/resolve', {
+                        customer_contract_id: parseInt(id),
+                        new_status: 'pending_resolve'
+                    })
+                    sucessNotify("Xe đã chuyển sang trạng thái đang xử lí sự cố")
+                    setRefresh((prev: boolean) => !prev)
+
+                } catch (error) {
+                    console.log(error);
+
+                }
+            }
+        })
+    }
+
     const handleViewContract = async (id: any) => {
 
         if (!openContractPdf) {
@@ -665,6 +710,35 @@ export default function ContractPage({
                                                 </div>
                                             }
                                             {
+                                                customerContractDetail?.status === 'pending_resolve' && <div className='flex justify-end w-full'>
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                        }}
+                                                        onClick={() => handleUpdateToResolved(parseInt(customerIdSlug))}
+                                                        className="inline-flex 
+                                                animate-shimmer 
+                                                items-center 
+                                                justify-center 
+                                                rounded-md border 
+                                                border-slate-800 bg-[linear-gradient(110deg,#33bf4e,45%,#60ff7e,55%,#33bf4e)]
+                                                bg-[length:200%_100%] 
+                                                font-medium 
+                                                text-slate-400 
+                                                transition-colors 
+                                                focus:outline-none 
+                                                focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
+                                                    >
+                                                        Xác nhận đã xử lí sự cố
+                                                        <CheckOutlinedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
+                                                </div>
+                                            }
+                                            {
                                                 customerContractDetail?.status === 'appraising_car_approved' &&
                                                 <div className='flex justify-between w-full'>
                                                     <button
@@ -724,6 +798,32 @@ export default function ContractPage({
                                             {
                                                 customerContractDetail?.status === 'renting' &&
                                                 <div className='flex justify-end w-full'>
+                                                    <button
+                                                        style={{
+                                                            color: '#fff',
+                                                            padding: '7px 20px',
+                                                            outline: 'none',
+                                                            border: 'none',
+                                                            cursor: 'pointer',
+                                                            background: 'red',
+                                                            marginRight: '20px'
+                                                        }}
+                                                        onClick={() => handleResolve(customerIdSlug)}
+                                                        className="inline-flex 
+                                            animate-shimmer 
+                                            items-center 
+                                            justify-center 
+                                            rounded-md border 
+                                            bg-[length:200%_100%] 
+                                            font-medium 
+                                            text-slate-400 
+                                            transition-colors 
+                                            focus:outline-none 
+                                            focus:ring-offset-2 focus:ring-offset-slate-50 mt-4"
+                                                    >
+                                                        Xác nhận có sự cố
+                                                        <PriorityHighRoundedIcon sx={{ color: '#fff', fontSize: 16, marginLeft: 2 }} />
+                                                    </button>
                                                     <button
                                                         style={{
                                                             color: '#fff',
