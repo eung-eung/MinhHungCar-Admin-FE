@@ -53,6 +53,7 @@ export default function CarDetail({
             {
                 !notFound && <>
                     <Breadcrumb
+                        style={{ marginTop: 10 }}
                         items={[
                             {
                                 title: <Link
@@ -74,11 +75,15 @@ export default function CarDetail({
                             }
                         ]}
                     />
-                    <div className={classes.detail}>
+                    <div className={classes.detail + ' row-span-1 rounded-xl h-max  group/bento transition duration-200 shadow-input dark:shadow-none p-4 pb-5 dark:bg-black dark:border-white/[0.2] bg-white border border-transparent space-y-4'}
+                        style={{
+                            marginBottom: 10,
+                        }}
+                    >
                         <div className={classes.leftDetail}>
                             <CarouselImages images={detail?.images} />
                         </div>
-                        <div className={classes.rightDetail}>
+                        <div className={classes.rightDetail} style={{ padding: 20 }}>
                             <CarInformation
                                 showAction={true}
                                 detail={detail} setRefresh={setRefresh} />
