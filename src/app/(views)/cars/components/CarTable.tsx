@@ -20,6 +20,7 @@ import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import { IPartnerContractRule } from '@/app/models/ContractRule'
 import InActiveCarDropDown from './InActiveCarDropDown'
 import CountQuantityInput from './CountQuantityInput'
+import nProgress from 'nprogress'
 export default function CarTable(
     {
         carData,
@@ -146,6 +147,30 @@ export default function CarTable(
                         <InActiveCarDropDown
                             id={record.id}
                         />
+                    }
+                    {
+                        filter === 'temporary_resolve' &&
+                        <div
+                            className='flex items-center justify-center'
+                            style={{
+                                cursor: "pointer",
+                                width: '34px',
+                                height: '34px',
+                                borderRadius: '12px',
+                                border: '1px solid',
+                                backgroundColor: '#e8ebed1a',
+                                borderColor: '#d9dee2',
+                                boxShadow: '#f6f7f866 0 2px 0 inset, #e8eaee80 0 -1.5px 0 inset, #dfe2e780 0 1px 2px 0'
+                            }} onClick={() => {
+                                nProgress.start()
+                                router.push('/cars/' + record.id)
+                            }}>
+                            <RemoveRedEyeOutlinedIcon style={{
+                                color: "#0073e6",
+                            }} />
+
+                        </div>
+
                     }
                 </div>
 
