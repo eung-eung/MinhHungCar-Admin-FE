@@ -4,5 +4,6 @@
     "rejected": "rejected",
     "active": "active",
     "waiting": "waiting_car_delivery",
-    "inactive": "inactive"
+    "inactive": "inactive",
+    "temporary_resolve": "temporary_resolve"
 }
