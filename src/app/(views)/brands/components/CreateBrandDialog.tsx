@@ -40,32 +40,34 @@ export default function CreateBrandDialog({
         setYears(e)
     }
     const handleCreateBrands = async () => {
-        console.log('seat: ', seat);
-        console.log('brand: ', brand.charAt(0).toUpperCase() + brand.slice(1));
-        console.log('year: ', year);
-        console.log('model: ', model);
-        console.log('price: ', price);
-        if (price <= 0 || (model.trim().length < 1) || (brand.trim().length < 1)) {
+        if ((model.trim().length < 1) || (brand.trim().length < 1)) {
             errorNotify("Vui lòng điền đầy đủ thông tin")
             return
-        } else {
-            try {
-                const response = await axiosAuth.post('/admin/car_model', {
-                    brand: brand.charAt(0).toUpperCase() + brand.slice(1),
-                    model: model.charAt(0).toUpperCase() + model.slice(1),
-                    year: year,
-                    number_of_seats: seat,
-                    based_price: price
-                })
-                sucessNotify("Thêm thành công")
-                setOpen(false)
-                setCurrentPage(1)
-                setRefresh((prev: any) => !prev)
-            } catch (error) {
-                console.log(error);
-
-            }
         }
+        if (price < 100000) {
+            errorNotify("Số tiền phải trên 100.000đ")
+            return
+        }
+        try {
+            const response = await axiosAuth.post('/admin/car_model', {
+                brand: brand.charAt(0).toUpperCase() + brand.slice(1),
+                model: model.charAt(0).toUpperCase() + model.slice(1),
+                year: year,
+                number_of_seats: seat,
+                based_price: price
+            })
+            sucessNotify("Thêm thành công")
+            setBrand('')
+            setModel('')
+            setPrice(0)
+            setOpen(false)
+            setCurrentPage(1)
+            setRefresh((prev: any) => !prev)
+        } catch (error) {
+            console.log(error);
+
+        }
+
     }
     return (
         <div>
