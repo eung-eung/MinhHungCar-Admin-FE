@@ -2,27 +2,39 @@
 import { ICarModel } from '@/app/models/CarModel.model'
 import { formatCurrency } from '@/app/utils/formatCurrency'
 import { Table, TableProps } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import Dialog from '@/app/components/Modal'
+import EditBrandDialog from './EditBrandDialog'
 export default function BrandsTable(
     {
         data,
         total,
         isLoading,
         setCurrentPage,
-        setPageLimit
+        setPageLimit,
+        setRefresh
     }: {
         data?: ICarModel[],
         isLoading: boolean,
         total: any,
         setCurrentPage: React.Dispatch<React.SetStateAction<any>>,
         setPageLimit: React.Dispatch<React.SetStateAction<any>>,
+        setRefresh: React.Dispatch<React.SetStateAction<any>>,
     }
 ) {
+    const [initValue, setInitValue] = useState<any>()
     const onTableChange: TableProps['onChange'] = (pagination, _filters, sorter) => {
         setCurrentPage(pagination.current)
         setPageLimit(pagination.pageSize)
     };
+    const handleOpenEditDialog = (id: any, currentPrice: any, brand: any, model: any, year: any) => {
+        setOpenEditDialog(true)
+        setInitValue({
+            id, currentPrice, brand, model, year
+        })
+    }
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false)
     const columns: TableProps<ICarModel>['columns'] = [
         {
             title: "Hãng",
@@ -55,6 +67,7 @@ export default function BrandsTable(
             dataIndex: "action",
             key: "id",
             render: (_, record) => <div
+                onClick={() => handleOpenEditDialog(record.id, record.based_price, record.brand, record.model, record.year)}
                 className='flex items-center justify-center'
                 style={{
                     cursor: "pointer",
@@ -83,6 +96,25 @@ export default function BrandsTable(
                 }}
                 onChange={onTableChange}
             />
+            {
+                openEditDialog &&
+                <Dialog
+                    width='45%'
+                    loading={false}
+                    setOpen={setOpenEditDialog}
+                    title={`Cập nhật giá ${initValue.brand} ${initValue.model} ${initValue.year}`}
+                    open={openEditDialog}
+                    isIntercept={false}
+                >
+                    <EditBrandDialog
+                        value={initValue}
+                        setValue={setInitValue}
+                        setOpen={setOpenEditDialog}
+                        setRefresh={setRefresh}
+                    />
+                </Dialog>
+            }
+
         </div>
     )
 }
