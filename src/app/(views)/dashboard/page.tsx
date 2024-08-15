@@ -164,18 +164,6 @@ export default function Dashboard() {
 
                 /> */}
             </div>
-            <div>
-
-                <StatisticItem
-                    style={{
-                        // height: '500px',
-                        flex: 1,
-                        marginTop: '30px'
-                    }}
-                    header={<DynamicBarChart />}
-                    title={<>Từng loại xe</>}
-                />
-            </div>
         </div>
     )
 }
