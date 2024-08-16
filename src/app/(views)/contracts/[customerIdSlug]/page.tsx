@@ -6,7 +6,7 @@ import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import type { ToolbarProps, ToolbarSlot, TransformToolbarSlot } from '@react-pdf-viewer/toolbar';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
-import { Breadcrumb, Button, Modal, Radio, RadioChangeEvent, Result, Select, Space, Spin, Table, Tag, UploadFile } from 'antd';
+import { Breadcrumb, Button, Input, Modal, Radio, RadioChangeEvent, Result, Select, Space, Spin, Table, Tag, UploadFile } from 'antd';
 import { errorNotify, sucessNotify } from '@/app/utils/toast';
 import { ICustomerContract } from '@/app/models/CustomerContract';
 import ExpandRowCollateral from '../components/ExpandRowCollateral';
@@ -46,6 +46,7 @@ export default function ContractPage({
     const searchParams = useSearchParams()?.get('fromNoti')
 
     const [pdfUrl, setPdfUrl] = useState<any>()
+    const [reason, setReason] = useState<any>('')
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<any>(false)
     const [fileCarCondition, setFileCarCondition] = useState<UploadFile[]>([])
@@ -111,7 +112,9 @@ export default function ContractPage({
         setIsModalCancelContractOpen(false);
     };
 
-
+    const handleChangeReason = (e: any) => {
+        setReason(e.target.value)
+    }
     const handleCancel = () => {
         setIsModalCancelContractOpen(false);
     };
@@ -406,6 +409,7 @@ export default function ContractPage({
             cancelText: "Hủy",
             onOk: async () => {
                 try {
+                    console.log('reason: ', reason);
                     const paymentListResponse = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + customerContractDetail?.id)
                     const paymentList = paymentListResponse.data.data
                     const refundPayment = paymentList.find(
@@ -452,9 +456,12 @@ export default function ContractPage({
 
                     }
                     console.log('refund payment: ', refundPayment)
+
+
                     const response = await axiosAuth.put("/admin/contract", {
                         customer_contract_id: id,
-                        action: "reject"
+                        action: "reject",
+                        reason: reason
                     })
                     if (response.status === 200) {
                         sucessNotify("Đã từ chối hợp đồng thành công")
@@ -671,6 +678,17 @@ export default function ContractPage({
                                             customerContractDetail?.end_date && dayjs(customerContractDetail.end_date).format('DD-MM-YYYY HH:mm:ss')
                                         }
                                         </p>
+                                        {
+                                            customerContractDetail?.status === 'canceled' && <><p className='font-medium mt-3'>
+                                                Lí do hủy
+                                            </p>
+                                                <TextArea placeholder={customerContractDetail.reason.trim().length < 1
+                                                    ? 'Không có ghi lí do'
+                                                    : ""}
+                                                    value={customerContractDetail.reason}
+                                                />
+                                            </>
+                                        }
                                     </div>
                                     {
                                         !searchParams &&
@@ -1040,6 +1058,8 @@ export default function ContractPage({
                                         <Radio value={2}>Khách hàng</Radio>
                                     </Space>
                                 </Radio.Group>
+                                <p className='font-medium mt-3'>Lí do hủy</p>
+                                <Input placeholder='Ghi lí do nếu có' value={reason} onChange={handleChangeReason} />
                             </Modal>
                         </>
                     }
