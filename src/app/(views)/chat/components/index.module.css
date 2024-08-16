@@ -34,8 +34,8 @@
 }
 
 .headerChat {
-    border: 1px solid #ccc;
     display: flex;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     align-items: center;
     padding: 8px 24px;
     height: 10%;
