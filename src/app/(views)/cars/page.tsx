@@ -109,6 +109,7 @@ export default function Cars() {
                     { label: 'Xe đang chờ giao', value: 'waiting_car_delivery' },
                     { label: 'Xe đang hoạt động', value: 'active' },
                     { label: 'Xe tạm dừng hoạt động', value: 'temporary_resolve' },
+                    { label: 'Đã từ chối', value: 'rejected' },
                     { label: 'Xe dừng hoạt động', value: 'inactive' },
                 ]}
                 handleSearch={handleSearch}
