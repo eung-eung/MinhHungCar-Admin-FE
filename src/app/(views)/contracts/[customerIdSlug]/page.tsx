@@ -1051,7 +1051,7 @@ export default function ContractPage({
                                     </div>
                                 }
                             </div>
-                            <Modal title="Vui lòng chọn bên hủy" open={isModalCancelContractOpen} onOk={() => rejectCustomerContract(parseInt(customerIdSlug))} onCancel={handleCancel}>
+                            <Modal cancelText="Hủy" title="Vui lòng chọn bên hủy" open={isModalCancelContractOpen} onOk={() => rejectCustomerContract(parseInt(customerIdSlug))} onCancel={handleCancel}>
                                 <Radio.Group onChange={onChange} value={value}>
                                     <Space direction="vertical">
                                         <Radio value={1}>MinhHung Car</Radio>
