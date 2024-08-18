@@ -238,7 +238,7 @@ export default function CarInformation(
                 </p>
                 <p className={classes.infor}>
                     {
-                        t('carStatus:temporary_resolve') === detail?.status &&
+                        t('carStatus:temporary_inactive') === detail?.status &&
                         <Tag
                             style={{
                                 margin: 0,

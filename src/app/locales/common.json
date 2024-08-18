@@ -5,7 +5,7 @@
     "rejected": "Đã từ chối duyệt",
     "waiting_car_delivery": "Đang chờ giao",
     "inactive": "Dừng hoạt động",
-    "temporary_resolve": "Tạm dừng hoạt động",
+    "temporary_inactive": "Tạm dừng hoạt động",
     "electricity": "Điện",
     "oil": "Dầu",
     "gas": "Xăng",
