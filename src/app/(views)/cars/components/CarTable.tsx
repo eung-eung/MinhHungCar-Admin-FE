@@ -149,7 +149,7 @@ export default function CarTable(
                         />
                     }
                     {
-                        filter === 'temporary_resolve' &&
+                        filter === 'temporary_inactive' &&
                         <div
                             className='flex items-center justify-center'
                             style={{
