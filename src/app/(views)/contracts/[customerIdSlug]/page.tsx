@@ -171,6 +171,7 @@ export default function ContractPage({
         const paymentList = paymentListResponse.data.data
         const refundPayment = paymentList.find(
             (payment: IPayment) => payment.payment_type === "refund_pre_pay")
+        console.log('ref: ', refundPayment);
 
         if (customerContractDetail?.collateral_type === 'motorbike') {
             if (customerContractDetail.is_return_collateral_asset) {
@@ -179,6 +180,10 @@ export default function ContractPage({
             }
             if (refundPayment && refundPayment.status === 'pending') {
                 errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'paid') {
+                errorNotify("Bạn không thể thay xe vì đã hoàn trả tiền cọc cho khách hàng")
                 return
             }
         }
@@ -247,6 +252,10 @@ export default function ContractPage({
                 }
                 if (refundPayment && refundPayment.status === 'pending') {
                     errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                    return
+                }
+                if (refundPayment && refundPayment.status === 'paid') {
+                    errorNotify("Bạn không thể tìm xe thay thế vì đã hoàn trả tiền cọc cho khách hàng")
                     return
                 }
             }
