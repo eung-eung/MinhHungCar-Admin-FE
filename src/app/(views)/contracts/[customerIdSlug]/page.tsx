@@ -167,6 +167,48 @@ export default function ContractPage({
     ]
     const changeCarForCustomer = async (carId: any, customerContractId: any) => {
         const { confirm } = Modal
+        const paymentListResponse = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + customerContractDetail?.id)
+        const paymentList = paymentListResponse.data.data
+        const refundPayment = paymentList.find(
+            (payment: IPayment) => payment.payment_type === "refund_pre_pay")
+
+        if (customerContractDetail?.collateral_type === 'motorbike') {
+            if (customerContractDetail.is_return_collateral_asset) {
+                errorNotify("Vui lòng không ghi nhận đã hoàn trả giấy tờ xe ở quản lý các khoản thanh toán")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'pending') {
+                errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                return
+            }
+        }
+        if (customerContractDetail?.collateral_type === 'cash') {
+            const isReturnCollateralPayment = paymentList.find(
+                (payment: IPayment) => (
+                    payment.payment_type === "return_collateral_cash"
+                    && payment.status === 'paid'
+                )
+            )
+            const isPaidCollateralPayment = paymentList.find(
+                (payment: IPayment) => (
+                    payment.payment_type === 'collateral_cash'
+                    && payment.status === 'paid'
+                )
+
+            )
+            if ((isReturnCollateralPayment && isPaidCollateralPayment)) {
+                errorNotify("Bạn không thể tìm xe vì đã hoàn trả tiền thế chấp")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'pending') {
+                errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                return
+            }
+            if (refundPayment && refundPayment.status === 'paid') {
+                errorNotify("Bạn không thể tìm xe vì đã hoàn trả tiền cọc cho khách hàng")
+                return
+            }
+        }
         confirm({
             title: 'Bạn có muốn thay bằng xe này?',
             cancelText: "Hủy",
@@ -192,9 +234,52 @@ export default function ContractPage({
 
     }
     const handleOpenReplaceCarList = async () => {
-        setOpenReplaceCarList(true)
-        setLoadingReplaceCarList(true)
         try {
+            const paymentListResponse = await axiosAuth.get('/admin/customer_payments?customer_contract_id=' + customerContractDetail?.id)
+            const paymentList = paymentListResponse.data.data
+            const refundPayment = paymentList.find(
+                (payment: IPayment) => payment.payment_type === "refund_pre_pay")
+
+            if (customerContractDetail?.collateral_type === 'motorbike') {
+                if (customerContractDetail.is_return_collateral_asset) {
+                    errorNotify("Vui lòng không ghi nhận đã hoàn trả giấy tờ xe ở quản lý các khoản thanh toán")
+                    return
+                }
+                if (refundPayment && refundPayment.status === 'pending') {
+                    errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                    return
+                }
+            }
+            if (customerContractDetail?.collateral_type === 'cash') {
+                const isReturnCollateralPayment = paymentList.find(
+                    (payment: IPayment) => (
+                        payment.payment_type === "return_collateral_cash"
+                        && payment.status === 'paid'
+                    )
+                )
+                const isPaidCollateralPayment = paymentList.find(
+                    (payment: IPayment) => (
+                        payment.payment_type === 'collateral_cash'
+                        && payment.status === 'paid'
+                    )
+
+                )
+                if ((isReturnCollateralPayment && isPaidCollateralPayment)) {
+                    errorNotify("Bạn không thể tìm xe vì đã hoàn trả tiền thế chấp")
+                    return
+                }
+                if (refundPayment && refundPayment.status === 'pending') {
+                    errorNotify("Vui lòng xóa khoản thanh toán hoàn trả tiền cọc")
+                    return
+                }
+                if (refundPayment && refundPayment.status === 'paid') {
+                    errorNotify("Bạn không thể tìm xe vì đã hoàn trả tiền cọc cho khách hàng")
+                    return
+                }
+            }
+
+            setOpenReplaceCarList(true)
+            setLoadingReplaceCarList(true)
             const response = await axiosAuth.get(
                 `/admin/find_change_cars`, {
                 params: {
