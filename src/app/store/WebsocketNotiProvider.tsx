@@ -69,6 +69,8 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
 
     }
     useEffect(() => {
+        let timerNewWs: any
+        let timerConversationWs: any
         const initSocket = async () => {
             try {
                 const newWs = new WebSocket('wss://minhhungcar.xyz/admin/subscribe_notification')
@@ -77,14 +79,19 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
                 newWs.onopen = () => {
                     setIsConnected(true)
                     newWs.send(JSON.stringify({ access_token: `Bearer ${session?.access_token}` }))
+                    timerNewWs = setInterval(() => {
+                        newWs.send('')
+                    }, 7000)
                 }
-                // newWs.onmessage = handleSocketMessage
-                // newWs.onerror = handleSocketError
+
 
                 // conversation socket
                 chatCoversationWs.onopen = () => {
                     setConversationWsIsConnected(true)
                     chatCoversationWs.send(JSON.stringify({ access_token: `Bearer ${session?.access_token}` }))
+                    timerConversationWs = setInterval(() => {
+                        chatCoversationWs.send('')
+                    }, 10000)
                 }
 
                 // chatCoversationWs.onmessage = handleConversationSocketMessage
@@ -94,16 +101,27 @@ export const WebSocketNotiProvider = ({ children }: { children: React.ReactNode 
                 setWs(newWs);
             } catch (error) {
                 console.error('WebSocket connection error:', error);
+                if (timerNewWs) {
+                    console.log(timerNewWs);
+                    clearInterval(timerNewWs)
+                }
+                if (timerConversationWs) {
+                    clearInterval(timerConversationWs)
+                }
             }
         };
 
         initSocket();
 
         return () => {
+
             if (ws) {
+                clearInterval(timerNewWs)
                 ws.close(); // Clean up on unmount
+
             }
             if (conversationWs) {
+                clearInterval(timerConversationWs)
                 conversationWs.close()
             }
         };
