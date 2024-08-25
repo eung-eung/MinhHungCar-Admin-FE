@@ -88,6 +88,27 @@ export default function CarInformation(
             })
     }
 
+    const cancelCarContract = async (id: any) => {
+        const { confirm } = Modal
+        confirm({
+            title: "Bạn có muốn hủy hợp đồng xe này?",
+            cancelText: "Hủy",
+            onOk: async () => {
+                try {
+                    const response = await axiosAuth.put("/admin/car/inactive", {
+                        car_id: id
+                    })
+                    if (setRefresh) {
+                        setRefresh(prev => !prev)
+                    }
+                } catch (error) {
+                    console.log(error);
+                    errorNotify("Xe đang được khách hàng thuê, vui lòng hủy sau khi khách hàng trả xe")
+                }
+            }
+        })
+    }
+
     const handleRejectCar = async (id: any) => {
         showConfirmModal("Bạn có muốn từ chối xe này?")
             .then(async () => {
@@ -144,41 +165,23 @@ export default function CarInformation(
                 </div>
             }
             <div className='flex justify-end'>
+                {
+                    detail?.status === 'active' && <Button
+                        style={{
+                            background: "red",
+                            borderColor: 'red',
+                            color: "#fff"
+                        }}
+                        className='mr-4'
+                        onClick={() => cancelCarContract(detail?.id)}
+                    >Hủy hợp đồng</Button>
+                }
                 {(detail?.status === "active" || detail?.status === "waiting_car_delivery") &&
                     <Button
                         type='primary'
                         onClick={() => showContract(detail?.id)}>
                         Xem hợp đồng
                     </Button>
-                }
-                {
-                    showAction && detail?.status === 'waiting_car_delivery' &&
-                    <button
-                        onClick={() => handleBringCarToActive(detail?.id)}
-                        style={{
-                            color: '#fff',
-                            fontSize: 13,
-                            padding: '0 10px',
-                            outline: 'none',
-                            border: 'none',
-                            marginLeft: 10
-                        }}
-                        className="inline-flex
-                    animate-shimmer 
-                    items-center 
-                    justify-center 
-                    rounded-md border 
-                    border-slate-800 bg-[linear-gradient(110deg,#00a921,45%,#3ad657f7,55%,#00a921)]
-                     bg-[length:200%_100%] 
-                    font-medium 
-                     text-slate-400 
-                     transition-colors 
-                     focus:outline-none 
-                     focus:ring-offset-2 focus:ring-offset-slate-50"
-                    >
-                        Đưa vào hoạt động
-                    </button>
-
                 }
             </div>
             {detail?.status === "active" && <div className='flex justify-between mt-4'>
