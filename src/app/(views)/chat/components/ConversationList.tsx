@@ -52,6 +52,7 @@ export default function ConversationList(
         <div className={classes.container}>
             {conversationList?.map((conversation, index) =>
                 <ConversationItem
+                    role={conversation.account.role}
                     conversationId={conversation.id}
                     activeId={activeId}
                     key={index}
