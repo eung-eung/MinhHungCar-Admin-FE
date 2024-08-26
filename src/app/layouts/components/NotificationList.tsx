@@ -181,7 +181,7 @@ export default function NotificationList() {
                                     <p style={{ fontWeight: 600, marginBottom: 7 }}>{item.title}</p>
                                     <p style={{ color: "#8f8f8f" }}>{item.content}</p>
                                     <p style={{ color: "#0866FF", fontWeight: 600, fontSize: '10px' }}>
-                                        {item.created_at ? new Date(item.created_at).toLocaleString() : new Date().toLocaleString()}
+                                        {item.created_at ? dayjs(item.created_at).format('DD-MM-YYYY HH:mm:ss') : new Date().toLocaleString()}
                                     </p>
                                 </div>
                             </div>
