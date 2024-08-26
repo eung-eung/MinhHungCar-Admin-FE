@@ -100,7 +100,13 @@ export default function PaymentTable(
                     <Tag color='green'>Đã thanh toán</Tag>
                     : <div className='flex items-center justify-between'>
                         {
-                            ((contractStatus !== 'canceled' && contractStatus !== 'renting' && contractStatus !== 'returned_car') || contractStatus === 'appraised_return_car')
+                            (
+                                contractStatus === 'appraised_return_car'
+                                || contractStatus === 'ordered'
+                                || contractStatus === 'appraising_car_approved'
+                                || contractStatus === 'pending_resolve'
+                                || contractStatus === 'appraising_car_rejected'
+                            )
                             &&
                             <Button
                                 className='cursor-pointer'
@@ -114,7 +120,10 @@ export default function PaymentTable(
                                     && record.payment_type === 'refund_pre_pay')
                                 || (contractStatus === 'appraising_car_approved'
                                     && record.payment_type === 'refund_pre_pay'
-                                )) &&
+                                )
+                                || (contractStatus === 'appraising_car_rejected'
+                                    && record.payment_type === 'refund_pre_pay')
+                                || contractStatus === 'pending_resolve') &&
                             <Button
                                 style={{
                                     background: "#fff",
@@ -142,7 +151,9 @@ export default function PaymentTable(
 
         },
         getCheckboxProps: (record: IPayment) => {
-            if (contractStatus === 'canceled') {
+            if (contractStatus === 'canceled'
+                || contractStatus === 'resolved'
+                || contractStatus === 'returned_car') {
                 return ({
                     disabled: true
                 })

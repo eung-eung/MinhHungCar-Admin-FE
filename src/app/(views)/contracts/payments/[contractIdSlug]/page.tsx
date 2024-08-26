@@ -179,6 +179,19 @@ export default function PaymentDetail({
                 setOptions([]);
             }
         }
+        if (data.status === 'pending_resolve' && data.collateral_type === 'cash') {
+            if (isExistReturnCollateralCashPayment) {
+                setOptions([
+                    { label: 'Khác', value: 'other' }
+                ]);
+            } else {
+                setOptions([
+                    { label: 'Khác', value: 'other' },
+                    { label: 'Hoàn trả tiền thế chấp', value: 'return_collateral_cash' },
+                ]);
+            }
+
+        }
         if (data.collateral_type === 'cash' && data.status === 'appraised_return_car') {
             (isExistRemainingPayment && isExistReturnCollateralCashPayment) &&
                 setOptions([
@@ -311,6 +324,7 @@ export default function PaymentDetail({
                                         || detail?.status === 'ordered'
                                         || detail?.status === 'appraising_car_approved'
                                         || detail?.status === 'appraising_car_rejected'
+                                        || detail?.status === 'pending_resolve'
                                     )
                                     &&
                                     <Button
