@@ -2,6 +2,7 @@
 
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import useAxiosAuth from '@/app/utils/hooks/useAxiosAuth';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -37,7 +38,7 @@ export default function AreaReChart() {
 
             const data = response.data.data.revenue.records.map((item: any) => (
                 {
-                    name: new Date(item.from_date).toLocaleDateString(),
+                    name: dayjs(item.from_date).format("DD-MM-YYYY"),
                     uv: item.revenue
                 }
             ))
