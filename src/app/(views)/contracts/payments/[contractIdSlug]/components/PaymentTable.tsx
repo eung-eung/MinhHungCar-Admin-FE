@@ -100,7 +100,7 @@ export default function PaymentTable(
                     <Tag color='green'>Đã thanh toán</Tag>
                     : <div className='flex items-center justify-between'>
                         {
-                            ((contractStatus !== 'canceled' && contractStatus !== 'renting') || contractStatus === 'appraised_return_car')
+                            ((contractStatus !== 'canceled' && contractStatus !== 'renting' && contractStatus !== 'returned_car') || contractStatus === 'appraised_return_car')
                             &&
                             <Button
                                 className='cursor-pointer'
